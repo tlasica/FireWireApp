@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+//apply plugin: "jp.leafytree.android-scala"
 
 android {
     compileSdkVersion 22
@@ -12,10 +13,13 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFile file("proguard-rules.pro")
+        }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+            proguardFile file("proguard-rules.pro")        }
     }
 }
 
@@ -24,4 +28,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
+    compile "org.scala-lang:scala-library:2.11.7"
+    //compile "org.scaloid:scaloid_2.11:4.0"
 }
