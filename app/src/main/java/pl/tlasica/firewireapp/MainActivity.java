@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setButtonFont(R.id.button_play, Font.ROBOTO_BOLD_ITALIC);
+        setButtonFont(R.id.button_tutorial, Font.ROBOTO_BOLD_ITALIC);
+        setButtonFont(R.id.button_rank, Font.ROBOTO_BOLD_ITALIC);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void setButtonFont(int id, String fontName ) {
+        Button bttn = (Button)findViewById(id);
+        bttn.setTypeface(Typer.set(getApplicationContext()).getFont(fontName));
     }
 
     @Override

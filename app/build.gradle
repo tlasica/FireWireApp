@@ -28,6 +28,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
+    compile 'com.elmargomez.typer:typerlib:1.0.0'
     compile "org.scala-lang:scala-library:2.11.7"
     //compile "org.scaloid:scaloid_2.11:4.0"
 }

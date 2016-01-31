@@ -1,0 +1,23 @@
+How to add ROBOTO field:
+
+        You can do this easily by using the Typerlib.
+
+            This library wraps the complexity of adding a font resource in your project and recycle those recently created font inorder to maximize your app's perfromance.
+
+        Add this to your build.gradle
+
+        dependencies {
+            compile 'com.elmargomez.typer:typerlib:1.0.0'
+        }
+
+        Then you can use the font by
+
+        TextView txtView1 = (TextView) findViewById(R.id.yourTxtView1);
+        TextView txtView2 = (TextView) findViewById(R.id.yourTxtView2);
+        TextView txtView3 = (TextView) findViewById(R.id.yourTxtView3);
+        TextView txtView4 = (TextView) findViewById(R.id.yourTxtView4);
+
+        txtView1.setTypeface(Typer.set(yourContext).getFont(Font.ROBOTO_REGULAR));
+        txtView2.setTypeface(Typer.set(yourContext).getFont(Font.ROBOTO_CONDENSED_ITALIC));
+        txtView3.setTypeface(Typer.set(yourContext).getFont(Font.ROBOTO_THIN));
+        txtView4.setTypeface(Typer.set(yourContext).getFont(Font.ROBOTO_BOLD));
