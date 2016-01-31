@@ -19,6 +19,7 @@
 
     <Button
         android:id="@+id/button_play"
+        android:onClick="onPlay"
         android:text="play"
         style="?android:attr/borderlessButtonStyle"
         android:textSize="32dp"

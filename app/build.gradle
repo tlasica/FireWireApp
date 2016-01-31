@@ -19,16 +19,18 @@ android {
         }
         release {
             minifyEnabled false
-            proguardFile file("proguard-rules.pro")        }
+            proguardFile file("proguard-rules.pro")
+        }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    //compile "org.scaloid:scaloid_2.11:4.0"
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.elmargomez.typer:typerlib:1.0.0'
-    compile "org.scala-lang:scala-library:2.11.7"
-    //compile "org.scaloid:scaloid_2.11:4.0"
+    compile 'org.scala-lang:scala-library:2.11.7'
+    compile 'com.android.support:support-v4:22.2.1'
 }
