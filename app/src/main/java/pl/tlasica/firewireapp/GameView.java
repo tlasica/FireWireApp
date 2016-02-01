@@ -72,7 +72,7 @@ public class GameView extends View {
             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.DKGRAY);
-            paint.setStrokeWidth(12);
+            paint.setStrokeWidth(cellSize()/12);
             this.nodePaint = paint;
         }
         return this.nodePaint;
@@ -83,7 +83,7 @@ public class GameView extends View {
             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.DKGRAY);
-            paint.setStrokeWidth(16);
+            paint.setStrokeWidth(cellSize()/10);
             this.wirePaint = paint;
         }
         return this.wirePaint;
@@ -102,15 +102,19 @@ public class GameView extends View {
 
 
     private int rx(int x) {
-        return 100 + x * 150;
+        return x*cellSize() + cellSize()/2;
     }
 
     private int ry(int y) {
-        return 100 + y * 150;
+        return y*cellSize() + cellSize()/2;
     }
 
     private int radius() {
-        return 18;
+        return cellSize()/6;
+    }
+
+    private int cellSize() {
+        return Math.round(getWidth() / 7);
     }
 
     // Use Color.parseColor to define HTML colors

@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="#000000"
     android:id="@+id/content_view"
-    tools:context="pl.tlasica.firewireapp.PlayActivity">
+    tools:context="pl.tlasica.firewireapp.PlayActivity"
+    android:theme="@style/FullscreenTheme"
+    android:touchscreenBlocksFocus="false">
 
     <RelativeLayout
         android:id="@+id/game_header"
