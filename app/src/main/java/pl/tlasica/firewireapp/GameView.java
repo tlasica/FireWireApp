@@ -19,7 +19,8 @@ import java.util.List;
  */
 public class GameView extends View {
 
-    private Paint basicPaint;
+    private Paint nodePaint;
+    private Paint wirePaint;
     private List<Coord> nodes = null;
 
     public GameView(Context context, AttributeSet attrs) {
@@ -36,16 +37,20 @@ public class GameView extends View {
         for(Coord n: nodes()) {
             drawNode(canvas, n.x, n.y);
         }
-        drawWire(canvas, 0, 0, 1, 0);
-        drawWire(canvas, 0, 0, 0, 1);
-        drawWire(canvas, 1, 0, 2, 2);
-        drawWire(canvas, 0, 1, 2, 2);
+        for(int x=0; x<5; x++) {
+            for (int y = 0; y < 5; y++) {
+                drawWire(canvas, x, y, x+1, y);
+                drawWire(canvas, x, y, x, y+1);
+            }
+        }
+        drawWire(canvas, 5, 5, 4, 5);
+        drawWire(canvas, 5, 5, 5, 4);
     }
 
     // TODO: create paints when the view is created and use them later
 
     private void drawNode(Canvas canvas, int cx, int cy) {
-        canvas.drawCircle(rx(cx), ry(cy), radius(), basicPaint());
+        canvas.drawCircle(rx(cx), ry(cy), radius(), nodePaint());
     }
 
     private void drawWire(Canvas canvas, int px, int py, int qx, int qy) {
@@ -53,7 +58,7 @@ public class GameView extends View {
         int qxr = rx(qx) + wireSpacer(qx, px);
         int pyr = ry(py) + wireSpacer(py, qy);
         int qyr = ry(qy) + wireSpacer(qy, py);
-        canvas.drawLine(pxr, pyr, qxr, qyr, basicPaint());
+        canvas.drawLine(pxr, pyr, qxr, qyr, wirePaint());
     }
 
     private int wireSpacer(int p, int q) {
@@ -62,15 +67,26 @@ public class GameView extends View {
         return 0;
     }
 
-    private Paint basicPaint() {
-        if (this.basicPaint == null) {
+    private Paint nodePaint() {
+        if (this.nodePaint == null) {
             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
             paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.LTGRAY);
-            paint.setStrokeWidth(10);
-            this.basicPaint = paint;
+            paint.setColor(Color.DKGRAY);
+            paint.setStrokeWidth(12);
+            this.nodePaint = paint;
         }
-        return this.basicPaint;
+        return this.nodePaint;
+    }
+
+    private Paint wirePaint() {
+        if (this.wirePaint == null) {
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.DKGRAY);
+            paint.setStrokeWidth(16);
+            this.wirePaint = paint;
+        }
+        return this.wirePaint;
     }
 
     public List<Coord> nodes() {
