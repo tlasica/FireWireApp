@@ -13,16 +13,17 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
+        android:id="@+id/logo_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:text="place a nice logo or name here" />
 
     <Button
         android:id="@+id/button_play"
         android:onClick="onPlay"
         android:text="play"
-        style="?android:attr/borderlessButtonStyle"
         android:textSize="32dp"
+        android:layout_below="@+id/logo_view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

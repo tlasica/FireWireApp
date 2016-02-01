@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         setButtonFont(R.id.button_play, Font.ROBOTO_BOLD_ITALIC);
-        setButtonFont(R.id.button_tutorial, Font.ROBOTO_BOLD_ITALIC);
+        setButtonFont(R.id.button_tutorial, Font.ROBOTO_BOLD);
         setButtonFont(R.id.button_rank, Font.ROBOTO_BOLD_ITALIC);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
