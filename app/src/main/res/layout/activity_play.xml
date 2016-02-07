@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/logo_img"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/shockcircle"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
@@ -67,7 +67,11 @@
         android:layout_width="match_parent"
         android:layout_alignParentEnd="false"
         android:layout_below="@+id/game_header"
-        android:layout_above="@+id/connectors_view" />
+        android:layout_above="@+id/connectors_view"
+        android:background="@color/myGreen"
+        />
+
+    <!-- #009240 -->
 
     <GridView
         android:id="@+id/connectors_view"

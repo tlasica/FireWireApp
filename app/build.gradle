@@ -33,4 +33,5 @@ dependencies {
     compile 'com.elmargomez.typer:typerlib:1.0.0'
     compile 'org.scala-lang:scala-library:2.11.7'
     compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.github.vajro:MaterialDesignLibrary:1.6'
 }

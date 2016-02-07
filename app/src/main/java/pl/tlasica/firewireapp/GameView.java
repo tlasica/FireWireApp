@@ -8,7 +8,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // FIXME: optimize drawing of the background as it will not change
 // FIXME: drawing parameters (x->rx, rad) are function of view size, maybe also max coord?
@@ -19,9 +21,14 @@ import java.util.List;
  */
 public class GameView extends View {
 
-    private Paint nodePaint;
-    private Paint wirePaint;
-    private List<Coord> nodes = null;
+    private Map<String, Paint> paints = new HashMap<String, Paint>();
+
+    private Board board = BoardFactory.standard();
+
+    private final int colorWire = Color.argb(255, 219, 219, 219);
+    private final int colorConn = Color.argb(255, 112, 173, 71);
+    private final int colorConnLine = Color.argb(255, 255, 230, 0);
+
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,26 +41,27 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for(Coord n: nodes()) {
-            drawNode(canvas, n.x, n.y);
-        }
-        for(int x=0; x<5; x++) {
-            for (int y = 0; y < 5; y++) {
-                drawWire(canvas, x, y, x+1, y);
-                drawWire(canvas, x, y, x, y+1);
-            }
-        }
-        drawWire(canvas, 5, 5, 4, 5);
-        drawWire(canvas, 5, 5, 5, 4);
-    }
 
-    // TODO: create paints when the view is created and use them later
+        for(int n: board.nodes) {
+            int x = Coord.x(n);
+            int y = Coord.y(n);
+            drawNode(canvas, x, y);
+        }
+
+        for(Wire w: board.wires) {
+            drawWire(canvas, w.a, w.b);
+        }
+
+        drawConnector(canvas, 12, "S,E");
+    }
 
     private void drawNode(Canvas canvas, int cx, int cy) {
         canvas.drawCircle(rx(cx), ry(cy), radius(), nodePaint());
     }
 
-    private void drawWire(Canvas canvas, int px, int py, int qx, int qy) {
+    private void drawWire(Canvas canvas, int from, int to) {
+        int px = Coord.x(from), py = Coord.y(from);
+        int qx = Coord.x(to), qy = Coord.y(to);
         int pxr = rx(px) + wireSpacer(px, qx);
         int qxr = rx(qx) + wireSpacer(qx, px);
         int pyr = ry(py) + wireSpacer(py, qy);
@@ -61,56 +69,81 @@ public class GameView extends View {
         canvas.drawLine(pxr, pyr, qxr, qyr, wirePaint());
     }
 
+    private void drawConnector(Canvas canvas, int at, String type) {
+        int cx = rx(Coord.x(at));
+        int cy = ry(Coord.y(at));
+        // draw connector circle
+        canvas.drawCircle(cx, cy, radius(), connectorCirclePaint());
+        // draw connector lines
+        for(String dir : type.split(",")) {
+            int vx = Direction.vx(dir);
+            int vy = Direction.vy(dir);
+            int dx = (cx-vx*5) + vx * radius() * 3;
+            int dy = (cy-vy*5) + vy * radius() * 3;
+            canvas.drawLine(cx, cy, dx, dy, connectorLinePaint());
+        }
+    }
+
     private int wireSpacer(int p, int q) {
-        if (q>p) return radius()-3;
-        if (p>q) return -(radius()-3);
+        int spacer = 5;
+        if (q>p) return radius() - spacer;
+        if (p>q) return -(radius() - spacer);
         return 0;
     }
 
+
     private Paint nodePaint() {
-        if (this.nodePaint == null) {
-            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.DKGRAY);
-            paint.setStrokeWidth(cellSize()/12);
-            this.nodePaint = paint;
+        String key = "node";
+        if (!paints.containsKey(key)) {
+            Paint paint = createLinePaint(cellSize() / 8, colorWire);
+            paints.put(key, paint);
         }
-        return this.nodePaint;
+        return paints.get(key);
     }
 
     private Paint wirePaint() {
-        if (this.wirePaint == null) {
-            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.DKGRAY);
-            paint.setStrokeWidth(cellSize()/10);
-            this.wirePaint = paint;
+        String key = "wire";
+        if (!paints.containsKey(key)) {
+            Paint paint = createLinePaint(cellSize() / 10, colorWire);
+            paints.put(key, paint);
         }
-        return this.wirePaint;
+        return paints.get(key);
     }
 
-    public List<Coord> nodes() {
-        if (nodes == null) {
-            List<Coord> c = new ArrayList<Coord>();
-            for (int x = 0; x < 6; ++x)
-                for (int y = 0; y < 6; ++y)
-                    c.add(new Coord(x, y));
-            nodes = c;
+    private Paint connectorCirclePaint() {
+        String key = "connector";
+        if (!paints.containsKey(key)) {
+            Paint paint = createLinePaint(cellSize() / 8, colorConn);
+            paints.put(key, paint);
         }
-        return nodes;
+        return paints.get(key);
     }
 
-
-    private int rx(int x) {
-        return x*cellSize() + cellSize()/2;
+    private Paint connectorLinePaint() {
+        String key = "connectorline";
+        if (!paints.containsKey(key)) {
+            Paint paint = createLinePaint(cellSize() / 10, colorConnLine);
+            paints.put(key, paint);
+        }
+        return paints.get(key);
     }
+
+    private Paint createLinePaint(int width, int color) {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(color);
+        paint.setStrokeWidth(width);
+        return paint;
+    }
+
+    private int rx(int x) { return x*cellSize() + cellSize()/2; }
 
     private int ry(int y) {
         return y*cellSize() + cellSize()/2;
     }
 
     private int radius() {
-        return cellSize()/6;
+        return cellSize()/9;
     }
 
     private int cellSize() {

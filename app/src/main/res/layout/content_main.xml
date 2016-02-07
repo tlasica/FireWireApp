@@ -8,46 +8,74 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_margin="20dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pl.tlasica.firewireapp.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <ImageView
+        android:id="@+id/logo_icon"
+        android:src="@drawable/shockcircle"
+        android:elevation="16dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
     <TextView
-        android:id="@+id/logo_view"
+        android:id="@+id/logo_text"
         android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_height="100dp"
-        android:text="place a nice logo or name here" />
+        android:textColor="@color/myGreen"
+        android:textSize="40sp"
+        android:text="Fire-Wire" />
 
     <Button
         android:id="@+id/button_play"
         android:onClick="onPlay"
         android:text="play"
         android:textSize="32dp"
-        android:layout_below="@+id/logo_view"
+        android:elevation="8dp"
+        android:textColor="@color/myLightGray"
+        android:backgroundTint="@color/myGreen"
+        android:backgroundTintMode="multiply"
+        android:layout_below="@+id/logo_text"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/button_rank"
         android:text="rank"
-        style="?android:attr/borderlessButtonStyle"
         android:textSize="32sp"
+        android:elevation="8dp"
+        android:textColor="@color/myLightGray"
+        android:background="?android:attr/selectableItemBackground"
+        android:backgroundTint="@color/myGreen"
+        android:backgroundTintMode="multiply"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/button_play"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/button_tutorial"
         android:text="tutorial"
-        style="?android:attr/borderlessButtonStyle"
         android:textSize="32sp"
+        android:elevation="8dp"
+        android:textColor="@color/myLightGray"
+        android:backgroundTint="@color/myGreen"
+        android:backgroundTintMode="multiply"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/button_rank"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
