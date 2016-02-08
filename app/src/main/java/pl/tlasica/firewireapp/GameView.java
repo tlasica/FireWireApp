@@ -9,6 +9,8 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 
 import java.util.HashMap;
@@ -21,30 +23,31 @@ import java.util.Map;
 /**
  * Game View prints current game status using 2D shapes
  */
-public class GameView extends View {
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Map<String, Paint> paints = new HashMap<String, Paint>();
-
     private Board board = BoardFactory.standard();
-
-    private final int colorWire = Color.argb(255, 219, 219, 219);
-    private final int colorConn = Color.argb(255, 112, 173, 71);
-    private final int colorConnLine = Color.argb(255, 255, 230, 0);
-
     private AvailableConnectorPainter availableConnectorPainter;
 
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        getHolder().addCallback(this);
     }
 
     public GameView(Context context) {
         super(context);
+        getHolder().addCallback(this);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+
+    }
+
+    protected void drawGame(Canvas canvas) {
+
+        canvas.drawColor(Color.parseColor("#009240"));
 
         for(int n: board.nodes) {
             int x = Coord.x(n);
@@ -97,7 +100,7 @@ public class GameView extends View {
     }
 
     private int wireSpacer(int p, int q) {
-        int spacer = 2;
+        int spacer = 4;
         if (q>p) return radius() + spacer;
         if (p>q) return -(radius() + spacer);
         return 0;
@@ -107,7 +110,8 @@ public class GameView extends View {
     private Paint nodePaint() {
         String key = "node";
         if (!paints.containsKey(key)) {
-            Paint paint = PaintHelper.strokePaint(cellSize() / 8, colorWire);
+            int color = Color.argb(255, 219, 219, 219);
+            Paint paint = PaintFactory.strokePaint(cellSize() / 8, color);
             paints.put(key, paint);
         }
         return paints.get(key);
@@ -117,7 +121,8 @@ public class GameView extends View {
         String key = "wire";
         if (!paints.containsKey(key)) {
             int width = cellSize()/10 - 2;
-            Paint paint = PaintHelper.strokePaint(width, colorWire);
+            int color = Color.argb(255, 219, 219, 219);
+            Paint paint = PaintFactory.strokePaint(width, color);
             paints.put(key, paint);
         }
         return paints.get(key);
@@ -127,17 +132,17 @@ public class GameView extends View {
         String key = "wireside";
         if (!paints.containsKey(key)) {
             int width = cellSize()/10 + 2;
-            Paint paint = PaintHelper.strokePaint(width, Color.argb(255, 156, 192, 171));
+            Paint paint = PaintFactory.strokePaint(width, Color.argb(255, 156, 192, 171));
             paints.put(key, paint);
         }
         return paints.get(key);
     }
 
-
     private Paint connectorCirclePaint() {
         String key = "connector";
         if (!paints.containsKey(key)) {
-            Paint paint = PaintHelper.strokePaint(cellSize() / 8, colorConn);
+            int color = Color.argb(255, 112, 173, 71);
+            Paint paint = PaintFactory.strokePaint(cellSize() / 8, color);
             paints.put(key, paint);
         }
         return paints.get(key);
@@ -146,7 +151,8 @@ public class GameView extends View {
     private Paint connectorLinePaint() {
         String key = "connectorline";
         if (!paints.containsKey(key)) {
-            Paint paint = PaintHelper.strokePaint(cellSize() / 10, colorConnLine);
+            int color = Color.argb(255, 255, 230, 0);
+            Paint paint = PaintFactory.strokePaint(cellSize() / 10, color);
             paints.put(key, paint);
         }
         return paints.get(key);
@@ -166,8 +172,27 @@ public class GameView extends View {
         return Math.round(getWidth() / 7);
     }
 
-    // Use Color.parseColor to define HTML colors
-    //paint.setColor(Color.parseColor("#CD5C5C"));
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        Log.d("SURFACE", "Created");
+        Canvas canvas = holder.lockCanvas();
+        drawGame(canvas);
+        holder.unlockCanvasAndPost(canvas);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.d("SURFACE", "Changed with w:"+width+" and h:"+height);
+        Canvas canvas = holder.lockCanvas();
+        drawGame(canvas);
+        holder.unlockCanvasAndPost(canvas);
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d("SURFACE", "Destroyed");
+
+    }
 
 }
 
@@ -226,12 +251,14 @@ class AvailableConnectorPainter {
     }
 
     private void initPaints() {
-        framePaint = PaintHelper.strokePaint(3, Color.argb(255, 219, 219, 219));
+        framePaint = PaintFactory.strokePaint(3, Color.argb(255, 219, 219, 219));
     }
 }
 
 
-class PaintHelper {
+class PaintFactory {
+
+
 
     public static Paint strokePaint(int width, int color) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -240,4 +267,6 @@ class PaintHelper {
         paint.setStrokeWidth(width);
         return paint;
     }
+
+
 }

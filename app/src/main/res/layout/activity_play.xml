@@ -69,9 +69,7 @@
         android:layout_width="match_parent"
         android:layout_alignParentEnd="false"
         android:layout_below="@+id/game_header"
-        android:layout_above="@+id/controls_view"
-        android:background="@color/myGreen"
-        />
+        android:layout_above="@+id/controls_view" />
 
     <!-- #009240 -->
 
