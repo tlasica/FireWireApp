@@ -39,7 +39,7 @@ public class PlayActivity extends AppCompatActivity {
         fullScreenMode(mContentView);
 
         mGameView = findViewById(R.id.game_view);
-        new ViewMotionDetector(mContentView);
+        new ViewMotionDetector(mGameView);
     }
 
     private void fullScreenMode(View view) {
