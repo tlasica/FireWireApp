@@ -3,6 +3,7 @@ package pl.tlasica.firewireapp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,12 +11,16 @@ import java.util.Set;
 public class Board {
 
     public Set<Integer> nodes = new HashSet<Integer>();
-    public List<Wire>   wires = new ArrayList<Wire>();
+    public Set<Wire>    wires = new HashSet<Wire>();
+    public int          plus = -1;
+    public int          minus = -1;
+    public int          target = -1;
 
     public Board() {
 
     }
 
+    // add wire a---b
     public Board with(int a, int b) {
         nodes.add(a);
         nodes.add(b);
@@ -23,16 +28,40 @@ public class Board {
         return this;
     }
 
-    public Board withNode(int n) {
+    // add node n
+    public Board with(int n) {
         nodes.add(n);
         return this;
     }
 
-    public Board withNodes(int [] n) {
+    // add array of nodes
+    public Board with(int [] n) {
         for (int x : n) {
             nodes.add(x);
         }
         return this;
+    }
+
+    // remove node
+    public Board remove(int n) {
+        nodes.remove(n);
+        List<Wire> adj = adj(n);
+        wires.removeAll(adj);
+        return this;
+    }
+
+    // remove wire a---b, but only wire!
+    public Board remove(int a, int b) {
+        wires.remove(new Wire(a,b));
+        return this;
+    }
+
+    public List<Wire> adj(int n) {
+        List<Wire> out = new ArrayList<>();
+        for (Wire w: wires) {
+            if ((w.a==n) || (w.b==n)) out.add(w);
+        }
+        return out;
     }
 
 }

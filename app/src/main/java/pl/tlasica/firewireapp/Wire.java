@@ -6,8 +6,18 @@ public class Wire {
     public int b;
 
     public Wire(int a, int b) {
-        this.a = a;
-        this.b = b;
+        this.a = Math.min(a, b);
+        this.b = Math.max(a, b);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Wire that = (Wire)o;
+        return (this.a==that.a) && (this.b==that.b);
+    }
+
+    @Override
+    public int hashCode() {
+        return 101*a + b;
+    }
 }
