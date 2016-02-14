@@ -1,19 +1,26 @@
-package pl.tlasica.firewireapp;
+package pl.tlasica.firewireapp.play;
 
 import android.util.Log;
+import android.view.SurfaceHolder;
+
 
 /**
  * Class to start / stop game loop thread
  */
 public class Game {
 
-    private Thread      thread;
-    private GameLoop    gameLoop;
+    private final Thread    thread;
+    private final GameLoop  gameLoop;
+    private SurfaceHolder   surfaceHolder;
+
+    public Game(SurfaceHolder holder) {
+        surfaceHolder = holder;
+        gameLoop = new GameLoop(surfaceHolder);
+        thread = new Thread(gameLoop);
+    }
 
     public void start() {
         Log.i("", "Game started");
-        gameLoop = new GameLoop();
-        thread = new Thread(gameLoop);
         thread.start();
     }
 

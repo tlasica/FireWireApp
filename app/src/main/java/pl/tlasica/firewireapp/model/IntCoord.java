@@ -1,6 +1,9 @@
-package pl.tlasica.firewireapp;
+package pl.tlasica.firewireapp.model;
 
-public class Coord {
+/**
+ * Helper class to translate integer to (x,y) coordinates
+ */
+public class IntCoord {
 
     public static int x(int i) {
         return i / 10;

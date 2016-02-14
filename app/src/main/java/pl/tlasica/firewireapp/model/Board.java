@@ -1,17 +1,20 @@
-package pl.tlasica.firewireapp;
+package pl.tlasica.firewireapp.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 
+/**
+ * Board description is a level description including nodes, wires,
+ * initially placed connectors, plus and minus locations as well as target location
+ * locations are described as int
+ */
 public class Board {
 
-    public Set<Integer> nodes = new HashSet<Integer>();
-    public Set<Wire>    wires = new HashSet<Wire>();
+    public Set<Integer> nodes = new HashSet<>();
+    public Set<Wire>    wires = new HashSet<>();
     public int          plus = -1;
     public int          minus = -1;
     public int          target = -1;

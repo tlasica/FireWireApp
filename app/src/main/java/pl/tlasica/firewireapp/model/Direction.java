@@ -1,4 +1,4 @@
-package pl.tlasica.firewireapp;
+package pl.tlasica.firewireapp.model;
 
 public class Direction {
 

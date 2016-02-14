@@ -16,6 +16,13 @@ import android.view.View;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.model.LevelFactory;
+import pl.tlasica.firewireapp.model.IntCoord;
+import pl.tlasica.firewireapp.model.Direction;
+import pl.tlasica.firewireapp.model.Wire;
+import pl.tlasica.firewireapp.play.Game;
+
 // FIXME: optimize drawing of the background as it will not change
 // FIXME: drawing parameters (x->rx, rad) are function of view size, maybe also max coord?
 // FIXME: może warto wydzielić klasę "Geometry", ktora coord <-> real coord
@@ -28,19 +35,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Game game;
 
     private Map<String, Paint> paints = new HashMap<String, Paint>();
-    private Board board = BoardFactory.standard();
+    private Board board = LevelFactory.standard();
     private AvailableConnectorPainter availableConnectorPainter;
 
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.game = new Game();
         getHolder().addCallback(this);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("SURFACE", "Created");
+        this.game = new Game(holder);
         game.start();
 //        Canvas canvas = holder.lockCanvas();
 //        drawGame(canvas);
@@ -77,8 +84,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.parseColor("#009240"));
 
         for(int n: board.nodes) {
-            int x = Coord.x(n);
-            int y = Coord.y(n);
+            int x = IntCoord.x(n);
+            int y = IntCoord.y(n);
             drawNode(canvas, x, y);
         }
 
@@ -101,8 +108,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawWire(Canvas canvas, int from, int to) {
-        int px = Coord.x(from), py = Coord.y(from);
-        int qx = Coord.x(to), qy = Coord.y(to);
+        int px = IntCoord.x(from), py = IntCoord.y(from);
+        int qx = IntCoord.x(to), qy = IntCoord.y(to);
         int pxr = rx(px) + wireSpacer(px, qx);
         int qxr = rx(qx) + wireSpacer(qx, px);
         int pyr = ry(py) + wireSpacer(py, qy);
@@ -112,8 +119,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawConnector(Canvas canvas, int at, String type) {
-        int cx = rx(Coord.x(at));
-        int cy = ry(Coord.y(at));
+        int cx = rx(IntCoord.x(at));
+        int cy = ry(IntCoord.y(at));
         // draw connector circle
         canvas.drawCircle(cx, cy, radius(), connectorCirclePaint());
         // draw connector lines

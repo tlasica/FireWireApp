@@ -1,16 +1,13 @@
-package pl.tlasica.firewireapp;
+package pl.tlasica.firewireapp.model;
 
-/**
- * Created by tomek on 2/6/16.
- */
-public class BoardFactory {
+public class LevelFactory {
 
     public static Board standard() {
         Board b = new Board();
         for (int x = 0; x < 6; ++x) {
             for (int y = 0; y < 6; ++y) {
-                b.with(Coord.i(x, y), Coord.i(x + 1, y));
-                b.with(Coord.i(x, y), Coord.i(x, y + 1));
+                b.with(IntCoord.i(x, y), IntCoord.i(x + 1, y));
+                b.with(IntCoord.i(x, y), IntCoord.i(x, y + 1));
             }
         }
         b.with(50, 61);
@@ -38,12 +35,14 @@ public class BoardFactory {
         b.remove(42, 51);
         b.remove(42, 41);
         b.remove(42, 52);
+
+        b.plus = 0;
+        b.minus = 55;
+        b.target = 22;
+
         return b;
     }
         /*
-        RED(2,2)
-        PLUS(0,0)
-        MINUS(5,5)
         (2,2)
         (4,2)~(5,1)
         (4,2)~(5,3)
