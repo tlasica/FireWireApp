@@ -1,8 +1,11 @@
 package pl.tlasica.firewireapp.model;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -15,6 +18,7 @@ public class Board {
 
     public Set<Integer> nodes = new HashSet<>();
     public Set<Wire>    wires = new HashSet<>();
+    public Map<ConnectorType, Integer> connectors = new HashMap<>();
     public int          plus = -1;
     public int          minus = -1;
     public int          target = -1;

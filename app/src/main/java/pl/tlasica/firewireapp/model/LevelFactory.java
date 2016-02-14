@@ -40,6 +40,10 @@ public class LevelFactory {
         b.minus = 55;
         b.target = 22;
 
+        b.connectors.put(ConnectorType.I_SHAPE, 5);
+        b.connectors.put(ConnectorType.L_SHAPE, 4);
+        b.connectors.put(ConnectorType.X_SHAPE, 1);
+
         return b;
     }
         /*

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import pl.tlasica.firewireapp.play.ConnectorBitmap;
+
 public class MainActivity extends BasicActivity {
 
     @Override
@@ -30,6 +32,8 @@ public class MainActivity extends BasicActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        ConnectorBitmap.initialize(getResources());
     }
 
 

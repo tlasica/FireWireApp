@@ -6,7 +6,7 @@ import android.view.SurfaceHolder;
 
 import java.util.Date;
 
-import pl.tlasica.firewireapp.BoardDrawing;
+import pl.tlasica.firewireapp.model.LevelPlay;
 
 
 public class GameLoop implements Runnable {
@@ -17,10 +17,12 @@ public class GameLoop implements Runnable {
     private final long frameDurationMs = 200;       // 10 frames per sec
 
     private final BoardDrawing boardDrawing;
+    private final ConnectorSetDrawing connSetDrawing;
 
     public GameLoop(SurfaceHolder sfHolder) {
         surfaceHolder = sfHolder;
         boardDrawing = new BoardDrawing();
+        connSetDrawing = new ConnectorSetDrawing();
     }
 
     @Override
@@ -40,7 +42,7 @@ public class GameLoop implements Runnable {
         long howLongWeTook = nextFrameStartTime - frameStartTime;
         long waitTime = frameDurationMs - howLongWeTook;
         if (waitTime > 0) {
-            Log.w(TAG, "Sleeping in frame for [ms]: " + waitTime);
+            //Log.w(TAG, "Sleeping in frame for [ms]: " + waitTime);
             try {
                 Thread.sleep(waitTime);
             } catch (InterruptedException e) {
@@ -61,8 +63,10 @@ public class GameLoop implements Runnable {
         }
 
         try {
+            LevelPlay levelPlay = LevelPlay.current();
             synchronized (surfaceHolder) {
-                boardDrawing.draw(canvas);
+                boardDrawing.draw(canvas, levelPlay);
+                connSetDrawing.draw(canvas, levelPlay);
             }
         }
         finally {
