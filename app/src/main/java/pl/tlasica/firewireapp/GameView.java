@@ -25,6 +25,8 @@ import java.util.Map;
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
+    private Game game;
+
     private Map<String, Paint> paints = new HashMap<String, Paint>();
     private Board board = BoardFactory.standard();
     private AvailableConnectorPainter availableConnectorPainter;
@@ -32,18 +34,43 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        getHolder().addCallback(this);
-    }
-
-    public GameView(Context context) {
-        super(context);
+        this.game = new Game();
         getHolder().addCallback(this);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void surfaceCreated(SurfaceHolder holder) {
+        Log.d("SURFACE", "Created");
+        game.start();
+//        Canvas canvas = holder.lockCanvas();
+//        drawGame(canvas);
+//        holder.unlockCanvasAndPost(canvas);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.d("SURFACE", "Changed with w:"+width+" and h:"+height);
+        // TODO: how to handle this???
+//        Canvas canvas = holder.lockCanvas();
+//        drawGame(canvas);
+//        holder.unlockCanvasAndPost(canvas);
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d("SURFACE", "Destroyed");
+        if (game != null) {
+            game.stop();
+            game = null;
+        }
 
     }
+
+
+
+
+
+
 
     protected void drawGame(Canvas canvas) {
 
@@ -170,28 +197,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int cellSize() {
         return Math.round(getWidth() / 7);
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        Log.d("SURFACE", "Created");
-        Canvas canvas = holder.lockCanvas();
-        drawGame(canvas);
-        holder.unlockCanvasAndPost(canvas);
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.d("SURFACE", "Changed with w:"+width+" and h:"+height);
-        Canvas canvas = holder.lockCanvas();
-        drawGame(canvas);
-        holder.unlockCanvasAndPost(canvas);
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.d("SURFACE", "Destroyed");
-
     }
 
 }
