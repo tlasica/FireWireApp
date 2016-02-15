@@ -54,8 +54,15 @@ public class LevelPlay {
     }
 
     public int tryPlaceConnector(ConnectorType type, int position) {
+        // if position is not already occupied
         if (connectorAt(position) != null) {
             Log.d("", "This position is already occupied: " + position);
+            return -1;
+        }
+        // if we have connectors of this type
+        Integer connLeft = availableConnectors.get(type);
+        if (connLeft==null || connLeft==0) {
+            Log.d("", "No more connectors of this type left: " + type);
             return -1;
         }
         int[] possibleRotations = board.possibleRotations(type, position);

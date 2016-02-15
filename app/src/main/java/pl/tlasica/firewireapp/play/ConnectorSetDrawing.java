@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -49,7 +50,18 @@ public class ConnectorSetDrawing extends CanvasDrawing {
         }
     }
 
-    public void drawConnector(Canvas canvas, int index, ConnectorType type, int count) {
+    public ConnectorType connAtMouse(Point mouse, LevelPlay play) {
+        int index = 0;
+        for(Map.Entry<ConnectorType, Integer> e: play.availableConnectors.entrySet()) {
+            ConnectorType type = e.getKey();
+            RectF rect = bitmapRect(index);
+            if (rect.contains(mouse.x, mouse.y)) return type;
+            index++;
+        }
+        return null;
+    }
+
+    void drawConnector(Canvas canvas, int index, ConnectorType type, int count) {
         drawFrame(canvas, index);
         drawConnector(canvas, index, type);
         drawCount(canvas, index, count);

@@ -3,6 +3,7 @@ package pl.tlasica.firewireapp.play;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 
 import java.util.Map;
 
@@ -31,7 +32,18 @@ public class BoardDrawing extends CanvasDrawing {
         drawConnectors(canvas, play.placedConnectors);
     }
 
-    private void drawConnectors(Canvas canvas, Map<Integer, PlacedConnector> placedConnectors) {
+    public int nodeNumber(Point mouse, Board board) {
+        for(int n: board.nodes) {
+            int x = canvasX( IntCoord.x(n) );
+            int y = canvasY(IntCoord.y(n));
+            boolean xFit = (mouse.x>=x-nodeRadius && mouse.x<=x+nodeRadius);
+            boolean yFit = (mouse.y>=y-nodeRadius && mouse.y<=y+nodeRadius);
+            if (xFit && yFit) return n;
+        }
+        return -1;
+    }
+
+    void drawConnectors(Canvas canvas, Map<Integer, PlacedConnector> placedConnectors) {
         for(Map.Entry<Integer, PlacedConnector> item: placedConnectors.entrySet()) {
             int pos = item.getKey();
             PlacedConnector conn = item.getValue();
@@ -39,7 +51,7 @@ public class BoardDrawing extends CanvasDrawing {
         }
     }
 
-    public void drawNodes(Canvas canvas, Board board) {
+    void drawNodes(Canvas canvas, Board board) {
         for(int n: board.nodes) {
             int x = canvasX( IntCoord.x(n) );
             int y = canvasY( IntCoord.y(n) );
@@ -47,7 +59,7 @@ public class BoardDrawing extends CanvasDrawing {
         }
     }
 
-    public void drawWires(Canvas canvas, Board board) {
+    void drawWires(Canvas canvas, Board board) {
         for(Wire w: board.wires) {
             int px = IntCoord.x(w.a);
             int py = IntCoord.y(w.a);

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Queue;
 
 import pl.tlasica.firewireapp.MouseEvent;
+import pl.tlasica.firewireapp.model.ConnectorType;
 import pl.tlasica.firewireapp.model.LevelPlay;
 
 
@@ -81,17 +82,19 @@ public class GameLoop implements Runnable {
     }
 
     private void doPhysics() {
-
+        // not needed at the moment
     }
 
     private void processInput() {
-        MouseEvent ev = eventQueue.poll();
-        while (ev != null) {
-            // process
-            if (ev instanceof ClickEvent) handleClick((ClickEvent)ev);
-            else if (ev instanceof SwipeEvent) handleSwipe((SwipeEvent)ev);
-            // next event
-            ev = eventQueue.poll();
+        LevelPlay play = LevelPlay.current();
+        while (eventQueue.isEmpty() == false) {
+            MouseEvent ev = eventQueue.poll();
+            if (ev instanceof ClickEvent) {
+                handleClick((ClickEvent)ev, play);
+            }
+            else if (ev instanceof SwipeEvent) {
+                handleSwipe((SwipeEvent)ev, play);
+            }
         }
     }
 
@@ -101,13 +104,54 @@ public class GameLoop implements Runnable {
     }
 
 
-    private boolean handleSwipe(SwipeEvent event) {
+    private boolean handleSwipe(SwipeEvent event, LevelPlay play) {
         Log.d(TAG, "SwipeEvent");
+        int nodeFrom = boardDrawing.nodeNumber(event.from, play.board);
+        int nodeTo = boardDrawing.nodeNumber(event.to, play.board);
+        Log.d(TAG, "nodeFrom:" + nodeFrom + ", nodeTo:" + nodeTo);
+        if (nodeFrom >= 0) {
+            if (nodeTo >= 0) {
+                Log.d(TAG, "Try to move connector from " + nodeFrom + " to node " + nodeTo);
+                // try move from node A to node B
+                return true;
+            }
+            ConnectorType type = connSetDrawing.connAtMouse(event.to, play);
+            if (type != null) {
+                Log.d(TAG, "Try to remove connector from " + nodeFrom);
+                // remove connector from node if possible
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        if (nodeTo >= 0) {
+            ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
+            if (type != null) {
+                Log.d(TAG, "Try to place connector on " + nodeTo);
+                int rotation = play.tryPlaceConnector(type, nodeTo);
+                if (rotation >= 0) {
+                    Log.d(TAG, "Type " + type + " placed on " + nodeTo);
+                    play.placeConnector(type, nodeTo, rotation);
+                    return true;
+                }
+                else {
+                    Log.d(TAG, "This type cannot be placed on " + nodeTo);
+                    return false;
+                }
+            }
+        }
         return false;
     }
 
-    private boolean handleClick(ClickEvent event) {
-        Log.d(TAG, "ClickEvent");
+    private boolean handleClick(ClickEvent event, LevelPlay play) {
+        int nodeClicked = boardDrawing.nodeNumber(event.point, play.board);
+        if (nodeClicked >= 0) {
+            Log.d(TAG, "ClickEvent on node " + nodeClicked);
+            // check if node has connector placed
+            // if it has try to rotate it
+            return true;
+        }
         return false;
     }
 

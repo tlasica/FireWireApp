@@ -5,10 +5,10 @@ import pl.tlasica.firewireapp.MouseEvent;
 
 public class ClickEvent extends MouseEvent{
 
-    Point p;
+    Point point;
 
     public ClickEvent(Point p) {
-        this.p = p;
+        point = p;
     }
 
 }
