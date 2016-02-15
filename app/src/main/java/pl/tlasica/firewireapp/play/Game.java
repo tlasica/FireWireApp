@@ -3,6 +3,10 @@ package pl.tlasica.firewireapp.play;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import java.util.Queue;
+
+import pl.tlasica.firewireapp.MouseEvent;
+
 
 /**
  * Class to start / stop game loop thread
@@ -13,9 +17,9 @@ public class Game {
     private final GameLoop  gameLoop;
     private SurfaceHolder   surfaceHolder;
 
-    public Game(SurfaceHolder holder) {
+    public Game(SurfaceHolder holder, Queue<MouseEvent> events) {
         surfaceHolder = holder;
-        gameLoop = new GameLoop(surfaceHolder);
+        gameLoop = new GameLoop(surfaceHolder, events);
         thread = new Thread(gameLoop);
     }
 

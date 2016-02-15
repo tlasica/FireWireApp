@@ -35,7 +35,7 @@ public class BoardDrawing extends CanvasDrawing {
         for(Map.Entry<Integer, PlacedConnector> item: placedConnectors.entrySet()) {
             int pos = item.getKey();
             PlacedConnector conn = item.getValue();
-            drawConnector(canvas, pos, conn.rotation);
+            drawConnector(canvas, pos, conn);
         }
     }
 
@@ -62,15 +62,15 @@ public class BoardDrawing extends CanvasDrawing {
         }
     }
 
-    void drawConnector(Canvas canvas, int at, String type) {
+    void drawConnector(Canvas canvas, int at, PlacedConnector conn) {
         int cx = canvasX(IntCoord.x(at));
         int cy = canvasY(IntCoord.y(at));
         // draw connector circle
         canvas.drawCircle(cx, cy, nodeRadius, connPaint());
         // draw connector lines
-        for(String dir : type.split(",")) {
-            int vx = Direction.vx(dir);
-            int vy = Direction.vy(dir);
+        for(int d: conn.type.directions(conn.rotation)) {
+            int vx = Direction.vx(d);
+            int vy = Direction.vy(d);
             int dx = (cx-vx*5) + vx * nodeRadius * 3;
             int dy = (cy-vy*5) + vy * nodeRadius * 3;
             canvas.drawLine(cx, cy, dx, dy, connLinePaint());

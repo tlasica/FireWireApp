@@ -1,11 +1,9 @@
 package pl.tlasica.firewireapp;
 
-import android.annotation.SuppressLint;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
+
 
 //http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
 
@@ -39,7 +37,6 @@ public class PlayActivity extends AppCompatActivity {
         fullScreenMode(mContentView);
 
         mGameView = findViewById(R.id.game_view);
-        new ViewMotionDetector(mGameView);
     }
 
     private void fullScreenMode(View view) {

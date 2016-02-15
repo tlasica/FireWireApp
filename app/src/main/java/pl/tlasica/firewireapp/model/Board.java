@@ -59,7 +59,7 @@ public class Board {
 
     // remove wire a---b, but only wire!
     public Board remove(int a, int b) {
-        wires.remove(new Wire(a,b));
+        wires.remove(new Wire(a, b));
         return this;
     }
 
@@ -71,4 +71,9 @@ public class Board {
         return out;
     }
 
+    // TODO: implement based on node neighbours
+    public int[] possibleRotations(ConnectorType type, int position) {
+        int [] all = {0, 90, 180, 270};
+        return all;
+    }
 }

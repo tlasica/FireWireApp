@@ -7,6 +7,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import pl.tlasica.firewireapp.model.LevelFactory;
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.play.Game;
@@ -15,17 +18,19 @@ import pl.tlasica.firewireapp.play.Game;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Game game;
+    Queue<MouseEvent> events = new ConcurrentLinkedQueue<>();
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LevelPlay.startLevel(LevelFactory.standard());
         getHolder().addCallback(this);
+        new ViewMotionDetector(this, events);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("SURFACE", "Created");
-        this.game = new Game(holder);
+        this.game = new Game(holder, events);
         game.start();
     }
 

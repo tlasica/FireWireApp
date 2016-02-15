@@ -1,8 +1,14 @@
 package pl.tlasica.firewireapp;
 
+import android.graphics.Point;
 import android.util.Log;
         import android.view.MotionEvent;
         import android.view.View;
+
+import java.util.Queue;
+
+import pl.tlasica.firewireapp.play.ClickEvent;
+import pl.tlasica.firewireapp.play.SwipeEvent;
 
 /**
  * http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
@@ -12,9 +18,11 @@ public class ViewMotionDetector implements View.OnTouchListener{
     private float downX, downY;
     private float upX, upY;
     private View view;
+    private Queue<MouseEvent> eventQueue;
 
-    public ViewMotionDetector(View v){
+    public ViewMotionDetector(View v, Queue<MouseEvent> queue){
         this.view = v;
+        this.eventQueue = queue;
         view.setOnTouchListener(this);
     }
 
@@ -30,9 +38,6 @@ public class ViewMotionDetector implements View.OnTouchListener{
                 Log.d("EVENT", event.toString());
                 upX = event.getX();
                 upY = event.getY();
-
-                float deltaX = downX - upX;
-                float deltaY = downY - upY;
 
                 // Can be swipe event
                 double dist = distance(downX, downY, upX, upY);
@@ -61,9 +66,11 @@ public class ViewMotionDetector implements View.OnTouchListener{
     }
 
     private void onClick(float downX, float downY) {
-        String msg = String.format("SHORT CLICK at (%f, %f)", downX, downY);
+        int x = (int) downX;
+        int y = (int) downY;
+        String msg = String.format("SHORT CLICK at (%d, %d)", x, y);
         Log.d("MOTION", msg);
-        //TODO: notify
+        eventQueue.add(new ClickEvent(new Point(x, y)));
     }
 
     private void onLongClick(float downX, float downY) {
@@ -88,7 +95,9 @@ public class ViewMotionDetector implements View.OnTouchListener{
     private void onSwipeEvent(float downX, float downY, float upX, float upY) {
         String msg = String.format("SWIPE from (%f, %f) to (%f, %f)", downX, downY, upX, upY);
         Log.d("MOTION", msg);
-        //TODO: notify
+        Point down = new Point((int)downX, (int)downY);
+        Point up = new Point((int)upX, (int)upY);
+        eventQueue.add(new SwipeEvent(down, up));
     }
 
 

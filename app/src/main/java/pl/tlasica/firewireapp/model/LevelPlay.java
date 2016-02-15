@@ -1,5 +1,7 @@
 package pl.tlasica.firewireapp.model;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,5 +39,63 @@ public class LevelPlay {
     private void prepareConnectors(Board b) {
         availableConnectors = new HashMap<>(b.connectors);
         placedConnectors = new HashMap<>();
+    }
+
+    /**
+     * place connector of given type at given position
+     * - removes from available list
+     * - placed on a board with first available rotation
+     */
+    public void placeConnector(ConnectorType type, int position, int rotation) {
+        PlacedConnector placedConn = new PlacedConnector(type, rotation);
+        int curr = availableConnectors.get(type);
+        availableConnectors.put(type, curr-1);
+        placedConnectors.put(position, placedConn);
+    }
+
+    public int tryPlaceConnector(ConnectorType type, int position) {
+        if (connectorAt(position) != null) {
+            Log.d("", "This position is already occupied: " + position);
+            return -1;
+        }
+        int[] possibleRotations = board.possibleRotations(type, position);
+        if (possibleRotations != null) {
+            return possibleRotations[0];
+        }
+        else {
+            Log.d("", "Not possible to place this type of connector at " + position);
+            return -1;
+        }
+    }
+
+    public int tryRotateConnector(int position) {
+        PlacedConnector conn = connectorAt(position);
+        if (conn == null) {
+            Log.d("", "Not possible to rotate non-existing connector at " + position);
+            return -1;
+        }
+        int[] possibleRotations = board.possibleRotations(conn.type, position);
+        if (possibleRotations.length <= 1) {
+            Log.d("", "No other rotations at position " + position);
+            return -1;
+        }
+        int nextRotation = 0;
+        for(int i=0; i<possibleRotations.length; ++i) {
+            int d = possibleRotations[i];
+            if (d == conn.rotation) {
+                nextRotation = (i+1) % possibleRotations.length;
+                break;
+            }
+        }
+        return possibleRotations[nextRotation];
+    }
+
+    public void rotateConnector(int position, int rotation) {
+        PlacedConnector placedConn = connectorAt(position);
+        placedConn.rotation = rotation;
+    }
+
+    public PlacedConnector connectorAt(int pos) {
+        return placedConnectors.get(pos);
     }
 }

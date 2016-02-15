@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.util.Date;
+import java.util.Queue;
 
+import pl.tlasica.firewireapp.MouseEvent;
 import pl.tlasica.firewireapp.model.LevelPlay;
 
 
@@ -16,10 +18,13 @@ public class GameLoop implements Runnable {
     private final String TAG = "GAMELOOP";
     private final long frameDurationMs = 200;       // 10 frames per sec
 
+    private Queue<MouseEvent>   eventQueue;
+
     private final BoardDrawing boardDrawing;
     private final ConnectorSetDrawing connSetDrawing;
 
-    public GameLoop(SurfaceHolder sfHolder) {
+    public GameLoop(SurfaceHolder sfHolder, Queue<MouseEvent> eventQ) {
+        eventQueue = eventQ;
         surfaceHolder = sfHolder;
         boardDrawing = new BoardDrawing();
         connSetDrawing = new ConnectorSetDrawing();
@@ -80,11 +85,30 @@ public class GameLoop implements Runnable {
     }
 
     private void processInput() {
-
+        MouseEvent ev = eventQueue.poll();
+        while (ev != null) {
+            // process
+            if (ev instanceof ClickEvent) handleClick((ClickEvent)ev);
+            else if (ev instanceof SwipeEvent) handleSwipe((SwipeEvent)ev);
+            // next event
+            ev = eventQueue.poll();
+        }
     }
 
     public void pleaseStop() {
         Log.i(TAG, "Requested GameLoop to stop");
         running = false;
     }
+
+
+    private boolean handleSwipe(SwipeEvent event) {
+        Log.d(TAG, "SwipeEvent");
+        return false;
+    }
+
+    private boolean handleClick(ClickEvent event) {
+        Log.d(TAG, "ClickEvent");
+        return false;
+    }
+
 }
