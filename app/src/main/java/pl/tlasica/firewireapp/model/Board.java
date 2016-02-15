@@ -1,6 +1,7 @@
 package pl.tlasica.firewireapp.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,7 +74,37 @@ public class Board {
 
     // TODO: implement based on node neighbours
     public int[] possibleRotations(ConnectorType type, int position) {
-        int [] all = {0, 90, 180, 270};
-        return all;
+        int [] all = {0, 45, 90, 135, 180, 225, 270, 315};
+        List<Wire> adjWires = adj(position);
+        // at least as many wires as conn directions
+        if (adjWires.size() < type.directions(0).length) {
+            return null;
+        }
+        // calculate adj directions as lookup array
+        boolean [] adjDirs = new boolean[8];
+        for(Wire w: adjWires) {
+            int d = w.dirFrom(position);
+            adjDirs[d / 45] = true;
+        }
+        // check all possible rotations
+        int [] acceptable = new int[8];
+        int found = 0;
+        for(int rot: all) {
+            // for each deg in rotated conn deg there should be matching wire
+            int [] dirs = type.directions(rot);
+            boolean match = true;
+            for(int d: dirs) {
+                int dp = d / 45;
+                if (adjDirs[dp]==false) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                acceptable[found] = rot;
+                found ++;
+            }
+        }
+        return (found>0) ? Arrays.copyOf(acceptable, found) : null;
     }
 }
