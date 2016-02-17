@@ -45,7 +45,8 @@
             android:textColor="@android:color/holo_blue_light"
             android:textSize="@dimen/abc_text_size_headline_material"
             android:textIsSelectable="true"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/level_time"
