@@ -133,10 +133,12 @@ public class GameLoop implements Runnable {
                 if (rotation >= 0) {
                     Log.d(TAG, "Type " + type + " placed on " + nodeTo);
                     play.placeConnector(type, nodeTo, rotation);
+                    SoundPoolPlayer.get().tick();
                     return true;
                 }
                 else {
                     Log.d(TAG, "This type cannot be placed on " + nodeTo);
+                    SoundPoolPlayer.get().playNo();
                     return false;
                 }
             }
@@ -145,12 +147,16 @@ public class GameLoop implements Runnable {
     }
 
     private boolean handleClick(ClickEvent event, LevelPlay play) {
-        int nodeClicked = boardDrawing.nodeNumber(event.point, play.board);
-        if (nodeClicked >= 0) {
-            Log.d(TAG, "ClickEvent on node " + nodeClicked);
-            // check if node has connector placed
-            // if it has try to rotate it
-            return true;
+        int node = boardDrawing.nodeNumber(event.point, play.board);
+        if (node >= 0) {
+            Log.d(TAG, "ClickEvent on node " + node);
+            int nextRotation = play.tryRotateConnector(node);
+            if (nextRotation >= 0) {
+                Log.d(TAG, "Rotation on " + node);
+                play.rotateConnector(node, nextRotation);
+                SoundPoolPlayer.get().tick();
+                return true;
+            }
         }
         return false;
     }

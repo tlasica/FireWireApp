@@ -9,8 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
+import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 public class MainActivity extends BasicActivity {
+
+    @Override
+    protected void onDestroy() {
+        SoundPoolPlayer.destroy();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +28,6 @@ public class MainActivity extends BasicActivity {
 
         setButtonFontBoldItalic(R.id.button_play);
         setButtonFontBoldItalic(R.id.button_rank);
-        setButtonFontBoldItalic(R.id.button_tutorial);
         setTextFont(R.id.logo_text);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -32,6 +38,8 @@ public class MainActivity extends BasicActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        SoundPoolPlayer.init(this);
 
         ConnectorBitmap.initialize(getResources());
     }

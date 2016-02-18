@@ -2,11 +2,12 @@ package pl.tlasica.firewireapp;
 
 import android.app.ActionBar;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 
 //http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
@@ -60,6 +61,7 @@ public class PlayActivity extends AppCompatActivity {
             actionBar.hide();
         }
     }
+
 
     private void fullScreenMode(View view) {
         //int currentApiVersion = android.os.Build.VERSION.SDK_INT;

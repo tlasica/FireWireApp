@@ -36,9 +36,12 @@ public class BoardDrawing extends CanvasDrawing {
         for(int n: board.nodes) {
             int x = canvasX( IntCoord.x(n) );
             int y = canvasY(IntCoord.y(n));
-            boolean xFit = (mouse.x>=x-nodeRadius && mouse.x<=x+nodeRadius);
-            boolean yFit = (mouse.y>=y-nodeRadius && mouse.y<=y+nodeRadius);
-            if (xFit && yFit) return n;
+            int dist = cellSize / 3;
+            boolean xFit = (mouse.x>=x-dist && mouse.x<=x+dist);
+            boolean yFit = (mouse.y>=y-dist && mouse.y<=y+dist);
+            if (xFit && yFit) {
+                return n;
+            }
         }
         return -1;
     }
@@ -98,7 +101,7 @@ public class BoardDrawing extends CanvasDrawing {
 
     Paint nodePaint() {
         if (nodePaint == null) {
-            int color = Color.argb(255, 219, 219, 219);
+            int color = Color.argb(255, 191, 193, 194);
             nodePaint = strokePaint(cellSize/8, color);
         }
         return nodePaint;
@@ -107,7 +110,7 @@ public class BoardDrawing extends CanvasDrawing {
     Paint wirePaint() {
         if (wirePaint == null) {
             int width = cellSize/10 - 2;
-            int color = Color.argb(255, 219, 219, 219);
+            int color = Color.argb(255, 191, 193, 194);
             wirePaint = strokePaint(width, color);
         }
         return wirePaint;
@@ -116,7 +119,7 @@ public class BoardDrawing extends CanvasDrawing {
     private Paint wireSidePaint() {
         if (wireSidePaint == null) {
             int width = cellSize/10 + 2;
-            int color = Color.argb(255, 156, 192, 171);
+            int color = Color.argb(255, 172, 172, 172);
             wireSidePaint = strokePaint(width, color);
         }
         return wireSidePaint;

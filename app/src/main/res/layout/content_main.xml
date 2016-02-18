@@ -13,34 +13,32 @@
     tools:context="pl.tlasica.firewireapp.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <TextView
+        android:id="@+id/logo_text"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:textColor="@color/myGreen"
+        android:textSize="60sp"
+        android:text="Fire-Wire" />
+
     <ImageView
         android:id="@+id/logo_icon"
         android:src="@drawable/shockcircle"
         android:elevation="16dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/logo_text"
         android:layout_width="150dp"
         android:layout_height="150dp" />
-
-    <TextView
-        android:id="@+id/logo_text"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_height="100dp"
-        android:textColor="@color/myGreen"
-        android:textSize="40sp"
-        android:text="Fire-Wire" />
 
     <Button
         android:id="@+id/button_play"
         android:onClick="onPlay"
         android:text="play"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:elevation="8dp"
-        android:textColor="@color/myLightGray"
-        android:backgroundTint="@color/myGreen"
-        android:backgroundTintMode="multiply"
+        android:textColor="@color/myGreen"
         android:layout_below="@+id/logo_icon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -53,28 +51,10 @@
         android:text="rank"
         android:textSize="32sp"
         android:elevation="8dp"
-        android:textColor="@color/myLightGray"
-        android:background="?android:attr/selectableItemBackground"
-        android:backgroundTint="@color/myGreen"
-        android:backgroundTintMode="multiply"
+        android:textColor="@color/myGreen"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/button_play"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/button_tutorial"
-        android:text="tutorial"
-        android:textSize="32sp"
-        android:elevation="8dp"
-        android:textColor="@color/myLightGray"
-        android:backgroundTint="@color/myGreen"
-        android:backgroundTintMode="multiply"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/button_rank"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
