@@ -102,6 +102,17 @@ public class LevelPlay {
         placedConn.rotation = rotation;
     }
 
+    public boolean tryRemoveConnector(int position) {
+        return placedConnectors.containsKey(position);
+    }
+
+    public void removeConnector(int position) {
+        PlacedConnector conn = connectorAt(position);
+        int count = 1 + availableConnectors.get(conn.type);
+        availableConnectors.put(conn.type, count);
+        placedConnectors.remove(position);
+    }
+
     public PlacedConnector connectorAt(int pos) {
         return placedConnectors.get(pos);
     }

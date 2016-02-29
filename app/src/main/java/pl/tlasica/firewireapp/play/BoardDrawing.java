@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.RectF;
 
 import java.util.Map;
 
@@ -27,14 +28,14 @@ public class BoardDrawing extends CanvasDrawing {
     public void draw(Canvas canvas, LevelPlay play) {
         prepareDrawing(canvas);
         canvas.drawColor(backgroundColor);
-        drawNodes(canvas, play.board);
         drawWires(canvas, play.board);
+        drawNodes(canvas, play.board);
         drawConnectors(canvas, play.placedConnectors);
     }
 
     public int nodeNumber(Point mouse, Board board) {
         for(int n: board.nodes) {
-            int x = canvasX( IntCoord.x(n) );
+            int x = canvasX(IntCoord.x(n));
             int y = canvasY(IntCoord.y(n));
             int dist = cellSize / 3;
             boolean xFit = (mouse.x>=x-dist && mouse.x<=x+dist);
@@ -56,8 +57,8 @@ public class BoardDrawing extends CanvasDrawing {
 
     void drawNodes(Canvas canvas, Board board) {
         for(int n: board.nodes) {
-            int x = canvasX( IntCoord.x(n) );
-            int y = canvasY( IntCoord.y(n) );
+            int x = canvasX(IntCoord.x(n));
+            int y = canvasY(IntCoord.y(n));
             canvas.drawCircle(x, y, nodeRadius, nodePaint());
         }
     }
@@ -78,22 +79,42 @@ public class BoardDrawing extends CanvasDrawing {
     }
 
     void drawConnector(Canvas canvas, int at, PlacedConnector conn) {
+        drawRectangle(canvas, at, rectFillPaint());
+        drawRectangle(canvas, at, rectPaint());
+
         int cx = canvasX(IntCoord.x(at));
         int cy = canvasY(IntCoord.y(at));
         // draw connector circle
-        canvas.drawCircle(cx, cy, nodeRadius, connPaint());
+
+        //canvas.drawCircle(cx, cy, nodeRadius, connPaint());
         // draw connector lines
         for(int d: conn.type.directions(conn.rotation)) {
             int vx = Direction.vx(d);
             int vy = Direction.vy(d);
             int dx = (cx-vx*5) + vx * nodeRadius * 3;
             int dy = (cy-vy*5) + vy * nodeRadius * 3;
-            canvas.drawLine(cx, cy, dx, dy, connLinePaint());
+
+            float w = (cellSize / 10 ) / 2 ;
+
+            if (vy == 0) {
+                canvas.drawLine(cx+vx*nodeRadius, cy - w, cx + vx*3*nodeRadius, cy - w, rectPaint());
+                canvas.drawLine(cx+vx*nodeRadius, cy + w, cx + vx*3*nodeRadius, cy + w, rectPaint());
+            }
+            else if (vx == 0) {
+                canvas.drawLine(cx - w, cy + vy * nodeRadius, cx - w, cy + vy * 3 *nodeRadius, rectPaint());
+                canvas.drawLine(cx + w, cy + vy * nodeRadius, cx + w, cy + vy * 3 * nodeRadius, rectPaint());
+
+            }
+            else {
+                canvas.drawLine(cx, cy, dx, dy, connLinePaint());
+            }
+
+
         }
     }
 
     int wireSpacer(int p, int q) {
-        int spacer = 4;
+        int spacer = 1;
         if (q>p) return nodeRadius + spacer;
         else if (p>q) return -(nodeRadius + spacer);
         else return 0;
@@ -143,4 +164,33 @@ public class BoardDrawing extends CanvasDrawing {
         return connLinePaint;
     }
 
+    private Paint rectPaint;
+    private Paint rectFillPaint;
+
+    private Paint rectPaint() {
+        if (rectPaint == null) {
+            int width = cellSize / 10 / 2;
+            int color = Color.argb(255,90, 92, 94);
+            rectPaint = strokePaint(width, color);
+            rectPaint.setAntiAlias(false);
+        }
+        return rectPaint;
+    }
+
+    private Paint rectFillPaint() {
+        if (rectFillPaint == null) {
+            int width = 1;
+            int color = Color.argb(255, 220, 220, 220);
+            rectFillPaint = strokePaint(width, color);
+            rectFillPaint.setStyle(Paint.Style.FILL);
+        }
+        return rectFillPaint;
+    }
+
+    private void drawRectangle(Canvas canvas, int n, Paint paint) {
+        int x = canvasX( IntCoord.x(n) );
+        int y = canvasY(IntCoord.y(n));
+        RectF rect = new RectF(x-2*nodeRadius, y-2*nodeRadius, x+2*nodeRadius, y+2*nodeRadius);
+        canvas.drawRoundRect(rect, nodeRadius, nodeRadius, paint);
+    }
 }

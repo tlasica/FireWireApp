@@ -40,10 +40,11 @@ public class SoundPoolPlayer {
         mSounds.put("no", this.mShortPlayer.load(pContext, R.raw.no, 1));
         mSounds.put("snooring", this.mShortPlayer.load(pContext, R.raw.snoring_2, 1));
         mSounds.put("tick", this.mShortPlayer.load(pContext, R.raw.tick, 1));
+        mSounds.put("shocktick", this.mShortPlayer.load(pContext, R.raw.electricshock, 1));
     }
 
     public void tick() {
-        playShortResource("tick");
+        playShortResource("shocktick");
     }
     public void playSnooring() {
         playShortResource("snooring");

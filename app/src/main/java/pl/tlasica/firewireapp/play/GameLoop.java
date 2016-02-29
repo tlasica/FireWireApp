@@ -118,12 +118,14 @@ public class GameLoop implements Runnable {
             ConnectorType type = connSetDrawing.connAtMouse(event.to, play);
             if (type != null) {
                 Log.d(TAG, "Try to remove connector from " + nodeFrom);
-                // remove connector from node if possible
-                return true;
+                boolean possible = play.tryRemoveConnector(nodeFrom);
+                if (possible) {
+                    Log.d(TAG, "Connector removed from " + nodeFrom);
+                    play.removeConnector(nodeFrom);
+                    return true;
+                }
             }
-            else {
-                return false;
-            }
+            return false;
         }
         if (nodeTo >= 0) {
             ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
