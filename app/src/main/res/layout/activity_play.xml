@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/abc_text_size_headline_material"
-            android:textColor="#824431"
+            android:textColor="@color/myGreen"
             android:textAlignment="center"
             android:gravity="center_vertical" />
 

@@ -72,7 +72,26 @@ public class Board {
         return out;
     }
 
-    // TODO: implement based on node neighbours
+    private boolean isIn(int[] arr, int v) {
+        for(int x: arr) {
+            if (v==x) return true;
+        }
+        return false;
+    }
+
+    public List<Wire> connectedWires(int n, ConnectorType type, int rotation) {
+        int [] all = {0, 45, 90, 135, 180, 225, 270, 315};
+        List<Wire> connWires = new ArrayList<>();
+        int[] directions = type.directions(rotation);
+        for(Wire w: adj(n)) {
+            int d = w.dirFrom(n);
+            if (isIn(directions, d)) {
+                connWires.add(w);
+            }
+        }
+        return connWires;
+    }
+
     public int[] possibleRotations(ConnectorType type, int position) {
         int [] all = {0, 45, 90, 135, 180, 225, 270, 315};
         List<Wire> adjWires = adj(position);

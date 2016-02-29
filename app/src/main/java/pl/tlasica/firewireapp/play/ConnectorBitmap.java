@@ -14,6 +14,9 @@ public class ConnectorBitmap {
 
     static Resources resources;
     static Map<ConnectorType, Bitmap> bitmaps= new HashMap<>();
+    static public Bitmap plusBitmap;
+    static public Bitmap minusBitmap;
+    static public Bitmap targetBitmap;
 
     public static void initialize(Resources res) {
         resources = res;
@@ -21,6 +24,9 @@ public class ConnectorBitmap {
             Bitmap bmp = create(type);
             bitmaps.put(type, bmp);
         }
+        plusBitmap = BitmapFactory.decodeResource(res, R.drawable.source_plus);
+        minusBitmap = BitmapFactory.decodeResource(res, R.drawable.source_minus);
+        targetBitmap = BitmapFactory.decodeResource(res, R.drawable.human);
     }
 
     public static Bitmap get(ConnectorType type) {
@@ -38,8 +44,9 @@ public class ConnectorBitmap {
 
     static int resourceId(ConnectorType type) {
         switch (type) {
-            case I_SHAPE: return R.drawable.connector_i_shape;
-            case L_SHAPE: return R.drawable.connector_l_shape;
+            case I_SHAPE: return R.drawable.connector_180;
+            case L_SHAPE: return R.drawable.connector_90;
+            case X_SHAPE: return R.drawable.connector_x;
             default: return 0;
         }
     }

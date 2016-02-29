@@ -8,4 +8,6 @@
 
     <color name="myGreen">#009240</color>
     <color name="myLightGray">#BFC1C2</color>
+    <color name="myOrange">#FFA500</color>
+    <color name="myRed">#FF2600</color>
 </resources>

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
@@ -26,6 +27,10 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     Paint framePaint;
     Paint bmpPaint;
     Paint textPaint;
+
+    final int countColor = Color.parseColor("#009240");
+    final int shapeColor = Color.parseColor("#009240");
+    final int frameColor = Color.argb(255,90, 92, 94);
 
     Map<String, Drawable> images = new HashMap<>();
 
@@ -68,7 +73,8 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     }
 
     void drawFrame(Canvas canvas, int index) {
-        canvas.drawRoundRect(frameRect(index), 3, 3, framePaint());
+        int rad = frameWidth / 8;
+        canvas.drawRoundRect(frameRect(index), rad, rad, framePaint());
     }
 
     void drawCount(Canvas canvas, int index, int count) {
@@ -102,7 +108,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
         float l = (float) (left(index) + 0.75 * frameWidth);
         float r = left(index) + frameWidth - 5;
         float t = (float) (offsetY + 5 );
-        float b = (float) (offsetY + 0.25 * frameHeight);
+        float b = (float) (offsetY + 0.33 * frameHeight);
         return new RectF(l, t, r, b);
     }
 
@@ -124,11 +130,13 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     Paint textPaint() {
         if (textPaint == null) {
             RectF rect = textRect(0);
-            int size = determineMaxTextSize("0", rect.right - rect.left);
-            int color = Color.argb(255, 219, 219, 219);
+            int size = determineMaxTextSize("0", 0.75f * (rect.right - rect.left));
+            int color = countColor;
             textPaint = new Paint();
             textPaint.setColor(color);
             textPaint.setTextSize(size);
+            textPaint.setAntiAlias(true);
+            textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
         }
         return textPaint;
     }
@@ -142,7 +150,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
         } while(paint.measureText(str) < maxWidth);
 
         Log.d("", "Connector count font size: " + size);
-        return size-2;
+        return size-4;
     }
 
 }
