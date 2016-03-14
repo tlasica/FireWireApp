@@ -72,6 +72,15 @@ public class Board {
         return out;
     }
 
+    public List<Integer> adjNodes(int n) {
+        List<Integer> out = new ArrayList<>();
+        for (Wire w: wires) {
+            if (w.a == n) out.add(w.b);
+            else if (w.b == n) out.add(w.a);
+        }
+        return out;
+    }
+
     private boolean isIn(int[] arr, int v) {
         for(int x: arr) {
             if (v==x) return true;
@@ -79,17 +88,16 @@ public class Board {
         return false;
     }
 
-    public List<Wire> connectedWires(int n, ConnectorType type, int rotation) {
-        int [] all = {0, 45, 90, 135, 180, 225, 270, 315};
-        List<Wire> connWires = new ArrayList<>();
+    public List<Integer> connectedNodes(int n, ConnectorType type, int rotation) {
+        List<Integer> ret = new ArrayList<>();
         int[] directions = type.directions(rotation);
         for(Wire w: adj(n)) {
             int d = w.dirFrom(n);
             if (isIn(directions, d)) {
-                connWires.add(w);
+                ret.add(w.a!=n ? w.a : w.b);
             }
         }
-        return connWires;
+        return ret;
     }
 
     public int[] possibleRotations(ConnectorType type, int position) {
