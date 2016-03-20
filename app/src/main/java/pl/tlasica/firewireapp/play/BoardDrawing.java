@@ -17,6 +17,7 @@ import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.model.PlacedConnector;
 import pl.tlasica.firewireapp.model.Wire;
 
+
 public class BoardDrawing extends CanvasDrawing {
 
     private int boardColor = Color.parseColor("#325132");
@@ -133,21 +134,22 @@ public class BoardDrawing extends CanvasDrawing {
                 canvas.drawLine(bx - space*xStep, by - space * yStep, bx, by, paint);
             }
             // draw circle where it bends
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawCircle(ax + space*xStep, by - space*yStep, bendRad, paint);
-            paint.setStyle(Paint.Style.STROKE);
-            // draw line down
-            canvas.drawLine(ax+space*xStep, ay+space*yStep, ax+space*xStep, by-space*yStep, paint);
-            // draw line right
-            canvas.drawLine(ax+space*xStep, by-space*yStep, bx-space*xStep, by-space*yStep, paint);
-
+            if (length > 3) {
+                paint.setStyle(Paint.Style.FILL);
+                canvas.drawCircle(ax + space * xStep, by - space * yStep, bendRad, paint);
+                paint.setStyle(Paint.Style.STROKE);
+                // draw line down
+                canvas.drawLine(ax + space * xStep, ay + space * yStep, ax + space * xStep, by - space * yStep, paint);
+                // draw line right
+                canvas.drawLine(ax + space * xStep, by - space * yStep, bx - space * xStep, by - space * yStep, paint);
+            }
         }
     }
 
     void drawConnector(Canvas canvas, Board board, int at, PlacedConnector conn) {
         // draw all connected wires as "connected"
         List<Integer> connNodes = board.connectedNodes(at, conn.type, conn.rotation);
-        drawConnectedWires(canvas, at, connNodes );
+        drawConnectedWires(canvas, at, connNodes, conn_wire_size);
         // get connector icon
         Bitmap bmp = ConnectorBitmap.freeBitmap(conn.type);
         assert bmp != null;
@@ -155,14 +157,14 @@ public class BoardDrawing extends CanvasDrawing {
         drawBitmapAtNode(canvas, at, bmp);
     }
 
-    void drawConnectedWires(Canvas canvas, int at, List<Integer> toNodes) {
+    void drawConnectedWires(Canvas canvas, int at, List<Integer> toNodes, int size) {
         for(Integer n: toNodes) {
-            drawWire(canvas, at, n, connectedPaint(), conn_wire_size);
+            drawWire(canvas, at, n, connectedPaint(), size);
         }
     }
 
     void drawSpecial(Canvas canvas, Board board, int at, Bitmap bmp) {
-        drawConnectedWires(canvas, at, board.adjNodes(at));
+        drawConnectedWires(canvas, at, board.adjNodes(at), 3);
         drawBitmapAtNode(canvas, at, bmp);
     }
 
