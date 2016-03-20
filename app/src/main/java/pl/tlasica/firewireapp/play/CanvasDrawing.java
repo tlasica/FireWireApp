@@ -2,6 +2,7 @@ package pl.tlasica.firewireapp.play;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 public class CanvasDrawing {
 
@@ -29,7 +30,10 @@ public class CanvasDrawing {
     void prepareDrawing(Canvas canvas) {
         cellSize = Math.round(canvas.getWidth() / 7);
         nodeRadius = cellSize / 7.0f;
-        wireWidth = nodeRadius / 1.8f;
+        wireWidth = nodeRadius / 1.3f;
+        Log.d("DIM", "prepareDrawing: cellSize=" + String.valueOf(cellSize));
+        Log.d("DIM", "prepareDrawing: nodeRadius=" + String.valueOf(nodeRadius));
+        Log.d("DIM", "prepareDrawing: wireWidth=" + String.valueOf(wireWidth));
     }
 
     float canvasX(int boardX) {

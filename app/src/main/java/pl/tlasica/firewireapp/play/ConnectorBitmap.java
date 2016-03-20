@@ -45,9 +45,9 @@ public class ConnectorBitmap {
     static int resourceId(ConnectorType type) {
         switch (type) {
             case I_SHAPE: return R.drawable.connector_e_180;
-            case L_SHAPE: return R.drawable.connector_e_90;
-            case X_SHAPE: return R.drawable.connector_x;
-            default: return 0;
+            case L_SHAPE: return R.drawable.connector_e_180;
+            case X_SHAPE: return R.drawable.connector_e_180;
+            default: return R.drawable.connector_e_180;
         }
     }
 }

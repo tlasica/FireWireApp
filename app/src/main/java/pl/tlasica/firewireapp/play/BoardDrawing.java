@@ -44,7 +44,7 @@ public class BoardDrawing extends CanvasDrawing {
 
 
     private int full_wire_size = 8; // full wire consists of 8 parts
-    private int conn_wire_size = 7; // we do not print last part
+    private int conn_wire_size = 6; // we do not print last part
 
     public void draw(Canvas canvas, LevelPlay play) {
         prepareDrawing(canvas);
@@ -95,9 +95,10 @@ public class BoardDrawing extends CanvasDrawing {
     }
 
     void drawWires(Canvas canvas, Board board) {
-        wirePaints[0].setStrokeWidth(wireWidth+2);
+        float border = wireWidth * 0.25f;
+        wirePaints[0].setStrokeWidth(wireWidth + border);
         wirePaints[1].setStrokeWidth(wireWidth);
-        wirePaints[2].setStrokeWidth(wireWidth-2);
+        wirePaints[2].setStrokeWidth(wireWidth - border);
         for(Wire w: board.wires) {
             drawWire(canvas, w.a, w.b, wirePaints[0], full_wire_size);
             drawWire(canvas, w.a, w.b, wirePaints[1], full_wire_size);
@@ -110,24 +111,44 @@ public class BoardDrawing extends CanvasDrawing {
         float ay = canvasY(IntCoord.y(a));
         float bx = canvasX(IntCoord.x(b));
         float by = canvasY(IntCoord.y(b));
-        float dx = ax + (bx-ax) * length / full_wire_size;
-        float dy = ay + (by-ay) * length / full_wire_size;
-        canvas.drawLine(ax, ay, dx, dy, paint);
+        float xStep = (bx - ax) / full_wire_size;
+        float yStep = (by - ay) / full_wire_size;
+        boolean horizontal = (ax==bx);
+        boolean vertical = (by==ay);
+        if (horizontal || vertical) {
+            canvas.drawLine(ax, ay, ax + length * xStep, ay + length * yStep, paint);
+        }
+        else {
+            // draw part 1-2/8
+            float space = 1.5f;
+            float bendRad = 0.40f * wireWidth;
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawCircle(ax + space * xStep, ay + space * yStep, bendRad, paint);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawLine(ax, ay, ax+space*xStep, ay+space*yStep, paint);
+            // draw part 7-8/8 only if applicable
+            if (length==full_wire_size) {
+                paint.setStyle(Paint.Style.FILL);
+                canvas.drawCircle(bx - space*xStep, by - space*yStep, bendRad, paint);
+                paint.setStyle(Paint.Style.STROKE);
+                canvas.drawLine(bx - space*xStep, by - space * yStep, bx, by, paint);
+            }
+            // draw circle where it bends
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawCircle(ax + space*xStep, by - space*yStep, bendRad, paint);
+            paint.setStyle(Paint.Style.STROKE);
+            // draw line down
+            canvas.drawLine(ax+space*xStep, ay+space*yStep, ax+space*xStep, by-space*yStep, paint);
+            // draw line right
+            canvas.drawLine(ax+space*xStep, by-space*yStep, bx-space*xStep, by-space*yStep, paint);
+
+        }
     }
 
     void drawConnector(Canvas canvas, Board board, int at, PlacedConnector conn) {
         // draw all connected wires as "connected"
         List<Integer> connNodes = board.connectedNodes(at, conn.type, conn.rotation);
         drawConnectedWires(canvas, at, connNodes );
-        // draw point:
-        float cx = canvasX(IntCoord.x(at));
-        float cy = canvasY(IntCoord.y(at));
-        float [] radPercent = {1.0f, 0.85f, 0.7f, 0.55f};
-        for(int i=0; i<4; ++i) {
-            float rad = radPercent[i] * nodeRadius;
-            Paint paint = connectorFillPaints[i];
-            canvas.drawCircle(cx, cy, rad, paint);
-        }
         // get connector icon
         Bitmap bmp = ConnectorBitmap.get(conn.type);
         assert bmp != null;
@@ -153,15 +174,6 @@ public class BoardDrawing extends CanvasDrawing {
         RectF targetRect = new RectF(cx-size/2, cy-size/2, cx+size/2, cy+size/2);
         Rect rectSrc = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
         canvas.drawBitmap(bmp, rectSrc, targetRect, bmpPaint);
-    }
-
-    Paint wirePaint() {
-        if (wirePaint == null) {
-            int width = (int)wireWidth;
-            int color = wireColor;
-            wirePaint = strokePaint(width, color);
-        }
-        return wirePaint;
     }
 
     private Paint connectedPaint() {
