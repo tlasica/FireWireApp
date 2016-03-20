@@ -25,7 +25,6 @@ public class BoardDrawing extends CanvasDrawing {
 
     private Paint nodePaint = fillPaint(wireColor);
     private Paint boardPaint = fillPaint(boardColor);
-    private Paint wirePaint;
     private Paint connectionPaint;
     private Paint bmpPaint = new Paint();
 
@@ -150,7 +149,7 @@ public class BoardDrawing extends CanvasDrawing {
         List<Integer> connNodes = board.connectedNodes(at, conn.type, conn.rotation);
         drawConnectedWires(canvas, at, connNodes );
         // get connector icon
-        Bitmap bmp = ConnectorBitmap.get(conn.type);
+        Bitmap bmp = ConnectorBitmap.freeBitmap(conn.type);
         assert bmp != null;
         // draw connector bitmap
         drawBitmapAtNode(canvas, at, bmp);

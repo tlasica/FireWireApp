@@ -24,15 +24,12 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     float offsetX;
     float offsetY;
 
-    Paint framePaint;
-    Paint bmpPaint;
-    Paint textPaint;
+    final int countColor = Color.parseColor("#E7C03F");
+    final int frameColor = Color.argb(255, 219, 219, 219);
 
-    final int countColor = Color.parseColor("#009240");
-    final int shapeColor = Color.parseColor("#009240");
-    final int frameColor = Color.argb(255,90, 92, 94);
-
-    Map<String, Drawable> images = new HashMap<>();
+    Paint framePaint = strokePaint(3, frameColor);
+    Paint bmpPaint = new Paint();
+    Paint textPaint;    // will be calculated later
 
     @Override
     void prepareDrawing(Canvas canvas) {
@@ -83,7 +80,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     }
 
     void drawConnector(Canvas canvas, int index, ConnectorType type) {
-        Bitmap bmp = ConnectorBitmap.get(type);
+        Bitmap bmp = ConnectorBitmap.choiceBitmap(type);
         if (bmp == null) {
             Log.e("", "No bitmap for" + type);
             return;
@@ -98,17 +95,17 @@ public class ConnectorSetDrawing extends CanvasDrawing {
 
     RectF bitmapRect(int index) {
         float l = left(index) + 10;
-        float t = (float) (offsetY + 0.25 * frameHeight);
-        float r = (float) (left(index) + 0.75 * frameWidth);
+        float t = offsetY + 0.25f * frameHeight;
+        float r = left(index) + 0.75f * frameWidth;
         float b = offsetY + frameHeight - 10;
         return new RectF(l, t, r, b);
     }
 
     RectF textRect(int index) {
-        float l = (float) (left(index) + 0.75 * frameWidth);
+        float l = left(index) + 0.75f * frameWidth;
         float r = left(index) + frameWidth - 5;
-        float t = (float) (offsetY + 5 );
-        float b = (float) (offsetY + 0.33 * frameHeight);
+        float t = offsetY + 5;
+        float b = offsetY + 0.33f * frameHeight;
         return new RectF(l, t, r, b);
     }
 

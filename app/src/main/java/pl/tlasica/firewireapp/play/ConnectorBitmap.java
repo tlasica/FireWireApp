@@ -13,7 +13,8 @@ import pl.tlasica.firewireapp.model.ConnectorType;
 public class ConnectorBitmap {
 
     static Resources resources;
-    static Map<ConnectorType, Bitmap> bitmaps= new HashMap<>();
+    static Map<ConnectorType, Bitmap> freeBitmaps= new HashMap<>();
+    static Map<ConnectorType, Bitmap> choiceBitmaps= new HashMap<>();
     static public Bitmap plusBitmap;
     static public Bitmap minusBitmap;
     static public Bitmap targetBitmap;
@@ -21,20 +22,25 @@ public class ConnectorBitmap {
     public static void initialize(Resources res) {
         resources = res;
         for(ConnectorType type: ConnectorType.values()){
-            Bitmap bmp = create(type);
-            bitmaps.put(type, bmp);
+            choiceBitmaps.put(type, create(choiceResId(type)));
+            freeBitmaps.put(type, create(freeResId(type)));
         }
-        plusBitmap = BitmapFactory.decodeResource(res, R.drawable.source_plus);
-        minusBitmap = BitmapFactory.decodeResource(res, R.drawable.source_minus);
-        targetBitmap = BitmapFactory.decodeResource(res, R.drawable.human);
+        plusBitmap = BitmapFactory.decodeResource(res, R.drawable.battery_blue);
+        minusBitmap = BitmapFactory.decodeResource(res, R.drawable.battery_blue);
+        targetBitmap = BitmapFactory.decodeResource(res, R.drawable.shockcircle);
     }
 
-    public static Bitmap get(ConnectorType type) {
-        return bitmaps.get(type);
+    // get bitmap without any connections
+    public static Bitmap freeBitmap(ConnectorType type) {
+        return freeBitmaps.get(type);
     }
 
-    static Bitmap create(ConnectorType type) {
-        int resId = resourceId(type);
+    // get bitmap describing placed connector
+    public static Bitmap choiceBitmap(ConnectorType type) {
+        return choiceBitmaps.get(type);
+    }
+
+    static Bitmap create(int resId) {
         if (resId > 0) {
             Bitmap bmp = BitmapFactory.decodeResource(resources, resId);
             return bmp;
@@ -42,12 +48,16 @@ public class ConnectorBitmap {
         else return null;
     }
 
-    static int resourceId(ConnectorType type) {
+    static int choiceResId(ConnectorType type) {
         switch (type) {
-            case I_SHAPE: return R.drawable.connector_e_180;
-            case L_SHAPE: return R.drawable.connector_e_180;
-            case X_SHAPE: return R.drawable.connector_e_180;
+            case I_SHAPE: return R.drawable.connector_e_180_placed;
+            case L_SHAPE: return R.drawable.connector_e_90_placed;
+            case X_SHAPE: return R.drawable.connector_e_x_placed;
             default: return R.drawable.connector_e_180;
         }
+    }
+
+    static int freeResId(ConnectorType type) {
+        return R.drawable.connector_e_180;
     }
 }
