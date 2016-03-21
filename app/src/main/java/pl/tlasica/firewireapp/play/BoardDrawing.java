@@ -18,7 +18,6 @@ import pl.tlasica.firewireapp.model.IntCoord;
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.model.PlacedConnector;
 import pl.tlasica.firewireapp.model.Wire;
-import scala.Int;
 
 
 public class BoardDrawing extends CanvasDrawing {
