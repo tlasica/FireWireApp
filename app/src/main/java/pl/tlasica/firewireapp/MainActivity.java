@@ -7,11 +7,20 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import java.io.IOException;
+
+import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.model.LevelPlay;
+import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 public class MainActivity extends BasicActivity {
+
+    private int currentLevel = 1;
+    private int currentGame = 0;
 
     @Override
     protected void onDestroy() {
@@ -38,13 +47,9 @@ public class MainActivity extends BasicActivity {
                         .setAction("Action", null).show();
             }
         });
-
         SoundPoolPlayer.init(this);
-
         ConnectorBitmap.initialize(getResources());
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,8 +74,19 @@ public class MainActivity extends BasicActivity {
     }
 
     public void onPlay(View view) {
-        Intent myIntent = new Intent(this, PlayActivity.class);
-        //myIntent.putExtra("key", value); //Optional parameters
-        startActivity(myIntent);
+        // load next level
+        BoardLoader loader = new BoardLoader(getAssets());
+        try {
+            Board level = loader.load(currentLevel, 1 +(currentGame % 4));
+            LevelPlay.startLevel(level);
+            currentGame++;
+            // start play activity
+            Intent myIntent = new Intent(this, PlayActivity.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            startActivity(myIntent);
+        } catch (IOException e) {
+            Toast.makeText(this, "Ups. Loading level failed.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 }

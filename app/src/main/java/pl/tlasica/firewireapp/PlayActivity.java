@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 
@@ -44,6 +46,9 @@ public class PlayActivity extends AppCompatActivity {
         fullScreenMode(decorView);
 
         mGameView = findViewById(R.id.game_view);
+
+        TextView titleText = (TextView)findViewById(R.id.level_title);
+        titleText.setText(LevelPlay.current().board.title);
     }
 
     @Override

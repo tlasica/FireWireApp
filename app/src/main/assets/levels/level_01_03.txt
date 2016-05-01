@@ -1,0 +1,20 @@
+T:A bit more
+MATRIX(3,3)
+TARGET(1,1)
+PLUS(3,0)
+MINUS(0,3)
+(1,1)
+(1,1)=N,S
+(3,0)
+(0,3)
+(3,0)=S,W
+(0,3)=E,N
+(1,2)=N,E
+(2,3)=N,W
+(3,2)=N,S
+(2,0)=W,S
+(0,1)=N,S
+
+# i konektory 5 x 90 stopni + 1 x 180 stopni (na wprost)
+C90=5
+C180=1

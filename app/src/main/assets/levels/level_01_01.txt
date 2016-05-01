@@ -1,0 +1,17 @@
+T:Easy Fizy
+MATRIX(2,2)
+TARGET(1,1)
+PLUS(0,0)
+MINUS(2,2)
+(1,1)
+(1,1)=N,S
+(0,0)
+(2,2)
+(0,0)=S,E
+(2,2)=W,N
+(2,0)=W,S
+(0,1)=N,S
+C90=2
+# do zrobienia w dwóch ruchach konektorami 90stopni.
+# czyli plansza zdefiniowana jw, do tego dostępne 2 konektory 90stopni.
+# Tak, żeby każdy złapał o co chodzi.

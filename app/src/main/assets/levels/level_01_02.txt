@@ -1,0 +1,19 @@
+T:Step 2
+MATRIX(3,3)
+TARGET(1,1)
+PLUS(0,0)
+MINUS(3,3)
+(1,1)
+(1,1)=N,S
+(0,0)
+(3,3)
+(0,0)=S,E
+(3,3)=W,N
+(1,2)=N,W,E
+(3,2)=N,S
+(2,1)=N,S
+(0,1)=N,S
+
+# rabialnej 3ema konektorami 90 stopni, ale dałbym do dyspozycji 5 konektorów 90 stopani i 2 180 stopni - tak żeby była alternatywa
+C90=5
+C180=2

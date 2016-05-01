@@ -23,13 +23,13 @@ public class Board {
     public int          plus = -1;
     public int          minus = -1;
     public int          target = -1;
+    public String       title;
 
     public Board() {
-
     }
 
     // add wire a---b
-    public Board with(int a, int b) {
+    public Board withWire(int a, int b) {
         nodes.add(a);
         nodes.add(b);
         wires.add(new Wire(a,b));
@@ -37,13 +37,13 @@ public class Board {
     }
 
     // add node n
-    public Board with(int n) {
+    public Board withNode(int n) {
         nodes.add(n);
         return this;
     }
 
     // add array of nodes
-    public Board with(int [] n) {
+    public Board withNodes(int [] n) {
         for (int x : n) {
             nodes.add(x);
         }
@@ -51,19 +51,37 @@ public class Board {
     }
 
     // remove node
-    public Board remove(int n) {
+    public Board removeNode(int n) {
         nodes.remove(n);
         List<Wire> adj = adj(n);
         wires.removeAll(adj);
         return this;
     }
 
-    // remove wire a---b, but only wire!
-    public Board remove(int a, int b) {
+    // remove wire a---b but keeps both nodes in the board
+    public Board removeWire(int a, int b) {
         wires.remove(new Wire(a, b));
         return this;
     }
 
+    // creates full matrix of orthogonal wires
+    public Board matrix(int xSize, int ySize) {
+        for (int x = 0; x < xSize; ++x) {
+            for (int y = 0; y < ySize; ++y) {
+                this.withWire(IntCoord.i(x, y), IntCoord.i(x + 1, y));
+                this.withWire(IntCoord.i(x, y), IntCoord.i(x, y + 1));
+            }
+        }
+        for (int x = 0; x < xSize; ++x) {
+            this.withWire(IntCoord.i(x, ySize), IntCoord.i(x + 1, ySize));
+        }
+        for (int y = 0; y < ySize; ++y) {
+            this.withWire(IntCoord.i(xSize, y), IntCoord.i(xSize, y + 1));
+        }
+        return this;
+    }
+
+    // list wires adjecent to given node
     public List<Wire> adj(int n) {
         List<Wire> out = new ArrayList<>();
         for (Wire w: wires) {
@@ -72,6 +90,7 @@ public class Board {
         return out;
     }
 
+    // list nodes connected to given node by existing wires
     public List<Integer> adjNodes(int n) {
         List<Integer> out = new ArrayList<>();
         for (Wire w: wires) {
@@ -81,13 +100,15 @@ public class Board {
         return out;
     }
 
-    private boolean isIn(int[] arr, int v) {
+    // helper method to search for int v in given array
+    private static boolean isIn(int[] arr, int v) {
         for(int x: arr) {
             if (v==x) return true;
         }
         return false;
     }
 
+    // return all nodes which are connected with node n when connector of type "type" is placed
     public List<Integer> connectedNodes(int n, ConnectorType type, int rotation) {
         List<Integer> ret = new ArrayList<>();
         int[] directions = type.directions(rotation);

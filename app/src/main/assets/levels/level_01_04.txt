@@ -1,0 +1,19 @@
+T: Small but tough
+MATRIX(3,3)
+TARGET(1,1)
+PLUS(0,0)
+MINUS(3,3)
+(1,1)
+(1,1)=N,S
+(0,0)
+(3,3)
+(0,0)=S,E
+(3,3)=W,N
+(1,2)=N,W
+(2,3)=N,W
+(3,2)=N,S
+(2,1)=N,S
+(0,1)=N,S
+#do rozwiązania tego 7 konektorów 90 stopni + 3 x 180 stopni (na wprost) (wystarczy 6 x 90 stopni + 2 x 180 stopni)
+C90=7
+C180=3
