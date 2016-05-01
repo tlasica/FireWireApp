@@ -14,16 +14,21 @@ import java.util.Set;
  * Board description is a level description including nodes, wires,
  * initially placed connectors, plus and minus locations as well as target location
  * locations are described as int
+ *
+ * It keeps also information about:
+ * - available connectors : type -> count
+ * - predefined connectors : node -> connected directions
  */
 public class Board {
 
     public Set<Integer> nodes = new HashSet<>();
     public Set<Wire>    wires = new HashSet<>();
-    public Map<ConnectorType, Integer> connectors = new HashMap<>();
     public int          plus = -1;
     public int          minus = -1;
     public int          target = -1;
     public String       title;
+    public Map<ConnectorType, Integer> connectors = new HashMap<>();
+    public Map<Integer, DefinedConnector> definedConnectors = new HashMap<>();
 
     public Board() {
     }

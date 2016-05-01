@@ -1,5 +1,8 @@
 package pl.tlasica.firewireapp.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Direction {
 
     public static int vx(String dir) {
@@ -26,4 +29,21 @@ public class Direction {
         else return 0;
     }
 
+    public static int degForDir(String dir) {
+        return dir2deg.get(dir);
+    }
+
+    private static Map<String, Integer> dir2deg = new HashMap<String, Integer>()
+    {
+        {
+            put("N", 0);
+            put("NE", 45);
+            put("E", 90);
+            put("SE", 135);
+            put("S", 180);
+            put("SW", 225);
+            put("W", 270);
+            put("NW", 315);
+        }
+    };
 }

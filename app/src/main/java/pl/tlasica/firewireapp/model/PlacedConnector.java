@@ -5,8 +5,8 @@ package pl.tlasica.firewireapp.model;
  * with certain rotation {0, 45, 90, 135, 180, 225, 270, 315}
  */
 public class PlacedConnector {
-    public ConnectorType    type;
-    public int              rotation;
+    public ConnectorType    type;       // type of the connector
+    public int              rotation;   // how it is placed (rotation)
 
     public PlacedConnector(ConnectorType t, int rot) {
         type = t;

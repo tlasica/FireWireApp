@@ -87,6 +87,9 @@ public class MainActivity extends BasicActivity {
         } catch (IOException e) {
             Toast.makeText(this, "Ups. Loading level failed.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Ups. Loading level failed on " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 }

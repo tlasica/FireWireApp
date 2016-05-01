@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.ConnectorType;
+import pl.tlasica.firewireapp.model.DefinedConnector;
 import pl.tlasica.firewireapp.model.IntCoord;
 
 /**
@@ -47,10 +48,22 @@ public class TextParser {
             if (tryAddWire(board, line)) continue;
             if (trySpecial(board, line)) continue;
             if (tryAvailableConnector(board, line)) continue;
-            // TODO: connector
-            // TODO: fail on unknown command
+            if (tryNodeConnection(board, line)) continue;
+            throw new IllegalArgumentException(line);
         }
         return board;
+    }
+
+    private boolean tryNodeConnection(Board board, String line) {
+        Matcher m = nodeConnPattern.matcher(line);
+        if (m.matches()) {
+            int node = nodeCoord(m);
+            if (node<0) throw new IllegalArgumentException(line);
+            String dirs = m.group(3);
+            board.definedConnectors.put(node, DefinedConnector.fromDirs(dirs));
+            return true;
+        }
+        return false;
     }
 
     private boolean tryAvailableConnector(Board board, String line) {
@@ -127,7 +140,7 @@ public class TextParser {
         if (m.matches()) {
             int node = nodeCoord(m);
             b.withNode(node);
-            //TODO: place full connector
+            b.definedConnectors.put(node, DefinedConnector.FULL);
             return true;
         }
         return false;
@@ -137,7 +150,6 @@ public class TextParser {
         Matcher m = titlePattern.matcher(line);
         if (m.matches()) {
             b.title = m.group(1);
-            //TODO: set a title for the board
             return true;
         }
         return false;
@@ -163,11 +175,16 @@ public class TextParser {
             Matcher mToEmpty = emptyNodePattern.matcher(nodes[1]);
             Matcher mToFull = fullNodePattern.matcher(nodes[1]);
             int nodeFrom = nodeCoord(mFromEmpty);
-            if (nodeFrom<0) nodeFrom = nodeCoord(mFromFull);
+            if (nodeFrom<0) {
+                nodeFrom = nodeCoord(mFromFull);
+                if (nodeFrom >= 0) b.definedConnectors.put(nodeFrom, DefinedConnector.FULL);
+            }
             int nodeTo = nodeCoord(mToEmpty);
-            if (nodeTo<0) nodeTo = nodeCoord(mToFull);
+            if (nodeTo<0) {
+                nodeTo = nodeCoord(mToFull);
+                if (nodeTo >= 0) b.definedConnectors.put(nodeTo, DefinedConnector.FULL);
+            }
             b.withWire(nodeFrom, nodeTo);
-            //TODO: add connector if full nodeTo or nodeFrom
             return true;
         }
         return false;
