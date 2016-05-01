@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.model.ConnectorType;
 import pl.tlasica.firewireapp.model.IntCoord;
 
 /**
@@ -30,8 +31,9 @@ public class TextParser {
     Pattern fullNodePattern = Pattern.compile(	"\\[(\\d+),[ ]*(\\d+)\\]");
     Pattern titlePattern = Pattern.compile("T:(.*)");
     Pattern matrixPattern = Pattern.compile("MATRIX\\((\\d+),[ ]*(\\d+)\\)");
-    Pattern nodeConnPattern = Pattern.compile("\\((\\d+),[ ]*(\\d+)\\)[ ]*\\=[ ]*([NSEW,]+)");
+    Pattern nodeConnPattern = Pattern.compile("\\((\\d+),[ ]*(\\d+)\\)[ ]*=[ ]*([NSEW,]+)");
     Pattern specialPattern = Pattern.compile("([A-Z]+)\\((\\d+),[ ]*(\\d+)\\)");
+    Pattern availConnPattern = Pattern.compile("C(.+)=(\\d+)");
 
     public Board parse(List<String> lines) {
         Board board = new Board();
@@ -44,11 +46,36 @@ public class TextParser {
             if (tryRemoveNode(board, line)) continue;
             if (tryAddWire(board, line)) continue;
             if (trySpecial(board, line)) continue;
+            if (tryAvailableConnector(board, line)) continue;
             // TODO: connector
-            // TODO: available connectors
             // TODO: fail on unknown command
         }
         return board;
+    }
+
+    private boolean tryAvailableConnector(Board board, String line) {
+        Matcher m = availConnPattern.matcher(line);
+        if (m.matches()) {
+            String name = m.group(1);
+            int count = Integer.parseInt(m.group(2));
+            ConnectorType type = connectorType(name);
+            if (type != null) {
+                board.connectors.put(type, count);
+                return true;
+            }
+            else throw new IllegalArgumentException(line);
+        }
+        return false;
+    }
+
+    private ConnectorType connectorType(String name) {
+        if (name.equalsIgnoreCase("90")) return ConnectorType.L_SHAPE;
+        if (name.equalsIgnoreCase("180")) return ConnectorType.I_SHAPE;
+        if (name.equalsIgnoreCase("X")) return ConnectorType.X_SHAPE;
+        if (name.equalsIgnoreCase("L")) return ConnectorType.L_SHAPE;
+        if (name.equalsIgnoreCase("I")) return ConnectorType.I_SHAPE;
+        if (name.equalsIgnoreCase("T")) return ConnectorType.T_SHAPE;
+        return null;
     }
 
     private boolean trySpecial(Board board, String line) {
