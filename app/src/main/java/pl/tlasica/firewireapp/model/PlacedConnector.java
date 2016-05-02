@@ -12,4 +12,8 @@ public class PlacedConnector {
         type = t;
         rotation = rot;
     }
+
+    public int[] directions() {
+        return this.type.directions(this.rotation);
+    }
 }

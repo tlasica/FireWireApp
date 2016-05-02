@@ -58,6 +58,9 @@ public class ConnectorBitmap {
     }
 
     static int freeResId(ConnectorType type) {
-        return R.drawable.connector_e_180;
+        switch (type) {
+            case DEFINED: return R.drawable.connection;
+            default: return R.drawable.connector_e_180;
+        }
     }
 }

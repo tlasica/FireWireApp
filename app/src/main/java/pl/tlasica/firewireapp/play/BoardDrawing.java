@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Random;
 
 import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.model.ConnectorType;
+import pl.tlasica.firewireapp.model.DefinedConnector;
 import pl.tlasica.firewireapp.model.IntCoord;
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.model.PlacedConnector;
@@ -57,6 +59,7 @@ public class BoardDrawing extends CanvasDrawing {
         drawWires(canvas, play.board);
         drawNodes(canvas, play.board);
         drawConnectors(canvas, play.board, play.placedConnectors);
+        drawDefinedConnections(canvas, play.board);
         drawSpecial(canvas, play.board, play.board.plus, ConnectorBitmap.plusBitmap);
         drawSpecial(canvas, play.board, play.board.minus, ConnectorBitmap.minusBitmap);
         drawSpecial(canvas, play.board, play.board.target, ConnectorBitmap.targetBitmap);
@@ -81,6 +84,26 @@ public class BoardDrawing extends CanvasDrawing {
             int pos = item.getKey();
             PlacedConnector conn = item.getValue();
             drawConnector(canvas, board, pos, conn);
+        }
+    }
+
+    void drawDefinedConnections(Canvas canvas, Board board) {
+        for (Map.Entry<Integer, DefinedConnector> item : board.definedConnectors.entrySet()) {
+            int pos = item.getKey();
+            DefinedConnector conn = item.getValue();
+            drawDefinedConnection(canvas, board, pos, conn);
+        }
+    }
+
+    void drawDefinedConnection(Canvas canvas, Board board, int pos, DefinedConnector conn) {
+        // draw all connected wires as "connected"
+        List<Integer> connNodes = board.connectedNodes(pos, conn);
+        drawConnectedWires(canvas, pos, connNodes, conn_wire_size);
+        // get connector icon
+        if (!board.isSpecial(pos)) {
+            Bitmap bmp = ConnectorBitmap.freeBitmap(ConnectorType.DEFINED);
+            assert bmp != null;
+            drawBitmapAtNode(canvas, pos, bmp);
         }
     }
 
@@ -182,7 +205,7 @@ public class BoardDrawing extends CanvasDrawing {
 
     void drawConnector(Canvas canvas, Board board, int at, PlacedConnector conn) {
         // draw all connected wires as "connected"
-        List<Integer> connNodes = board.connectedNodes(at, conn.type, conn.rotation);
+        List<Integer> connNodes = board.connectedNodes(at, conn);
         drawConnectedWires(canvas, at, connNodes, conn_wire_size);
         // get connector icon
         Bitmap bmp = ConnectorBitmap.freeBitmap(conn.type);
@@ -198,7 +221,7 @@ public class BoardDrawing extends CanvasDrawing {
     }
 
     void drawSpecial(Canvas canvas, Board board, int at, Bitmap bmp) {
-        drawConnectedWires(canvas, at, board.adjNodes(at), conn_wire_size);
+        // we expected defined conn for special fields if they are connected
         drawBitmapAtNode(canvas, at, bmp);
     }
 

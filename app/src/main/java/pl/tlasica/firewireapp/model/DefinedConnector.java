@@ -30,7 +30,8 @@ public class DefinedConnector extends PlacedConnector {
 
     private Set<Integer> definedDirections = null;
 
-    public int[] definedDirections() {
+    @Override
+    public int[] directions() {
         int[] ret = new int[this.definedDirections.size()];
         int index = 0;
         for(int v: definedDirections) {

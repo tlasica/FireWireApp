@@ -23,7 +23,7 @@ public enum ConnectorType {
             case C_SHAPE: return rotate(cDirs, rotation);
             case V_SHAPE: return rotate(vDirs, rotation);
             case FULL: return fullDirs;
-            case DEFINED: return null;
+            case DEFINED: return new int[0];
             default: return null;
         }
     }

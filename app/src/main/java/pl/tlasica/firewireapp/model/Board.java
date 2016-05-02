@@ -115,9 +115,9 @@ public class Board {
     }
 
     // return all nodes which are connected with node n when connector of type "type" is placed
-    public List<Integer> connectedNodes(int n, ConnectorType type, int rotation) {
+    public List<Integer> connectedNodes(int n, PlacedConnector connector) {
         List<Integer> ret = new ArrayList<>();
-        int[] directions = type.directions(rotation);
+        int[] directions = connector.directions();
         for(Wire w: adj(n)) {
             int d = w.dirFrom(n);
             if (isIn(directions, d)) {
@@ -166,13 +166,14 @@ public class Board {
         return 1 + IntCoord.x( Collections.max(nodes) );
     }
 
-    public boolean isFree(int position) {
-        boolean isNode = nodes.contains(position);
-        if (!isNode) return false;
-        boolean isSpecial = (position==target || position==minus || position==plus);
-        if (isSpecial) return false;
-        boolean hasDefinedConn = definedConnectors.containsKey(position);
-        if (hasDefinedConn) return false;
+    public boolean isFree(int node) {
+        if (!nodes.contains(node)) return false;
+        if (isSpecial(node)) return false;
+        if (definedConnectors.containsKey(node)) return false;
         return true;
+    }
+
+    public boolean isSpecial(int node) {
+        return (node==target || node==minus || node==plus);
     }
 }
