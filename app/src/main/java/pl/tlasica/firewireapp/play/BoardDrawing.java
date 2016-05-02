@@ -47,11 +47,11 @@ public class BoardDrawing extends CanvasDrawing {
             fillPaint(Color.parseColor("#FFF29D"))
     };
 
-
     private int full_wire_size = 8; // full wire consists of 8 parts
     private int conn_wire_size = 4; // we do not print last part
 
     public void draw(Canvas canvas, LevelPlay play) {
+        this.cellsInRow = play.board.xSize();
         prepareDrawing(canvas);
         canvas.drawColor(boardColor);
         drawWires(canvas, play.board);

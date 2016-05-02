@@ -2,6 +2,7 @@ package pl.tlasica.firewireapp.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,5 +160,9 @@ public class Board {
             }
         }
         return (found>0) ? Arrays.copyOf(acceptable, found) : null;
+    }
+
+    public int xSize() {
+        return 1 + IntCoord.x( Collections.max(nodes) );
     }
 }

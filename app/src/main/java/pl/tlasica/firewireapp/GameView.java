@@ -9,10 +9,6 @@ import android.view.SurfaceView;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import pl.tlasica.firewireapp.model.Board;
-import pl.tlasica.firewireapp.model.LevelPlay;
-import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.Game;
 
 

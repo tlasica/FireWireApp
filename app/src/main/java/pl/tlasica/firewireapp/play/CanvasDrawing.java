@@ -9,6 +9,7 @@ public class CanvasDrawing {
     float cellSize;
     float nodeRadius;
     float wireWidth;
+    float cellsInRow = 6.0f;
 
     Paint strokePaint(int width, int color) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -28,7 +29,7 @@ public class CanvasDrawing {
     }
 
     void prepareDrawing(Canvas canvas) {
-        cellSize = Math.round(canvas.getWidth() / 7);
+        cellSize = Math.round(canvas.getWidth() / cellsInRow);
         nodeRadius = cellSize / 7.0f;
         wireWidth = nodeRadius / 1.3f;
         Log.d("DIM", "prepareDrawing: cellSize=" + String.valueOf(cellSize));
