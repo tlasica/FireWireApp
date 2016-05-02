@@ -39,6 +39,7 @@ public class TextParser {
     public Board parse(List<String> lines) {
         Board board = new Board();
         for(String line: lines) {
+            if (line.isEmpty()) continue;
             if (tryMatrix(board, line)) continue;
             if (tryTitle(board, line)) continue;
             if (tryEmptyNode(board, line)) continue;

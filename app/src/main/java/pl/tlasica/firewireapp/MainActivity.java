@@ -85,7 +85,7 @@ public class MainActivity extends BasicActivity {
             //myIntent.putExtra("key", value); //Optional parameters
             startActivity(myIntent);
         } catch (IOException e) {
-            Toast.makeText(this, "Ups. Loading level failed.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
             Toast.makeText(this, "Ups. Loading level failed on " + e.getMessage(), Toast.LENGTH_LONG).show();

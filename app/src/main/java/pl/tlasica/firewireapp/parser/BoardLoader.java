@@ -17,15 +17,21 @@ import pl.tlasica.firewireapp.model.Board;
 public class BoardLoader {
 
     private AssetManager assets;
+    private String lastFile;
 
     public BoardLoader(AssetManager assets) {
         this.assets = assets;
     }
 
     public Board load(int levelNo, int gameNo) throws IOException {
-        List<String> lines = loadLines(this.assets, fileName(levelNo, gameNo));
+        lastFile = fileName(levelNo, gameNo);
+        List<String> lines = loadLines(this.assets, lastFile);
         TextParser parser = new TextParser();
         return parser.parse(lines);
+    }
+
+    public String getLastFile() {
+        return lastFile;
     }
 
     private String fileName(int levelNo, int gameNo) {
