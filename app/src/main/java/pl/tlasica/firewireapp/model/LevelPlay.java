@@ -54,9 +54,14 @@ public class LevelPlay {
     }
 
     public int tryPlaceConnector(ConnectorType type, int position) {
+        // if this node is free
+        if (!board.isFree(position)) {
+            Log.d("", "This position is not a free slot: " + position);
+            return -1;
+        }
         // if position is not already occupied
         if (connectorAt(position) != null) {
-            Log.d("", "This position is already occupied: " + position);
+            Log.d("", "This position is already occupied by connector: " + position);
             return -1;
         }
         // if we have connectors of this type

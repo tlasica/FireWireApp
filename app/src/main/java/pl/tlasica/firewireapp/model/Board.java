@@ -165,4 +165,14 @@ public class Board {
     public int xSize() {
         return 1 + IntCoord.x( Collections.max(nodes) );
     }
+
+    public boolean isFree(int position) {
+        boolean isNode = nodes.contains(position);
+        if (!isNode) return false;
+        boolean isSpecial = (position==target || position==minus || position==plus);
+        if (isSpecial) return false;
+        boolean hasDefinedConn = definedConnectors.containsKey(position);
+        if (hasDefinedConn) return false;
+        return true;
+    }
 }

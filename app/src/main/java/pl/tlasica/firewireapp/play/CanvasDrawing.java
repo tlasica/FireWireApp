@@ -32,9 +32,9 @@ public class CanvasDrawing {
         cellSize = Math.round(canvas.getWidth() / cellsInRow);
         nodeRadius = cellSize / 7.0f;
         wireWidth = nodeRadius / 1.3f;
-        Log.d("DIM", "prepareDrawing: cellSize=" + String.valueOf(cellSize));
-        Log.d("DIM", "prepareDrawing: nodeRadius=" + String.valueOf(nodeRadius));
-        Log.d("DIM", "prepareDrawing: wireWidth=" + String.valueOf(wireWidth));
+        String msg = String.format("prepareDrawing: cellSize=%f nodeRad=%f wireWidth=%f",
+                cellSize, nodeRadius, wireWidth);
+        Log.d("DIM", msg);
     }
 
     float canvasX(int boardX) {
