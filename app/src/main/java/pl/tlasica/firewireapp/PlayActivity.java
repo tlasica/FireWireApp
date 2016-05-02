@@ -2,6 +2,7 @@ package pl.tlasica.firewireapp;
 
 import android.app.ActionBar;
 import android.content.pm.ActivityInfo;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,9 @@ import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 public class PlayActivity extends AppCompatActivity {
     private View mContentView;
     private View mGameView;
+    private TextView mTimeView;
+    private CountDownTimer timer;
+    private long timeLimitMs;
 
 //    private final Runnable mHidePart2Runnable = new Runnable() {
 //        @SuppressLint("InlinedApi")
@@ -39,22 +43,24 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGameView = findViewById(R.id.game_view);
+        // set the full screen mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_play);
-
         View decorView = getWindow().getDecorView();
         fullScreenMode(decorView);
-
-        mGameView = findViewById(R.id.game_view);
-
+        // change title to level title
         TextView titleText = (TextView)findViewById(R.id.level_title);
         titleText.setText(LevelPlay.current().board.title);
+        mTimeView = (TextView)findViewById(R.id.level_time);
+        // start countdown timer to stop game and update time
+        timeLimitMs = 5 * 60 * 1000;
+        timer = startTimer(timeLimitMs);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         Log.d("", "onResume()");
 
         View decorView = getWindow().getDecorView();
@@ -78,6 +84,22 @@ public class PlayActivity extends AppCompatActivity {
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         flags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         view.setSystemUiVisibility(flags);
+    }
+
+    private CountDownTimer startTimer(long limitMs) {
+        timer = new CountDownTimer(limitMs, 1000) {
+            public void onTick(long millisUntilFinished) {
+                long durSec = (timeLimitMs - millisUntilFinished) /1000;
+                long min = durSec / 60;
+                long sec = durSec % 60;
+                mTimeView.setText(String.format("%02d:%02d", min, sec));
+            }
+
+            public void onFinish() {
+                mTimeView.setText("GAME OVER");
+            }
+        }.start();
+        return timer;
     }
 
 }

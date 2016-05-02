@@ -17,12 +17,15 @@ public class GameLoop implements Runnable {
     private final SurfaceHolder surfaceHolder;
     private boolean running = true;
     private final String TAG = "GAMELOOP";
-    private final long frameDurationMs = 200;       // 10 frames per sec
+    private final long frameDurationMs = 200;       // 5 frames per sec
 
     private Queue<MouseEvent>   eventQueue;
 
     private final BoardDrawing boardDrawing;
     private final ConnectorSetDrawing connSetDrawing;
+
+    private long startTimeMs;
+    private long currTimeMs;
 
     public GameLoop(SurfaceHolder sfHolder, Queue<MouseEvent> eventQ) {
         eventQueue = eventQ;
@@ -34,13 +37,20 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         Log.d(TAG, "GameLoop started");
+        startTimeMs = System.currentTimeMillis();
         while (running) {
+            currTimeMs = System.currentTimeMillis();
             long frameStartTime = new Date().getTime();
             processInput();
             doPhysics();
             drawGraphics();
             waitForNextFrame(frameStartTime);
         }
+    }
+
+    // returns duration in millisec
+    private long durationMs() {
+        return currTimeMs - startTimeMs;
     }
 
     private long waitForNextFrame(long frameStartTime) {
