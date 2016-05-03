@@ -116,10 +116,13 @@ public class GameLoop implements Runnable {
             switch (status) {
                 case WIN:
                     Log.i("GAME", "Success. Win!");
+                    SoundPoolPlayer.get().electricshock();
+                    SoundPoolPlayer.get().playYes();
                     this.pleaseStop();
                     break;
                 case LOST:
                     Log.i("GAME", "Game Lost...");
+                    SoundPoolPlayer.get().playNo();
                     this.pleaseStop();
                     break;
             }

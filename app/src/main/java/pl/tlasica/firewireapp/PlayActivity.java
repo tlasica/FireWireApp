@@ -3,11 +3,14 @@ package pl.tlasica.firewireapp;
 import android.app.ActionBar;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
@@ -15,7 +18,7 @@ import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 //http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements Handler.Callback {
     private View mContentView;
     private View mGameView;
     private TextView mTimeView;
@@ -102,4 +105,15 @@ public class PlayActivity extends AppCompatActivity {
         return timer;
     }
 
+    @Override
+    public boolean handleMessage(Message msg) {
+        String text = "";
+        if (msg.what == 0) text = "Winner!";
+        if (msg.what == 1) text = "Game Over!";
+        if (!text.isEmpty()) {
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return false;
+    }
 }
