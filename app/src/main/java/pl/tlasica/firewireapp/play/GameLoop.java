@@ -3,11 +3,13 @@ package pl.tlasica.firewireapp.play;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.Queue;
 
 import pl.tlasica.firewireapp.MouseEvent;
+import pl.tlasica.firewireapp.engine.Solution;
 import pl.tlasica.firewireapp.model.ConnectorType;
 import pl.tlasica.firewireapp.model.LevelPlay;
 
@@ -97,13 +99,29 @@ public class GameLoop implements Runnable {
 
     private void processInput() {
         LevelPlay play = LevelPlay.current();
+        boolean sthProcessed = false;
         while (eventQueue.isEmpty() == false) {
             MouseEvent ev = eventQueue.poll();
             if (ev instanceof ClickEvent) {
-                handleClick((ClickEvent)ev, play);
+                sthProcessed |= handleClick((ClickEvent)ev, play);
             }
             else if (ev instanceof SwipeEvent) {
-                handleSwipe((SwipeEvent)ev, play);
+                sthProcessed |= handleSwipe((SwipeEvent)ev, play);
+            }
+        }
+        // if there was handled event
+        if (sthProcessed) {
+            Log.i(TAG, "Something processed, checking game status");
+            Solution.GameStatus status = Solution.solution(LevelPlay.current());
+            switch (status) {
+                case WIN:
+                    Log.i("GAME", "Success. Win!");
+                    this.pleaseStop();
+                    break;
+                case LOST:
+                    Log.i("GAME", "Game Lost...");
+                    this.pleaseStop();
+                    break;
             }
         }
     }
