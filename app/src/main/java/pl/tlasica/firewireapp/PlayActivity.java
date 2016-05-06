@@ -53,8 +53,6 @@ public class PlayActivity extends BasicActivity {
         mGameView = findViewById(R.id.game_view);
         // set the full screen mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        View decorView = getWindow().getDecorView();
-        fullScreenMode(decorView);
         // change title to level title
         TextView titleText = (TextView)findViewById(R.id.level_title);
         titleText.setText(LevelPlay.current().board.title);
@@ -67,20 +65,17 @@ public class PlayActivity extends BasicActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("", "onResume()");
+        fullScreenMode();
+    }
 
-        View decorView = getWindow().getDecorView();
-        fullScreenMode(decorView);
-
+    private void fullScreenMode() {
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             Log.d("", "Hiding action bar");
             actionBar.hide();
         }
-    }
 
-
-    private void fullScreenMode(View view) {
+        View view = getWindow().getDecorView();
         //int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         int flags = View.SYSTEM_UI_FLAG_LOW_PROFILE;
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
@@ -112,10 +107,12 @@ public class PlayActivity extends BasicActivity {
         builder.setMessage("Stop this game?");
         builder.setPositiveButton("STOP", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                fullScreenMode();
                 finish();
             } });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    fullScreenMode();
                 } });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -126,10 +123,12 @@ public class PlayActivity extends BasicActivity {
         builder.setMessage("Restart this game?");
         builder.setPositiveButton("RESTART", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                fullScreenMode();
                 game().restart();
             } });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                fullScreenMode();
             } });
         AlertDialog dialog = builder.create();
         dialog.show();
