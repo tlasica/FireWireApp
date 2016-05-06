@@ -31,6 +31,12 @@ public class LevelPlay {
         currentPlay = play;
     }
 
+    public static void restart() {
+        if (current() != null) {
+            startLevel(current().board);
+        }
+    }
+
     private LevelPlay(Board b) {
         this.board = b;
         prepareConnectors(b);

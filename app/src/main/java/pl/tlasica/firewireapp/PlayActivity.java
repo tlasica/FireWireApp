@@ -1,10 +1,12 @@
 package pl.tlasica.firewireapp;
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,15 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import pl.tlasica.firewireapp.model.LevelPlay;
+import pl.tlasica.firewireapp.play.Game;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 
 //http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
 
-public class PlayActivity extends AppCompatActivity implements Handler.Callback {
-    private View mContentView;
-    private View mGameView;
-    private TextView mTimeView;
+public class PlayActivity extends BasicActivity {
+    private View        mContentView;
+    private View        mGameView;
+    private TextView    mTimeView;
     private CountDownTimer timer;
     private long timeLimitMs;
 
@@ -46,10 +49,10 @@ public class PlayActivity extends AppCompatActivity implements Handler.Callback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_play);
         mGameView = findViewById(R.id.game_view);
         // set the full screen mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_play);
         View decorView = getWindow().getDecorView();
         fullScreenMode(decorView);
         // change title to level title
@@ -97,7 +100,6 @@ public class PlayActivity extends AppCompatActivity implements Handler.Callback 
                 long sec = durSec % 60;
                 mTimeView.setText(String.format("%02d:%02d", min, sec));
             }
-
             public void onFinish() {
                 mTimeView.setText("GAME OVER");
             }
@@ -105,15 +107,37 @@ public class PlayActivity extends AppCompatActivity implements Handler.Callback 
         return timer;
     }
 
-    @Override
-    public boolean handleMessage(Message msg) {
-        String text = "";
-        if (msg.what == 0) text = "Winner!";
-        if (msg.what == 1) text = "Game Over!";
-        if (!text.isEmpty()) {
-            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return false;
+    public void closeGame(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Stop this game?");
+        builder.setPositiveButton("STOP", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            } });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                } });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void restartGame(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Restart this game?");
+        builder.setPositiveButton("RESTART", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                game().restart();
+            } });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            } });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private Game game() {
+        GameView gameView = (GameView)findViewById(R.id.game_view);
+        Game game = gameView.getGame();
+        return game;
     }
 }

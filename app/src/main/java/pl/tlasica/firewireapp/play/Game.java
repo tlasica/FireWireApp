@@ -4,8 +4,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.util.Queue;
+import java.util.logging.Level;
 
 import pl.tlasica.firewireapp.MouseEvent;
+import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.model.LevelPlay;
 
 
 /**
@@ -35,5 +38,11 @@ public class Game {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void restart() {
+        gameLoop.pause(true);
+        LevelPlay.restart();
+        gameLoop.pause(false);
     }
 }

@@ -14,13 +14,17 @@ import pl.tlasica.firewireapp.play.Game;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private Game game;
-    Queue<MouseEvent> events = new ConcurrentLinkedQueue<>();
+    private Game        game;
+    Queue<MouseEvent>   events = new ConcurrentLinkedQueue<>();
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         getHolder().addCallback(this);
         new ViewMotionDetector(this, events);
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     @Override

@@ -3,7 +3,6 @@ package pl.tlasica.firewireapp.play;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.Queue;
@@ -18,6 +17,7 @@ public class GameLoop implements Runnable {
 
     private final SurfaceHolder surfaceHolder;
     private boolean running = true;
+    private boolean pause = false;
     private final String TAG = "GAMELOOP";
     private final long frameDurationMs = 200;       // 5 frames per sec
 
@@ -36,6 +36,10 @@ public class GameLoop implements Runnable {
         connSetDrawing = new ConnectorSetDrawing();
     }
 
+    public void pause(boolean p) {
+        this.pause = p;
+    }
+
     @Override
     public void run() {
         Log.d(TAG, "GameLoop started");
@@ -43,9 +47,11 @@ public class GameLoop implements Runnable {
         while (running) {
             currTimeMs = System.currentTimeMillis();
             long frameStartTime = new Date().getTime();
-            processInput();
-            doPhysics();
-            drawGraphics();
+            if (! pause) {
+                processInput();
+                doPhysics();
+                drawGraphics();
+            }
             waitForNextFrame(frameStartTime);
         }
     }
