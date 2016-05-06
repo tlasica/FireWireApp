@@ -166,6 +166,12 @@ public class Board {
         return 1 + IntCoord.x( Collections.max(nodes) );
     }
 
+    public int ySize() {
+        int maxY = 0;
+        for(int n: nodes) if (IntCoord.y(n)>maxY) maxY=IntCoord.y(n);
+        return maxY;
+    }
+
     public boolean isFree(int node) {
         if (!nodes.contains(node)) return false;
         if (isSpecial(node)) return false;

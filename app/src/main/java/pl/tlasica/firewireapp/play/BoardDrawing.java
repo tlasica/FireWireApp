@@ -55,7 +55,7 @@ public class BoardDrawing extends CanvasDrawing {
     public void draw(Canvas canvas, LevelPlay play) {
         this.cellsInRow = play.board.xSize();
         prepareDrawing(canvas);
-        canvas.drawColor(boardColor);
+        drawBoard(canvas, play.board);
         drawWires(canvas, play.board);
         drawNodes(canvas, play.board);
         drawConnectors(canvas, play.board, play.placedConnectors);
@@ -63,6 +63,14 @@ public class BoardDrawing extends CanvasDrawing {
         drawSpecial(canvas, play.board, play.board.plus, ConnectorBitmap.plusBitmap);
         drawSpecial(canvas, play.board, play.board.minus, ConnectorBitmap.minusBitmap);
         drawSpecial(canvas, play.board, play.board.target, ConnectorBitmap.targetBitmap);
+    }
+
+    private void drawBoard(Canvas canvas, Board board) {
+        int ySize = board.ySize();
+//        RectF rect = new RectF(10, 10, canvas.getWidth()-10, (1+ySize) * cellSize);
+        RectF rect = new RectF(10, 10, canvas.getWidth()-10, canvas.getHeight()-10);
+        float rad = this.nodeRadius;
+        canvas.drawRoundRect(rect, rad, rad, this.boardPaint);
     }
 
     public int nodeNumber(Point mouse, Board board) {
