@@ -15,6 +15,10 @@ import pl.tlasica.firewireapp.model.LevelPlay;
 
 public class GameLoop implements Runnable {
 
+    public class Message {
+        boolean stateChanged;  // player made a move
+    }
+
     private final SurfaceHolder surfaceHolder;
     private boolean running = true;
     private boolean pause = false;
@@ -28,8 +32,10 @@ public class GameLoop implements Runnable {
     private long startTimeMs;
     private long currTimeMs;
     private long lastLogTime;
+    private Game game;
 
-    public GameLoop(SurfaceHolder sfHolder, Queue<MouseEvent> eventQ) {
+    public GameLoop(Game g, SurfaceHolder sfHolder, Queue<MouseEvent> eventQ) {
+        game = g;
         eventQueue = eventQ;
         surfaceHolder = sfHolder;
         boardDrawing = new BoardDrawing();
@@ -120,6 +126,7 @@ public class GameLoop implements Runnable {
         }
         // if there was handled event
         if (sthProcessed) {
+            game.noifyStateChange();
             Log.i(TAG, "Something processed, checking game status");
             Solution.GameStatus status = Solution.solution(LevelPlay.current());
             switch (status) {
@@ -128,11 +135,13 @@ public class GameLoop implements Runnable {
                     SoundPoolPlayer.get().electricshock();
                     SoundPoolPlayer.get().playYes();
                     this.pleaseStop();
+                    game.notifyGameSolved();
                     break;
                 case LOST:
                     Log.i("GAME", "Game Lost...");
                     SoundPoolPlayer.get().playNo();
                     this.pleaseStop();
+                    game.notifyGameLost();
                     break;
             }
         }

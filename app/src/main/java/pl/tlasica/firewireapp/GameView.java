@@ -23,6 +23,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         new ViewMotionDetector(this, events);
     }
 
+    public void setGame(Game g) {
+        this.game = g;
+    }
+
     public Game getGame() {
         return game;
     }
@@ -30,7 +34,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("SURFACE", "Created");
-        this.game = new Game(holder, events);
+        game.create(holder, events);
         game.start();
     }
 
