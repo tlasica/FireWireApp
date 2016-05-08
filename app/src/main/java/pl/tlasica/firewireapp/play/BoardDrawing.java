@@ -49,15 +49,29 @@ public class BoardDrawing extends CanvasDrawing {
             fillPaint(Color.parseColor("#FFF29D"))
     };
 
+    private Canvas boardCanvas;
+    private Bitmap boardBitmap;
+
     private int full_wire_size = 8; // full wire consists of 8 parts
     private int conn_wire_size = 4; // we do not print last part
 
     public void draw(Canvas canvas, LevelPlay play) {
         this.cellsInRow = play.board.xSize();
         prepareDrawing(canvas);
-        drawBoard(canvas, play.board);
-        drawWires(canvas, play.board);
-        drawNodes(canvas, play.board);
+
+        if (this.boardCanvas == null) {
+            // create canvas
+            Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+            boardBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), conf);
+            boardCanvas = new Canvas(boardBitmap);
+            // draw the board on canvas
+            drawBoard(boardCanvas, play.board);
+            drawWires(boardCanvas, play.board);
+            drawNodes(boardCanvas, play.board);
+        }
+
+        canvas.drawBitmap(boardBitmap, 0, 0, bmpPaint);
+
         drawConnectors(canvas, play.board, play.placedConnectors);
         drawDefinedConnections(canvas, play.board);
         drawSpecial(canvas, play.board, play.board.plus, ConnectorBitmap.plusBitmap);

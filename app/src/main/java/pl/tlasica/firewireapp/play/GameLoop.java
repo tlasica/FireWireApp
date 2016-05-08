@@ -19,7 +19,6 @@ public class GameLoop implements Runnable {
     private boolean running = true;
     private boolean pause = false;
     private final String TAG = "GAMELOOP";
-    private final long frameDurationMs = 200;       // 5 frames per sec
 
     private Queue<MouseEvent>   eventQueue;
 
@@ -28,6 +27,7 @@ public class GameLoop implements Runnable {
 
     private long startTimeMs;
     private long currTimeMs;
+    private long lastLogTime;
 
     public GameLoop(SurfaceHolder sfHolder, Queue<MouseEvent> eventQ) {
         eventQueue = eventQ;
@@ -64,9 +64,9 @@ public class GameLoop implements Runnable {
     private long waitForNextFrame(long frameStartTime) {
         long nextFrameStartTime = new Date().getTime();
         long howLongWeTook = nextFrameStartTime - frameStartTime;
+        long frameDurationMs = 200;
         long waitTime = frameDurationMs - howLongWeTook;
         if (waitTime > 0) {
-            //Log.w(TAG, "Sleeping in frame for [ms]: " + waitTime);
             try {
                 Thread.sleep(waitTime);
             } catch (InterruptedException e) {
@@ -88,10 +88,13 @@ public class GameLoop implements Runnable {
 
         try {
             LevelPlay levelPlay = LevelPlay.current();
+            long t0 = System.currentTimeMillis();
             synchronized (surfaceHolder) {
                 boardDrawing.draw(canvas, levelPlay);
                 connSetDrawing.draw(canvas, levelPlay);
             }
+            long t1 = System.currentTimeMillis();
+            logPerf("Drawing duration[ms]", t1-t0);
         }
         finally {
             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -198,6 +201,15 @@ public class GameLoop implements Runnable {
             }
         }
         return false;
+    }
+
+    private void logPerf(String metric, long value) {
+        long ct = System.currentTimeMillis();
+        long period = 5 * 1000;
+        if (ct-lastLogTime > period) {
+            lastLogTime = ct;
+            Log.d("PERF", String.format("%s: %d", metric, value));
+        }
     }
 
 }
