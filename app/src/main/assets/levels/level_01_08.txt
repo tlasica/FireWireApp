@@ -1,0 +1,23 @@
+T: Close to the end
+MATRIX(4,4)
+TARGET(2,2)
+PLUS(0,1)
+MINUS(4,3)
+(4,0)
+(0,4)
+(4,0)=S,W
+(4,3)=S,W,N
+(0,4)=E,N
+(1,2)=S,E
+(2,4)=W,N
+(3,4)=E,W
+(2,3)=N,S
+(2,2)=N,E,S,W
+(3,2)=N,E
+(4,1)=W,N
+(2,1)=N,S
+(0,1)=N,S
+
+#do rozwiązania potrzeba: 5x 90 stopni i 2 na wprost
+C90=5
+C180=2

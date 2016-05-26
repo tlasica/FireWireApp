@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Random;
 
 import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.LevelPlay;
@@ -77,7 +78,8 @@ public class MainActivity extends BasicActivity {
         // load next level
         BoardLoader loader = new BoardLoader(getAssets());
         try {
-            Board level = loader.load(currentLevel, 1 +(currentGame % 4));
+            int randomGame = 1 + new Random().nextInt(9);
+            Board level = loader.load(currentLevel, randomGame);
             LevelPlay.startLevel(level);
             currentGame++;
             // start play activity

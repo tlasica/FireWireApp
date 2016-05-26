@@ -1,0 +1,22 @@
+T: Plansza 5-ta
+MATRIX(4,4)
+TARGET(3,2)
+PLUS(0,4)
+MINUS(4,0)
+(4,0)
+(0,4)
+(4,0)=S,W
+(0,4)=E,N
+(1,2)=S,W
+(1,3)=N,W
+(3,4)=E,W
+(2,3)=N,W
+(3,2)=N,S,W,E
+(3,1)=E,S
+(4,1)=W,S
+(2,1)=N,S
+(0,1)=N,S
+
+# do rozwiązania potrzeba 5 konektorów "na wprost" i 3 90 stopni
+C90=3
+C180=5
