@@ -80,8 +80,6 @@ public class BoardDrawing extends CanvasDrawing {
     }
 
     private void drawBoard(Canvas canvas, Board board) {
-        int ySize = board.ySize();
-//        RectF rect = new RectF(10, 10, canvas.getWidth()-10, (1+ySize) * cellSize);
         RectF rect = new RectF(10, 10, canvas.getWidth()-10, canvas.getHeight()-10);
         float rad = this.nodeRadius;
         canvas.drawRoundRect(rect, rad, rad, this.boardPaint);
@@ -250,7 +248,7 @@ public class BoardDrawing extends CanvasDrawing {
     void drawBitmapAtNode(Canvas canvas, int at, Bitmap bmp) {
         float cx = canvasX(IntCoord.x(at));
         float cy = canvasY(IntCoord.y(at));
-        float size = this.cellSize / 2.0f;
+        float size = this.cellSize / 2.7f;
         RectF targetRect = new RectF(cx - size / 2, cy - size / 2, cx + size / 2, cy + size / 2);
         Rect rectSrc = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
         canvas.drawBitmap(bmp, rectSrc, targetRect, bmpPaint);
