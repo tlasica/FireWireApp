@@ -35,7 +35,7 @@ public class BoardLoader {
     }
 
     private String fileName(int levelNo, int gameNo) {
-        return String.format("levels/level_%02d_%02d.txt", levelNo, gameNo);
+        return String.format("levels/%02d/%02d.txt", levelNo, gameNo);
     }
 
     public static List<String> loadLines(AssetManager assets, String fileName) throws IOException {
