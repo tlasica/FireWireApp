@@ -1,0 +1,15 @@
+MATRIX(2,2)
+TARGET(2,1)
+PLUS(0,2)
+MINUS(0,0)
+(0,0)
+(0,2)
+(0,0)=E,S
+(0,2)=N,E
+(2,1)=N,S,W
+(1,1)=W,E
+
+# dostępne 2x90 i 2x180 (jeden też nadmiarowo, lub dłuższa ścieżka powstanie)
+C90=2
+C180=2
+

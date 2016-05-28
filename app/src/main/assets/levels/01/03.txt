@@ -1,0 +1,13 @@
+MATRIX(2,2)
+TARGET(1,1)
+PLUS(0,2)
+MINUS(0,0)
+(0,0)
+(0,2)
+(0,0)=E,S
+(0,2)=N,E
+(1,1)=N,E,S,W
+
+#dostępne 2x90 stopni i 1x180 stopni (nadmiarowo)
+C90=2
+C180=1
