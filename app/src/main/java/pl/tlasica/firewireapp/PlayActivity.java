@@ -39,7 +39,7 @@ public class PlayActivity extends BasicActivity {
         titleText.setText(LevelPlay.current().board.title);
         mTimeView = (TextView)findViewById(R.id.level_time);
         // start countdown timer to stop game and update time
-        timeLimitMs = 5 * 60 * 1000;
+        timeLimitMs = 15 * 60 * 1000;
         timer = startTimer(timeLimitMs);
         // start game
         mGameView = (GameView)findViewById(R.id.game_view);
@@ -88,7 +88,7 @@ public class PlayActivity extends BasicActivity {
 
     public void closeGame(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Stop this game?");
+        builder.setMessage("Stop game and return to menu?");
         builder.setPositiveButton("STOP", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 fullScreenMode();

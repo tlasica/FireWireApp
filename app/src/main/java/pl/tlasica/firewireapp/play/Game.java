@@ -1,12 +1,19 @@
 package pl.tlasica.firewireapp.play;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.View;
 
 import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 import pl.tlasica.firewireapp.MouseEvent;
@@ -30,6 +37,7 @@ public class Game {
     private static final int STATE_CHANGED = 997;
     private static final int GAME_SOLVED = 998;
     private static final int GAME_LOST = 999;
+
     private Queue<MouseEvent> eventsQueue;
     private SurfaceHolder surfaceHolder;
 
@@ -43,6 +51,7 @@ public class Game {
         Handler handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message inputMessage) {
+                AlertDialog.Builder builder;
                 switch (inputMessage.what) {
                     case STATE_CHANGED:
                         Log.d("GAME", "game loop msg: change");
@@ -51,12 +60,31 @@ public class Game {
                         // TODO: show alert what now: restart, stop
                         // TODO: maybe a better idea would be to pass this message to
                         Log.d("GAME", "game loop msg: lost");
-                        playActivity.finish();
+                        builder = new AlertDialog.Builder(playActivity);
+                        builder.setMessage("Timeout, sorry.");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                playActivity.finish();
+                            }
+                        });
+                        builder.create().show();
                         break;
                     case GAME_SOLVED:
-                        // TODO: show alert what now?
                         Log.d("GAME", "game loop msg: solved");
-
+                        Player.get().gameFinishedWithSuccess();
+                        builder = new AlertDialog.Builder(playActivity);
+                        builder.setMessage("Good job!");
+                        builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                playActivity.finish();
+                            }
+                        });
+                        builder.setNegativeButton("MENU", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                playActivity.finish();
+                            }
+                        });
+                        builder.create().show();
                         break;
                 }
             }
@@ -103,4 +131,5 @@ public class Game {
         gameLoop = new GameLoop(this, surfaceHolder, eventsQueue);
         thread = new Thread(gameLoop);
     }
+
 }
