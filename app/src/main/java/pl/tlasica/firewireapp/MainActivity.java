@@ -16,12 +16,10 @@ import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
+import pl.tlasica.firewireapp.play.Player;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 public class MainActivity extends BasicActivity {
-
-    private int currentLevel = 1;
-    private int currentGame = 0;
 
     @Override
     protected void onDestroy() {
@@ -49,7 +47,14 @@ public class MainActivity extends BasicActivity {
             }
         });
         SoundPoolPlayer.init(this);
+
         ConnectorBitmap.initialize(getResources());
+        try {
+            new BoardLoader(getAssets()).initLevelSizes();
+        } catch (IOException e) {
+            Toast.makeText(this, "Ups. Loading levels failed.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -78,10 +83,8 @@ public class MainActivity extends BasicActivity {
         // load next level
         BoardLoader loader = new BoardLoader(getAssets());
         try {
-            int randomGame = 1 + new Random().nextInt(9);
-            Board level = loader.load(currentLevel, randomGame);
+            Board level = loader.load(Player.get().nextLevel(), Player.get().nextGame());
             LevelPlay.startLevel(level);
-            currentGame++;
             // start play activity
             Intent myIntent = new Intent(this, PlayActivity.class);
             //myIntent.putExtra("key", value); //Optional parameters

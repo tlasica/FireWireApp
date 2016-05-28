@@ -16,8 +16,11 @@ import pl.tlasica.firewireapp.model.Board;
  */
 public class BoardLoader {
 
-    private AssetManager assets;
-    private String lastFile;
+    public static final int NUM_LEVELS = 3;
+    public static final int[] levelSizes = new int[NUM_LEVELS+1];
+
+    private AssetManager    assets;
+    private String          lastFile;   // last file used for loading eg. for error reporting
 
     public BoardLoader(AssetManager assets) {
         this.assets = assets;
@@ -48,5 +51,17 @@ public class BoardLoader {
             line = reader.readLine();
         }
         return lines;
+    }
+
+    public int numGamesInLevel(int levelNo) throws IOException {
+        String levelPath = String.format("levels/%02d", levelNo);
+        String[] games = this.assets.list(levelPath);
+        return games.length;
+    }
+
+    public final void initLevelSizes() throws IOException {
+        for(int l=1; l<=NUM_LEVELS; l++) {
+            levelSizes[l] = numGamesInLevel(l);
+        }
     }
 }
