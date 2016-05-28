@@ -52,14 +52,16 @@ public class LevelPlay {
      * - removes from available list
      * - placed on a board with first available rotation
      */
-    public void placeConnector(ConnectorType type, int position, int rotation) {
+    public void placeConnector(ConnectorType type, int position, int rotation, boolean moveOnBoard) {
         PlacedConnector placedConn = new PlacedConnector(type, rotation);
-        int curr = availableConnectors.get(type);
-        availableConnectors.put(type, curr-1);
         placedConnectors.put(position, placedConn);
+        if (!moveOnBoard) {
+            int curr = availableConnectors.get(type);
+            availableConnectors.put(type, curr-1);
+        }
     }
 
-    public int tryPlaceConnector(ConnectorType type, int position) {
+    public int tryPlaceConnector(ConnectorType type, int position, boolean moveOnBoard) {
         // if this node is free
         if (!board.isFree(position)) {
             Log.d("", "This position is not a free slot: " + position);
@@ -71,11 +73,14 @@ public class LevelPlay {
             return -1;
         }
         // if we have connectors of this type
-        Integer connLeft = availableConnectors.get(type);
-        if (connLeft==null || connLeft==0) {
-            Log.d("", "No more connectors of this type left: " + type);
-            return -1;
+        if (!moveOnBoard) {
+            Integer connLeft = availableConnectors.get(type);
+            if (connLeft == null || connLeft == 0) {
+                Log.d("", "No more connectors of this type left: " + type);
+                return -1;
+            }
         }
+        // if type fits wires at target node
         int[] possibleRotations = board.possibleRotations(type, position);
         if (possibleRotations != null) {
             return possibleRotations[0];
@@ -117,14 +122,29 @@ public class LevelPlay {
         return placedConnectors.containsKey(position);
     }
 
-    public void removeConnector(int position) {
+    public void removeConnector(int position, boolean moveOnBoard) {
         PlacedConnector conn = connectorAt(position);
-        int count = 1 + availableConnectors.get(conn.type);
-        availableConnectors.put(conn.type, count);
         placedConnectors.remove(position);
+        if (!moveOnBoard) {
+            int count = 1 + availableConnectors.get(conn.type);
+            availableConnectors.put(conn.type, count);
+        }
     }
 
     public PlacedConnector connectorAt(int pos) {
         return placedConnectors.get(pos);
+    }
+
+    public boolean tryMoveConnector(int nodeFrom, int nodeTo) {
+        if (! tryRemoveConnector(nodeFrom)) return false;
+        PlacedConnector conn = this.connectorAt(nodeFrom);
+        return tryPlaceConnector(conn.type, nodeTo, true) >= 0;
+    }
+
+    public void moveConnector(int nodeFrom, int nodeTo) {
+        PlacedConnector conn = this.connectorAt(nodeFrom);
+        this.removeConnector(nodeFrom, true);
+        int rotation = this.tryPlaceConnector(conn.type, nodeTo, true);
+        this.placeConnector(conn.type, nodeTo, rotation, true );
     }
 }

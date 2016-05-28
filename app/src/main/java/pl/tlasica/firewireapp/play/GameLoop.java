@@ -62,11 +62,6 @@ public class GameLoop implements Runnable {
         }
     }
 
-    // returns duration in millisec
-    private long durationMs() {
-        return currTimeMs - startTimeMs;
-    }
-
     private long waitForNextFrame(long frameStartTime) {
         long nextFrameStartTime = new Date().getTime();
         long howLongWeTook = nextFrameStartTime - frameStartTime;
@@ -115,7 +110,7 @@ public class GameLoop implements Runnable {
     private void processInput() {
         LevelPlay play = LevelPlay.current();
         boolean sthProcessed = false;
-        while (eventQueue.isEmpty() == false) {
+        while (!eventQueue.isEmpty()) {
             MouseEvent ev = eventQueue.poll();
             if (ev instanceof ClickEvent) {
                 sthProcessed |= handleClick((ClickEvent)ev, play);
@@ -161,8 +156,14 @@ public class GameLoop implements Runnable {
         if (nodeFrom >= 0) {
             if (nodeTo >= 0) {
                 Log.d(TAG, "Try to move connector from " + nodeFrom + " to node " + nodeTo);
-                // try move from node A to node B
-                return true;
+                boolean possible = play.tryMoveConnector(nodeFrom, nodeTo);
+                if (possible) {
+                    Log.d(TAG, "Connector moved from " + nodeFrom + " to node " + nodeTo);
+                    play.moveConnector(nodeFrom, nodeTo);
+                    SoundPoolPlayer.get().tick();
+                    return true;
+                }
+                return false;
             }
             ConnectorType type = connSetDrawing.connAtMouse(event.to, play);
             if (type != null) {
@@ -170,7 +171,7 @@ public class GameLoop implements Runnable {
                 boolean possible = play.tryRemoveConnector(nodeFrom);
                 if (possible) {
                     Log.d(TAG, "Connector removed from " + nodeFrom);
-                    play.removeConnector(nodeFrom);
+                    play.removeConnector(nodeFrom, false);
                     return true;
                 }
             }
@@ -180,10 +181,10 @@ public class GameLoop implements Runnable {
             ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
             if (type != null) {
                 Log.d(TAG, "Try to place connector on " + nodeTo);
-                int rotation = play.tryPlaceConnector(type, nodeTo);
+                int rotation = play.tryPlaceConnector(type, nodeTo, false);
                 if (rotation >= 0) {
                     Log.d(TAG, "Type " + type + " placed on " + nodeTo);
-                    play.placeConnector(type, nodeTo, rotation);
+                    play.placeConnector(type, nodeTo, rotation, false);
                     SoundPoolPlayer.get().tick();
                     return true;
                 }
