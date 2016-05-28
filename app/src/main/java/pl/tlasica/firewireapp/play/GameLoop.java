@@ -15,10 +15,6 @@ import pl.tlasica.firewireapp.model.LevelPlay;
 
 public class GameLoop implements Runnable {
 
-    public class Message {
-        boolean stateChanged;  // player made a move
-    }
-
     private final SurfaceHolder surfaceHolder;
     private boolean running = true;
     private boolean pause = false;
@@ -28,9 +24,8 @@ public class GameLoop implements Runnable {
 
     private final BoardDrawing boardDrawing;
     private final ConnectorSetDrawing connSetDrawing;
+    private final GameLoopStatistics stats = new GameLoopStatistics();
 
-    private long startTimeMs;
-    private long currTimeMs;
     private long lastLogTime;
     private Game game;
 
@@ -49,9 +44,8 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         Log.d(TAG, "GameLoop started");
-        startTimeMs = System.currentTimeMillis();
+        stats.start();
         while (running) {
-            currTimeMs = System.currentTimeMillis();
             long frameStartTime = new Date().getTime();
             if (! pause) {
                 processInput();
@@ -60,6 +54,7 @@ public class GameLoop implements Runnable {
             }
             waitForNextFrame(frameStartTime);
         }
+        stats.stop();
     }
 
     private long waitForNextFrame(long frameStartTime) {
@@ -161,6 +156,7 @@ public class GameLoop implements Runnable {
                     Log.d(TAG, "Connector moved from " + nodeFrom + " to node " + nodeTo);
                     play.moveConnector(nodeFrom, nodeTo);
                     SoundPoolPlayer.get().tick();
+                    stats.incMove();
                     return true;
                 }
                 else {
@@ -176,6 +172,7 @@ public class GameLoop implements Runnable {
                 if (possible) {
                     Log.d(TAG, "Connector removed from " + nodeFrom);
                     play.removeConnector(nodeFrom, false);
+                    stats.incRemove();
                     return true;
                 }
             }
@@ -190,6 +187,7 @@ public class GameLoop implements Runnable {
                     Log.d(TAG, "Type " + type + " placed on " + nodeTo);
                     play.placeConnector(type, nodeTo, rotation, false);
                     SoundPoolPlayer.get().tick();
+                    stats.incPlace();
                     return true;
                 }
                 else {
@@ -211,6 +209,7 @@ public class GameLoop implements Runnable {
                 Log.d(TAG, "Rotation on " + node);
                 play.rotateConnector(node, nextRotation);
                 SoundPoolPlayer.get().tick();
+                stats.incRotate();
                 return true;
             }
         }
@@ -226,4 +225,48 @@ public class GameLoop implements Runnable {
         }
     }
 
+}
+
+class GameLoopStatistics {
+    int numRotate = 0;
+    int numMove = 0;
+    int numPlace = 0;
+    int numRemove = 0;
+    private long startTimeMs;
+    private long stopTimeMs;
+
+    public GameLoopStatistics() {
+    }
+
+    public void start() {
+        startTimeMs = System.currentTimeMillis();
+        numRotate = 0;
+        numMove = 0;
+        numPlace = 0;
+        numRemove = 0;
+    }
+
+    public void stop() {
+        stopTimeMs = System.currentTimeMillis();
+    }
+
+    public void incMove() {
+        numMove++;
+    }
+
+    public void incRotate() {
+        numRotate++;
+    }
+
+    public void incPlace() {
+        numPlace++;
+    }
+
+    public void incRemove() {
+        numRemove++;
+    }
+
+    public double durationSec() {
+        return (stopTimeMs-startTimeMs) / 1000.0;
+    }
 }
