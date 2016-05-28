@@ -163,7 +163,11 @@ public class GameLoop implements Runnable {
                     SoundPoolPlayer.get().tick();
                     return true;
                 }
-                return false;
+                else {
+                    Log.d(TAG, "This type cannot be moved to " + nodeTo);
+                    SoundPoolPlayer.get().playNo();
+                    return false;
+                }
             }
             ConnectorType type = connSetDrawing.connAtMouse(event.to, play);
             if (type != null) {
