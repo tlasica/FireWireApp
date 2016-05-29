@@ -61,7 +61,7 @@ public class Game {
                         // TODO: maybe a better idea would be to pass this message to
                         Log.d("GAME", "game loop msg: lost");
                         builder = new AlertDialog.Builder(playActivity);
-                        builder.setMessage("Timeout, sorry.");
+                        builder.setMessage("Game lost:\npower wired but not fired.");
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 playActivity.finish();

@@ -30,7 +30,11 @@ public class BoardLoader {
         lastFile = fileName(levelNo, gameNo);
         List<String> lines = loadLines(this.assets, lastFile);
         TextParser parser = new TextParser();
-        return parser.parse(lines);
+        Board board = parser.parse(lines);
+        if (board.title==null) {
+            board.title = String.format("Level %02d:%02d", levelNo, gameNo);
+        }
+        return board;
     }
 
     public String getLastFile() {
