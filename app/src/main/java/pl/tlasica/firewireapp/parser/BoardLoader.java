@@ -1,6 +1,7 @@
 package pl.tlasica.firewireapp.parser;
 
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -66,6 +67,7 @@ public class BoardLoader {
     public final void initLevelSizes() throws IOException {
         for(int l=1; l<=NUM_LEVELS; l++) {
             levelSizes[l] = numGamesInLevel(l);
+            Log.d("GameLoader", String.format("Level %02d: %d games", l, levelSizes[l]));
         }
     }
 }

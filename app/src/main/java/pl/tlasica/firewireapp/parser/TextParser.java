@@ -107,7 +107,7 @@ public class TextParser {
                 board.minus = node;
                 return true;
             }
-            if (name.equalsIgnoreCase("TARGET")) {
+            if (name.equalsIgnoreCase("TARGET") || name.equalsIgnoreCase("RED") || name.equalsIgnoreCase("BLUE")) {
                 board.target = node;
                 return true;
             }

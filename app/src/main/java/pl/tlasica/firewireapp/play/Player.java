@@ -2,6 +2,9 @@ package pl.tlasica.firewireapp.play;
 
 // TODO: add persistency
 
+import android.util.Log;
+import pl.tlasica.firewireapp.parser.BoardLoader;
+
 /**
  * Holds information about current level to play, history etc.
  */
@@ -23,7 +26,11 @@ public class Player {
     // mark current game as finished with success
     public void gameFinishedWithSuccess() {
         this.nextGameNo++;
-        //TODO: move to next level
+        if (this.nextGameNo > BoardLoader.levelSizes[nextLevelNo]) {
+            this.nextGameNo = 1;
+            this.nextLevelNo++;
+            Log.d("Player", "Level Up. Next level: " + String.valueOf(nextLevelNo));
+        }
     }
 
     public void gameCancelled() {
