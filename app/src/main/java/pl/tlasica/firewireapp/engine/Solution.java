@@ -1,5 +1,7 @@
 package pl.tlasica.firewireapp.engine;
 
+import android.util.Log;
+
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
@@ -25,7 +27,8 @@ public class Solution {
         List<DefaultEdge> path = DijkstraShortestPath.findPathBetween(graph, play.board.plus, play.board.minus);
         if (path!=null && !path.isEmpty()) {
             for (DefaultEdge e : path) {
-                if (graph.getEdgeSource(e) == play.board.target) {
+                Log.d("Path", e.toString());
+                if (graph.getEdgeSource(e) == play.board.target || graph.getEdgeTarget(e)==play.board.target) {
                     return GameStatus.WIN;
                 }
             }
