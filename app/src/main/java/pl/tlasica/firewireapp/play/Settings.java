@@ -21,7 +21,7 @@ public class Settings {
         boolean sound = !curr;
         SharedPreferences.Editor editor = preferences().edit();
         editor.putBoolean("SOUND", sound);
-        editor.commit();
+        editor.apply();
         return sound;
     }
 
