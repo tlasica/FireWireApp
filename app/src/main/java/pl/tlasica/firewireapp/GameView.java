@@ -25,6 +25,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setGame(Game g) {
         this.game = g;
+        if (this.getHolder() != null) {
+            this.game.create(this.getHolder(), this.events);
+        }
     }
 
     public Game getGame() {

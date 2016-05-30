@@ -14,19 +14,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
+import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.LevelPlay;
+import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.Game;
+import pl.tlasica.firewireapp.play.Player;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 
 //http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
+//https://developer.android.com/guide/topics/ui/dialogs.html
 
 public class PlayActivity extends BasicActivity {
     private GameView    mGameView;
     private TextView    mTimeView;
     private CountDownTimer timer;
-    private long timeLimitMs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +43,7 @@ public class PlayActivity extends BasicActivity {
         titleText.setText(LevelPlay.current().board.title);
         mTimeView = (TextView)findViewById(R.id.level_time);
         // start countdown timer to stop game and update time
-        timeLimitMs = 15 * 60 * 1000;
-        timer = startTimer(timeLimitMs);
+        timer = startTimer();
         // start game
         mGameView = (GameView)findViewById(R.id.game_view);
         mGameView.setGame(new Game(this));
@@ -71,10 +74,14 @@ public class PlayActivity extends BasicActivity {
         view.setSystemUiVisibility(flags);
     }
 
-    private CountDownTimer startTimer(long limitMs) {
+    private CountDownTimer startTimer() {
+        final long limitMs = 15 * 60 * 1000;
+        if (timer != null) {
+            timer.cancel();
+        }
         timer = new CountDownTimer(limitMs, 1000) {
             public void onTick(long millisUntilFinished) {
-                long durSec = (timeLimitMs - millisUntilFinished) /1000;
+                long durSec = (limitMs - millisUntilFinished) /1000;
                 long min = durSec / 60;
                 long sec = durSec % 60;
                 mTimeView.setText(String.format("%02d:%02d", min, sec));
@@ -122,5 +129,25 @@ public class PlayActivity extends BasicActivity {
         GameView gameView = (GameView)findViewById(R.id.game_view);
         Game game = gameView.getGame();
         return game;
+    }
+
+    public void nextLevel() {
+        game().stop();
+        fullScreenMode();
+        BoardLoader loader = new BoardLoader(getAssets());
+        Board level = null;
+        try {
+            level = loader.load(Player.get().nextLevel(), Player.get().nextGame());
+        } catch (IOException e) {
+            Toast.makeText(this, "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            this.finish();
+        }
+        LevelPlay.startLevel(level);
+        timer = startTimer();
+        TextView titleText = (TextView)findViewById(R.id.level_title);
+        titleText.setText(LevelPlay.current().board.title);
+        mGameView.setGame(new Game(this));
+        game().start();
     }
 }

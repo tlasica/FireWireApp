@@ -18,7 +18,7 @@ public class GameLoop implements Runnable {
     private final SurfaceHolder surfaceHolder;
     private boolean running = true;
     private boolean pause = false;
-    private final String TAG = "GAMELOOP";
+    private final String TAG = "GameLoop";
 
     private Queue<MouseEvent>   eventQueue;
 
@@ -122,6 +122,7 @@ public class GameLoop implements Runnable {
             switch (status) {
                 case WIN:
                     Log.i("GAME", "Success. Win!");
+                    stats.stop();
                     SoundPoolPlayer.get().electricshock();
                     SoundPoolPlayer.get().playYes();
                     this.pleaseStop();
@@ -129,6 +130,7 @@ public class GameLoop implements Runnable {
                     break;
                 case LOST:
                     Log.i("GAME", "Game Lost...");
+                    stats.stop();
                     SoundPoolPlayer.get().playNo();
                     this.pleaseStop();
                     game.notifyGameLost();
@@ -225,6 +227,9 @@ public class GameLoop implements Runnable {
         }
     }
 
+    public GameLoopStatistics stats() {
+        return stats;
+    }
 }
 
 class GameLoopStatistics {
@@ -247,7 +252,7 @@ class GameLoopStatistics {
     }
 
     public void stop() {
-        stopTimeMs = System.currentTimeMillis();
+        if (stopTimeMs == 0) stopTimeMs = System.currentTimeMillis();
     }
 
     public void incMove() {
@@ -269,4 +274,5 @@ class GameLoopStatistics {
     public double durationSec() {
         return (stopTimeMs-startTimeMs) / 1000.0;
     }
+
 }

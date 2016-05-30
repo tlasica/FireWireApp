@@ -1,6 +1,5 @@
 package pl.tlasica.firewireapp.play;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,18 +7,11 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.View;
 
 import java.util.Queue;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
 
 import pl.tlasica.firewireapp.MouseEvent;
 import pl.tlasica.firewireapp.PlayActivity;
-import pl.tlasica.firewireapp.engine.Solution;
-import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.LevelPlay;
 
 
@@ -29,17 +21,14 @@ import pl.tlasica.firewireapp.model.LevelPlay;
  */
 public class Game {
 
-    private Thread    thread = null;
-    private GameLoop  gameLoop = null;
+    private Thread          thread = null;
+    private GameLoop        gameLoop = null;
     private Handler         msgHandler;
     private PlayActivity    playActivity;
 
     private static final int STATE_CHANGED = 997;
     private static final int GAME_SOLVED = 998;
     private static final int GAME_LOST = 999;
-
-    private Queue<MouseEvent> eventsQueue;
-    private SurfaceHolder surfaceHolder;
 
     public Game(PlayActivity activity) {
         playActivity = activity;
@@ -71,20 +60,12 @@ public class Game {
                         break;
                     case GAME_SOLVED:
                         Log.d("GAME", "game loop msg: solved");
-                        Player.get().gameFinishedWithSuccess();
-                        builder = new AlertDialog.Builder(playActivity);
-                        builder.setMessage("Good job!");
-                        builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                playActivity.finish();
-                            }
-                        });
-                        builder.setNegativeButton("MENU", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                playActivity.finish();
-                            }
-                        });
-                        builder.create().show();
+                        // save to game history etc.
+                        Player.get().gameFinishedWithSuccess(); // to save this fact
+                        // show level completed dialog
+                        LevelCompletedDialogFragment dialogFragment = new LevelCompletedDialogFragment();
+                        dialogFragment.gameStats = gameLoop.stats();
+                        dialogFragment.show(playActivity.getFragmentManager(), "levelCompleted");
                         break;
                 }
             }
@@ -116,6 +97,7 @@ public class Game {
         gameLoop.pleaseStop();
         try {
             thread.join();
+            Log.i("Game", "stop() completed. thread joined." );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -128,6 +110,7 @@ public class Game {
     }
 
     public void create(SurfaceHolder surfaceHolder, Queue<MouseEvent> eventsQueue) {
+        Log.i("Game", "create()");
         gameLoop = new GameLoop(this, surfaceHolder, eventsQueue);
         thread = new Thread(gameLoop);
     }
