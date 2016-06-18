@@ -44,13 +44,9 @@ public class LevelCompletedDialogFragment extends DialogFragment {
     private String buildMsg() {
         int points = PointCalculator.points(gameStats, LevelPlay.current().board);
         String msg = String.format("Level completed in %02.1fs\n\n" +
-                "Connectors used: %d\n" +
-                "Extra moves: %d\n" +
                 "\n" +
                 "TOTAL POINTS: %d",
                 gameStats.durationSec(),
-                gameStats.numPlace - gameStats.numRemove,
-                gameStats.numRotate + gameStats.numMove,
                 points);
         return msg;
     }
