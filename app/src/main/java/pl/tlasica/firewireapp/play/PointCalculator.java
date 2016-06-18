@@ -3,10 +3,10 @@ package pl.tlasica.firewireapp.play;
 import pl.tlasica.firewireapp.model.Board;
 
 /**
- * (400W/sqrt(t))*(1-P/75)*(1-L/50)*(1-O/200)
+ * (200*W/sqrt(t))*(1-P/75)*(1-L/50)*(1-O/200)
 
  t - czas w sekundach
- W - wymiar planszy (jeden, nie iloczyn z wymiarów macierzy)
+ W - wymiar planszy (jeden, nie iloczyn z wymiarów macierzy) ^ 1.5
  P - liczba zdjętych z planszy konektorów
  L - liczba wykorzystanych konektorów
  O - liczba obrotów konektorami
@@ -22,7 +22,9 @@ public class PointCalculator {
     }
 
     private static double timeValue(GameLoopStatistics stats, Board board) {
-        return 400 * Math.max(board.xSize(), board.ySize()) / Math.sqrt(stats.durationSec());
+        int size = Math.max(board.xSize(), board.ySize());
+        double w = Math.pow(size, 1.5);
+        return 200 * w / Math.sqrt(stats.durationSec());
     }
 
     private static double pValue(GameLoopStatistics stats) {
