@@ -47,8 +47,8 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/button_rank"
-        android:text="rank"
+        android:id="@+id/button_tutorial"
+        android:text="HOW TO PLAY"
         android:textSize="32sp"
         android:elevation="8dp"
         android:textColor="@color/myGreen"
@@ -57,7 +57,8 @@
         android:layout_below="@id/button_play"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="showTutorial" />
 
 
 </RelativeLayout>

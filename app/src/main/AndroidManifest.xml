@@ -10,8 +10,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,15 @@
             android:name=".PlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_play"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".play.TutorialActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.tlasica.firewireapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

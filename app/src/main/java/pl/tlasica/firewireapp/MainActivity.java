@@ -18,6 +18,7 @@ import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
 import pl.tlasica.firewireapp.play.Player;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
+import pl.tlasica.firewireapp.play.TutorialActivity;
 
 public class MainActivity extends BasicActivity {
 
@@ -35,7 +36,7 @@ public class MainActivity extends BasicActivity {
         //setSupportActionBar(toolbar);
 
         setButtonFontBoldItalic(R.id.button_play);
-        setButtonFontBoldItalic(R.id.button_rank);
+        setButtonFontBoldItalic(R.id.button_tutorial);
         setTextFont(R.id.logo_text);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -96,5 +97,10 @@ public class MainActivity extends BasicActivity {
             Toast.makeText(this, "Ups. Loading level failed on " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    public void showTutorial(View view) {
+        Intent myIntent = new Intent(this, TutorialActivity.class);
+        startActivity(myIntent);
     }
 }
