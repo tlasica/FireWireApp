@@ -182,4 +182,5 @@ public class Board {
     public boolean isSpecial(int node) {
         return (node==target || node==minus || node==plus);
     }
+
 }

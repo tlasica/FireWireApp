@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import android.util.Log;
+
 import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.ConnectorType;
 import pl.tlasica.firewireapp.model.DefinedConnector;
@@ -51,6 +53,7 @@ public class BoardDrawing extends CanvasDrawing {
 
     private Canvas boardCanvas;
     private Bitmap boardBitmap;
+    private long   lastDrawnGeneration = 0;
 
     private int full_wire_size = 8; // full wire consists of 8 parts
     private int conn_wire_size = 4; // we do not print last part
@@ -65,10 +68,15 @@ public class BoardDrawing extends CanvasDrawing {
             Bitmap.Config conf = Bitmap.Config.ARGB_8888;
             boardBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), conf);
             boardCanvas = new Canvas(boardBitmap);
+        }
+
+        if (play.generation != this.lastDrawnGeneration) {
+            Log.d("DRAW", "Drawing background for generation: " + String.valueOf(play.generation));
             // draw the board on canvas
             drawBoard(boardCanvas, play.board);
             drawWires(boardCanvas, play.board);
-            drawNodes(boardCanvas, play.board);
+            drawNodes(boardCanvas, play);
+            this.lastDrawnGeneration = play.generation;
         }
 
         canvas.drawBitmap(boardBitmap, 0, 0, bmpPaint);
@@ -82,7 +90,7 @@ public class BoardDrawing extends CanvasDrawing {
 
     private void drawBoard(Canvas canvas, Board board) {
         RectF rect = new RectF(10, 10, canvas.getWidth()-10, canvas.getHeight()-10);
-        float rad = this.nodeRadius;
+        float rad = this.nodeRadius * 0.6f;
         canvas.drawRoundRect(rect, rad, rad, this.boardPaint);
     }
 
@@ -128,9 +136,11 @@ public class BoardDrawing extends CanvasDrawing {
         }
     }
 
-    void drawNodes(Canvas canvas, Board board) {
-        for (Integer n : board.nodes) {
-            drawNode(canvas, n, true);
+    void drawNodes(Canvas canvas, LevelPlay play) {
+        for (Integer n : play.board.nodes) {
+            if (play.isFree(n)) {
+                drawNode(canvas, n, true);
+            }
         }
     }
 

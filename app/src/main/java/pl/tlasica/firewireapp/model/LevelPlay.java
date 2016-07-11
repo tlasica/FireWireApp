@@ -18,8 +18,9 @@ public class LevelPlay {
     public Board                            board = null;
     private static LevelPlay                currentPlay = null;
 
-    public Map<ConnectorType, Integer>     availableConnectors;
-    public Map<Integer, PlacedConnector>   placedConnectors;
+    public Map<ConnectorType, Integer>      availableConnectors;
+    public Map<Integer, PlacedConnector>    placedConnectors;
+    public long                             generation = 1;
 
 
     public static LevelPlay current() {
@@ -59,6 +60,7 @@ public class LevelPlay {
             int curr = availableConnectors.get(type);
             availableConnectors.put(type, curr-1);
         }
+        generation++;
     }
 
     public int tryPlaceConnector(ConnectorType type, int position, boolean moveOnBoard) {
@@ -116,6 +118,7 @@ public class LevelPlay {
     public void rotateConnector(int position, int rotation) {
         PlacedConnector placedConn = connectorAt(position);
         placedConn.rotation = rotation;
+        generation++;
     }
 
     public boolean tryRemoveConnector(int position) {
@@ -129,6 +132,7 @@ public class LevelPlay {
             int count = 1 + availableConnectors.get(conn.type);
             availableConnectors.put(conn.type, count);
         }
+        generation++;
     }
 
     public PlacedConnector connectorAt(int pos) {
@@ -146,5 +150,10 @@ public class LevelPlay {
         this.removeConnector(nodeFrom, true);
         int rotation = this.tryPlaceConnector(conn.type, nodeTo, true);
         this.placeConnector(conn.type, nodeTo, rotation, true );
+        generation++;
+    }
+
+    public boolean isFree(int node) {
+        return !placedConnectors.containsKey(node) && board.isFree(node);
     }
 }
