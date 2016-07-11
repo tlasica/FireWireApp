@@ -55,6 +55,7 @@ public class BoardDrawing extends CanvasDrawing {
     private int full_wire_size = 8; // full wire consists of 8 parts
     private int conn_wire_size = 4; // we do not print last part
 
+
     public void draw(Canvas canvas, LevelPlay play) {
         this.cellsInRow = play.board.xSize();
         prepareDrawing(canvas);
@@ -89,7 +90,7 @@ public class BoardDrawing extends CanvasDrawing {
         for (int n : board.nodes) {
             float x = canvasX(IntCoord.x(n));
             float y = canvasY(IntCoord.y(n));
-            float dist = cellSize / 3;
+            float dist = cellSize / 2.25f;
             boolean xFit = (mouse.x >= x - dist && mouse.x <= x + dist);
             boolean yFit = (mouse.y >= y - dist && mouse.y <= y + dist);
             if (xFit && yFit) {
