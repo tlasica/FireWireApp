@@ -232,6 +232,7 @@ public class GameLoop implements Runnable {
     }
 }
 
+
 class GameLoopStatistics {
     int numRotate = 0;
     int numMove = 0;

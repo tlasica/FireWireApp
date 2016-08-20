@@ -6,31 +6,28 @@ import android.util.Log;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 
 /**
- * Holds information about current level to play, history etc.
+ * Holds information about current level to play
  */
 public class Player {
 
     private static final Player player = new Player();
 
-    private int nextGameNo = 1;
-    private int nextLevelNo = 1;
+    private int currLevelId = LevelId.levelId(1, 1);
 
-    public int nextLevel() {
-        return nextLevelNo;
+    public int currentLevelId() {
+        return currLevelId;
     }
 
-    public int nextGame() {
-        return nextGameNo;
+    public void setNextLevel() {
+        currLevelId = BoardLoader.nextLevelId(currentLevelId());
     }
 
     // mark current game as finished with success
     public void gameFinishedWithSuccess() {
-        this.nextGameNo++;
-        if (this.nextGameNo > BoardLoader.levelSizes[nextLevelNo]) {
-            this.nextGameNo = 1;
-            this.nextLevelNo++;
-            Log.d("Player", "Level Up. Next level: " + String.valueOf(nextLevelNo));
-        }
+        //TODO: save the fact that game is solved
+        //TODO: save game statistics
+        //TODO: update points per level
+        Log.d("Player", "Level finished: " + String.valueOf(currentLevelId()));
     }
 
     public void gameCancelled() {

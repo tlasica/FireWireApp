@@ -132,12 +132,21 @@ public class PlayActivity extends BasicActivity {
     }
 
     public void nextLevel() {
+        Player.get().setNextLevel();
+        playLevel();
+    }
+
+    public void repeatLevel() {
+        playLevel();
+    }
+
+    private void playLevel() {
         game().stop();
         fullScreenMode();
         BoardLoader loader = new BoardLoader(getAssets());
         Board level = null;
         try {
-            level = loader.load(Player.get().nextLevel(), Player.get().nextGame());
+            level = loader.load(Player.get().currentLevelId());
         } catch (IOException e) {
             Toast.makeText(this, "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
             e.printStackTrace();

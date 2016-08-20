@@ -25,16 +25,25 @@ public class LevelCompletedDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Good job!");
         builder.setMessage(this.buildMsg());
-        builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
+
+        builder.setNeutralButton("EXIT", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                getActivity().finish();
+            }
+        });
+
+        builder.setNegativeButton("PLAY AGAIN", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // play next level
+                PlayActivity ply = (PlayActivity)getActivity();
+                ply.repeatLevel();
+            }
+        });
+        builder.setPositiveButton("NEXT LEVEL", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // play next level
                 PlayActivity ply = (PlayActivity)getActivity();
                 ply.nextLevel();
-            }
-        });
-        builder.setNegativeButton("MENU", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                getActivity().finish();
             }
         });
         // Create the AlertDialog object and return it
@@ -43,9 +52,9 @@ public class LevelCompletedDialogFragment extends DialogFragment {
 
     private String buildMsg() {
         int points = PointCalculator.points(gameStats, LevelPlay.current().board);
-        String msg = String.format("Level completed in %02.1fs\n\n" +
-                "\n" +
-                "TOTAL POINTS: %d",
+        String msg = String.format("Level completed in %02.1fs\n" +
+                "LEVEL POINTS: %d" +
+                "\n",
                 gameStats.durationSec(),
                 points);
         return msg;

@@ -16,6 +16,7 @@ import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
+import pl.tlasica.firewireapp.play.LevelId;
 import pl.tlasica.firewireapp.play.Player;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 import pl.tlasica.firewireapp.play.TutorialActivity;
@@ -84,7 +85,7 @@ public class MainActivity extends BasicActivity {
         // load next level
         BoardLoader loader = new BoardLoader(getAssets());
         try {
-            Board level = loader.load(Player.get().nextLevel(), Player.get().nextGame());
+            Board level = loader.load(Player.get().currentLevelId());
             LevelPlay.startLevel(level);
             // start play activity
             Intent myIntent = new Intent(this, PlayActivity.class);

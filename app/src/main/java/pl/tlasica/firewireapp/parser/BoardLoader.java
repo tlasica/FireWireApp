@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.play.LevelId;
 
 /**
  * Translates level# and game# to Board object,
@@ -27,7 +28,9 @@ public class BoardLoader {
         this.assets = assets;
     }
 
-    public Board load(int levelNo, int gameNo) throws IOException {
+    public Board load(int levelId) throws IOException {
+        int levelNo = LevelId.level(levelId);
+        int gameNo = LevelId.game(levelId);
         lastFile = fileName(levelNo, gameNo);
         List<String> lines = loadLines(this.assets, lastFile);
         TextParser parser = new TextParser();
@@ -46,7 +49,7 @@ public class BoardLoader {
         return String.format("levels/%02d/%02d.txt", levelNo, gameNo);
     }
 
-    public static List<String> loadLines(AssetManager assets, String fileName) throws IOException {
+    private static List<String> loadLines(AssetManager assets, String fileName) throws IOException {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(assets.open(fileName)));
         List<String> lines = new ArrayList<>();
@@ -58,7 +61,7 @@ public class BoardLoader {
         return lines;
     }
 
-    public int numGamesInLevel(int levelNo) throws IOException {
+    private int numGamesInLevel(int levelNo) throws IOException {
         String levelPath = String.format("levels/%02d", levelNo);
         String[] games = this.assets.list(levelPath);
         return games.length;
@@ -70,4 +73,14 @@ public class BoardLoader {
             Log.d("GameLoader", String.format("Level %02d: %d games", l, levelSizes[l]));
         }
     }
+
+    public static int nextLevelId(int levelId) {
+        int levelNo = LevelId.level(levelId);
+        int gameNo = LevelId.game(levelId);
+        if (gameNo > levelSizes[levelNo])
+            return LevelId.levelId(levelNo+1, 1);
+        else
+            return LevelId.levelId(levelNo, gameNo+1);
+    }
+
 }
