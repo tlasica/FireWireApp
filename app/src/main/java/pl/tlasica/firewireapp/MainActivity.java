@@ -43,8 +43,11 @@ public class MainActivity extends BasicActivity {
         setTextFont(R.id.logo_text);
 
         //sound icon
-        Boolean soundOn = new Settings(this).sound();
+        Settings settings = new Settings(this);
+        Boolean soundOn = settings.sound();
         this.setSoundIcon(soundOn);
+        int nextLevel = settings.nextLevelId();
+        Player.get().setLevel(nextLevel);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

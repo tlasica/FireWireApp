@@ -29,4 +29,11 @@ public class Settings {
         return context.getSharedPreferences("pl.tlasica.firewire", Context.MODE_PRIVATE);
     }
 
+    public int nextLevelId() { return preferences().getInt("NEXT_LEVEL", LevelId.levelId(1,1)); }
+
+    public void storeNextLevelId(int levelId) {
+        SharedPreferences.Editor editor = preferences().edit();
+        editor.putInt("NEXT_LEVEL", levelId);
+        editor.apply();
+    }
 }

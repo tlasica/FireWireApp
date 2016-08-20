@@ -13,6 +13,7 @@ import java.util.Queue;
 import pl.tlasica.firewireapp.MouseEvent;
 import pl.tlasica.firewireapp.PlayActivity;
 import pl.tlasica.firewireapp.model.LevelPlay;
+import pl.tlasica.firewireapp.parser.BoardLoader;
 
 
 /**
@@ -62,6 +63,9 @@ public class Game {
                         Log.d("GAME", "game loop msg: solved");
                         // save to game history etc.
                         Player.get().gameFinishedWithSuccess(); // to save this fact
+                        // save the fact game is solved
+                        Settings settings = new Settings(playActivity);
+                        settings.storeNextLevelId(BoardLoader.nextLevelId(Player.get().currentLevelId()));
                         // show level completed dialog
                         LevelCompletedDialogFragment dialogFragment = new LevelCompletedDialogFragment();
                         dialogFragment.gameStats = gameLoop.stats();

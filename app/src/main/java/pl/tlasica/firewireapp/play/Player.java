@@ -18,12 +18,17 @@ public class Player {
         return currLevelId;
     }
 
+    public void setLevel(int levelId) {
+        currLevelId=levelId;
+    }
+
     public void setNextLevel() {
         currLevelId = BoardLoader.nextLevelId(currentLevelId());
     }
 
     // mark current game as finished with success
     public void gameFinishedWithSuccess() {
+        //TODO: save current level as saved
         //TODO: save the fact that game is solved
         //TODO: save game statistics
         //TODO: update points per level
