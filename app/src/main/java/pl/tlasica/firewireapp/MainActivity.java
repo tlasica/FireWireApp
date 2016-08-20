@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
 import pl.tlasica.firewireapp.play.LevelId;
 import pl.tlasica.firewireapp.play.Player;
+import pl.tlasica.firewireapp.play.Settings;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 import pl.tlasica.firewireapp.play.TutorialActivity;
 
@@ -36,21 +38,26 @@ public class MainActivity extends BasicActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        setButtonFontBoldItalic(R.id.button_play);
-        setButtonFontBoldItalic(R.id.button_tutorial);
+//        setButtonFontBoldItalic(R.id.button_play);
+//        setButtonFontBoldItalic(R.id.button_tutorial);
         setTextFont(R.id.logo_text);
+
+        //sound icon
+        Boolean soundOn = new Settings(this).sound();
+        this.setSoundIcon(soundOn);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String msg = "TODO: Share on FB";
+                Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
         SoundPoolPlayer.init(this);
 
         ConnectorBitmap.initialize(getResources());
+
         try {
             new BoardLoader(getAssets()).initLevelSizes();
         } catch (IOException e) {
@@ -72,6 +79,8 @@ public class MainActivity extends BasicActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        Toast.makeText(this, "ACTION: " + String.valueOf(id), Toast.LENGTH_LONG).show();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -103,5 +112,21 @@ public class MainActivity extends BasicActivity {
     public void showTutorial(View view) {
         Intent myIntent = new Intent(this, TutorialActivity.class);
         startActivity(myIntent);
+    }
+
+    public void switchSound(View view) {
+        Settings s = new Settings(getApplicationContext());
+        Boolean soundOn = s.switchSound();
+        String msg = "Sound is " + (soundOn ? "ON" : "OFF");
+        Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT).show();
+        this.setSoundIcon(soundOn);
+    }
+
+    private void setSoundIcon(boolean on) {
+        ImageView view = (ImageView)findViewById(R.id.button_switch_sound);
+        if (on)
+            view.setImageResource(R.drawable.ic_volume_up_black_36dp);
+        else
+            view.setImageResource(R.drawable.ic_volume_off_black_36dp);
     }
 }

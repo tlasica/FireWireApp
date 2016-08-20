@@ -32,33 +32,60 @@
         android:layout_width="150dp"
         android:layout_height="150dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_play"
         android:onClick="onPlay"
-        android:text="play"
         android:textSize="32sp"
         android:elevation="8dp"
+        android:src="@drawable/ic_play_circle_outline_white_48dp"
+        android:background="@color/myGreen"
         android:textColor="@color/myGreen"
         android:layout_below="@+id/logo_icon"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginTop="40dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 
-    <Button
-        android:id="@+id/button_tutorial"
-        android:text="HOW TO PLAY"
+    <ImageButton
+        android:id="@+id/button_levels"
         android:textSize="32sp"
         android:elevation="8dp"
+        android:src="@drawable/ic_apps_white_48dp"
+        android:background="@color/myGreen"
         android:textColor="@color/myGreen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/button_play"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo_icon"
+        android:layout_toRightOf="@+id/button_play"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:onClick="showTutorial" />
 
+    <ImageButton
+        android:id="@+id/button_tutorial"
+        android:textSize="32sp"
+        android:elevation="8dp"
+        android:src="@drawable/ic_help_outline_white_48dp"
+        android:background="@color/myGreen"
+        android:textColor="@color/myGreen"
+        android:layout_below="@+id/logo_icon"
+        android:layout_toRightOf="@+id/button_levels"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:onClick="showTutorial" />
+
+    <ImageView
+        android:id="@+id/button_switch_sound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:elevation="8dp"
+        android:src="@drawable/ic_volume_up_black_36dp"
+        android:alpha="0.66"
+        android:onClick="switchSound"
+        />
 
 </RelativeLayout>
