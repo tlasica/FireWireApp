@@ -69,7 +69,7 @@
             android:elevation="8dp"
             android:src="@drawable/ic_apps_white_48dp"
             android:background="@color/myGreen"
-            android:onClick="showTutorial"
+            android:onClick="showLevels"
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

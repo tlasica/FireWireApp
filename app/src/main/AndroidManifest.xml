@@ -32,6 +32,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.tlasica.firewireapp.MainActivity" />
         </activity>
+        <activity
+            android:name=".play.LevelsActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.tlasica.firewireapp.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

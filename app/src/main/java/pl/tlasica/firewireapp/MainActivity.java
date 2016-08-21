@@ -20,6 +20,7 @@ import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.ConnectorBitmap;
 import pl.tlasica.firewireapp.play.LevelId;
+import pl.tlasica.firewireapp.play.LevelsActivity;
 import pl.tlasica.firewireapp.play.Player;
 import pl.tlasica.firewireapp.play.Settings;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
@@ -42,20 +43,14 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //setSupportActionBar(toolbar);
-
         Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/chango_regular.ttf");
         TextView text = (TextView)findViewById(R.id.logo_text);
         text.setTypeface(tf);
 
-//        setButtonFontBoldItalic(R.id.button_play);
-//        setButtonFontBoldItalic(R.id.button_tutorial);
-//        setTextFont(R.id.logo_text);
-
-        //sound icon
         Settings settings = new Settings(this);
         Boolean soundOn = settings.sound();
         this.setSoundIcon(soundOn);
+
         int nextLevel = settings.nextLevelId();
         Player.get().setLevel(nextLevel);
 
@@ -67,6 +62,7 @@ public class MainActivity extends BasicActivity {
                 Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
+
         SoundPoolPlayer.init(this);
 
         ConnectorBitmap.initialize(getResources());
@@ -145,5 +141,10 @@ public class MainActivity extends BasicActivity {
 
     public void exitGame(View view) {
         this.finish();
+    }
+
+    public void showLevels(View view) {
+        Intent myIntent = new Intent(this, LevelsActivity.class);
+        startActivity(myIntent);
     }
 }
