@@ -1,15 +1,19 @@
 package pl.tlasica.firewireapp.play;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
+import android.widget.TextView;
 
+import pl.tlasica.firewireapp.BasicActivity;
 import pl.tlasica.firewireapp.R;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 
@@ -18,28 +22,72 @@ import pl.tlasica.firewireapp.parser.BoardLoader;
 
 //TODO: Expand Grid inside ScrollView
 
-public class LevelsActivity extends AppCompatActivity {
+public class LevelsActivity extends BasicActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
-
-        GridView gridview1 = (GridView) findViewById(R.id.gridview_level_1);
-        gridview1.setAdapter(new LevelAdapter(this, 1));
-
-        GridView gridview2 = (GridView) findViewById(R.id.gridview_level_2);
-        gridview2.setAdapter(new LevelAdapter(this, 2));
-
-        GridView gridview3 = (GridView) findViewById(R.id.gridview_level_3);
-        gridview3.setAdapter(new LevelAdapter(this, 3));
-
+        buildContent();
     }
 
     public void onClose(View view) {
         finish();
     }
+
+    private void buildContent() {
+        for(int level=1; level<=BoardLoader.NUM_LEVELS; level++) {
+            addLevelTitle(level);
+            addLevelGames(level);
+        }
+    }
+
+    private void addLevelTitle(int level) {
+        LinearLayout layout = (LinearLayout)findViewById(R.id.levels_vertical_view);
+        TextView text = new TextView(this);
+        text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        text.setText("Level " + String.valueOf(level));
+        text.setTextColor(getResources().getColor(R.color.myGreen));
+        text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        //TODO: Font
+        layout.addView(text);
+    }
+
+    private LinearLayout row() {
+        LinearLayout row = new LinearLayout(this);
+        row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setPadding(10, 10, 10, 10);
+        return row;
+    }
+
+    private void addLevelGames(int level) {
+        int numColumns = 5;
+        LinearLayout layout = (LinearLayout)findViewById(R.id.levels_vertical_view);
+        LinearLayout row = this.row();
+        layout.addView(row);
+        int imageSize = 160; // TODO: change to 1/7 of screen width
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(imageSize, imageSize);
+        layoutParams.setMargins(5, 5, 5, 5);
+        for(int game=1; game<=BoardLoader.levelSizes[level]; game++) {
+            Log.d("LEVEL", "adding game " + String.valueOf(game));
+            ImageView image = new ImageView(row.getContext());
+            image.setPadding(6, 6, 6, 6);
+            image.setBackgroundResource(R.drawable.level_image_view);
+            image.setImageResource(R.drawable.shockcircle);
+            image.setAdjustViewBounds(true);
+            row.addView(image, layoutParams);
+            Space space = new Space(this);
+            row.addView(space);
+            if (game % numColumns == 0) {
+                row = this.row();
+                layout.addView(row);
+            }
+        }
+    }
 }
+
+
 
 
 class LevelAdapter extends BaseAdapter {
