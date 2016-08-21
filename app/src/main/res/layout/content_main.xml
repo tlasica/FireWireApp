@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:layout_margin="20dp"
+    android:layout_margin="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pl.tlasica.firewireapp.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -18,9 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
         android:textColor="@color/myGreen"
-        android:textSize="60sp"
+        android:textSize="40sp"
         android:text="Fire-Wire" />
 
     <ImageView
@@ -29,63 +30,97 @@
         android:elevation="16dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/logo_text"
+        android:layout_marginTop="20dp"
         android:layout_width="150dp"
         android:layout_height="150dp" />
 
-    <ImageButton
-        android:id="@+id/button_play"
-        android:onClick="onPlay"
-        android:textSize="32sp"
-        android:elevation="8dp"
-        android:src="@drawable/ic_play_circle_outline_white_48dp"
-        android:background="@color/myGreen"
-        android:textColor="@color/myGreen"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/logo_icon"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="40dp"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_marginTop="40dp">
 
-    <ImageButton
-        android:id="@+id/button_levels"
-        android:textSize="32sp"
-        android:elevation="8dp"
-        android:src="@drawable/ic_apps_white_48dp"
-        android:background="@color/myGreen"
-        android:textColor="@color/myGreen"
-        android:layout_below="@+id/logo_icon"
-        android:layout_toRightOf="@+id/button_play"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:onClick="showTutorial" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
-    <ImageButton
-        android:id="@+id/button_tutorial"
-        android:textSize="32sp"
-        android:elevation="8dp"
-        android:src="@drawable/ic_help_outline_white_48dp"
-        android:background="@color/myGreen"
-        android:textColor="@color/myGreen"
-        android:layout_below="@+id/logo_icon"
-        android:layout_toRightOf="@+id/button_levels"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:onClick="showTutorial" />
+        <ImageButton
+            android:id="@+id/button_play"
+            android:onClick="onPlay"
+            android:elevation="8dp"
+            android:src="@drawable/ic_play_circle_outline_white_48dp"
+            android:background="@color/myGreen"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <ImageButton
+            android:id="@+id/button_levels"
+            android:elevation="8dp"
+            android:src="@drawable/ic_apps_white_48dp"
+            android:background="@color/myGreen"
+            android:onClick="showTutorial"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <ImageButton
+            android:id="@+id/button_tutorial"
+            android:elevation="8dp"
+            android:src="@drawable/ic_help_outline_white_48dp"
+            android:background="@color/myGreen"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showTutorial" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/button_switch_sound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:elevation="8dp"
         android:src="@drawable/ic_volume_up_black_36dp"
         android:alpha="0.66"
         android:onClick="switchSound"
+        />
+
+    <ImageView
+        android:id="@+id/button_exit_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:elevation="8dp"
+        android:src="@drawable/ic_highlight_off_black_48dp"
+        android:alpha="0.66"
+        android:onClick="exitGame"
         />
 
 </RelativeLayout>

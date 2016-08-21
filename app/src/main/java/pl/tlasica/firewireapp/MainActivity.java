@@ -1,6 +1,7 @@
 package pl.tlasica.firewireapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -23,6 +25,10 @@ import pl.tlasica.firewireapp.play.Settings;
 import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 import pl.tlasica.firewireapp.play.TutorialActivity;
 
+/**
+ * fonts: http://www.1001fonts.com/free-fonts-for-commercial-use.html
+ * icons: https://design.google.com/icons/#ic_exit_to_app
+ */
 public class MainActivity extends BasicActivity {
 
     @Override
@@ -35,12 +41,16 @@ public class MainActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         //setSupportActionBar(toolbar);
+
+        Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/chango_regular.ttf");
+        TextView text = (TextView)findViewById(R.id.logo_text);
+        text.setTypeface(tf);
 
 //        setButtonFontBoldItalic(R.id.button_play);
 //        setButtonFontBoldItalic(R.id.button_tutorial);
-        setTextFont(R.id.logo_text);
+//        setTextFont(R.id.logo_text);
 
         //sound icon
         Settings settings = new Settings(this);
@@ -131,5 +141,9 @@ public class MainActivity extends BasicActivity {
             view.setImageResource(R.drawable.ic_volume_up_black_36dp);
         else
             view.setImageResource(R.drawable.ic_volume_off_black_36dp);
+    }
+
+    public void exitGame(View view) {
+        this.finish();
     }
 }

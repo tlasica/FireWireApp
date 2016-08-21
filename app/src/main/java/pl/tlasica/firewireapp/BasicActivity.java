@@ -1,5 +1,7 @@
 package pl.tlasica.firewireapp;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,4 +44,5 @@ public class BasicActivity extends AppCompatActivity {
         TextView text = (TextView)findViewById(id);
         text.setTypeface(Typer.set(getApplicationContext()).getFont(fontName));
     }
+
 }
