@@ -77,34 +77,46 @@ public class LevelsActivity extends BasicActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int imageSize = metrics.widthPixels / 7; // TODO: change to 1/7 of screen width
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(imageSize, imageSize);
-        layoutParams.setMargins(5, 5, 5, 5);
+        layoutParams.setMargins(10, 5, 10, 5);
         // add 1st row
         LinearLayout row = this.row();
         layout.addView(row);
+        // is level permitted
+        boolean canPlayLevel = Player.get().canPlayLevel(level);
         for(int game=1; game<=BoardLoader.levelSizes[level]; game++) {
             Log.d("LEVEL", "adding game " + String.valueOf(game));
             ImageView image = new ImageView(row.getContext());
             image.setPadding(6, 6, 6, 6);
-            image.setBackgroundResource(R.drawable.level_image_view);
-            image.setImageResource(R.drawable.shockcircle);
             image.setAdjustViewBounds(true);
-            image.setId(LevelId.levelId(level, game));
-            image.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    int levelId = v.getId();
-                    Toast.makeText(getApplicationContext(), String.format("Play level %d", levelId), Toast.LENGTH_LONG).show();
-                    BoardLoader loader = new BoardLoader(getAssets());
-                    try {
-                        Board level = loader.load(levelId);
-                        Player.get().setLevel(levelId);
-                        LevelPlay.startLevel(level);
-                        Intent myIntent = new Intent(getBaseContext(), PlayActivity.class);
-                        startActivity(myIntent);
-                    } catch (IOException e) {
-                        Toast.makeText(getBaseContext(), "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
+            int levelId = LevelId.levelId(level, game);
+            image.setId(levelId);
+            if (canPlayLevel) {
+                image.setBackgroundResource(R.drawable.level_image_view);
+                if (Player.get().isSolved(levelId))
+                    image.setImageResource(R.drawable.level_solved);
+                else
+                    image.setImageResource(R.drawable.level_not_solved);
+                image.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        int levelId = v.getId();
+                        BoardLoader loader = new BoardLoader(getAssets());
+                        try {
+                            Board level = loader.load(levelId);
+                            Player.get().setLevel(levelId);
+                            LevelPlay.startLevel(level);
+                            Intent myIntent = new Intent(getBaseContext(), PlayActivity.class);
+                            startActivity(myIntent);
+                        } catch (IOException e) {
+                            Toast.makeText(getBaseContext(), "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
                     }
-                }});
+                });
+            }
+            else {
+                image.setImageResource(R.drawable.level_not_available);
+                image.setBackgroundResource(R.drawable.level_image_view_not_available);
+            }
             row.addView(image, layoutParams);
             Space space = new Space(this);
             row.addView(space);

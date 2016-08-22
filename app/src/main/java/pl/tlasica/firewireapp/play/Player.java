@@ -3,6 +3,10 @@ package pl.tlasica.firewireapp.play;
 // TODO: add persistency
 
 import android.util.Log;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import pl.tlasica.firewireapp.parser.BoardLoader;
 
 /**
@@ -13,6 +17,7 @@ public class Player {
     private static final Player player = new Player();
 
     private int currLevelId = LevelId.levelId(1, 1);
+    private Set<Integer> levelsSolved = new HashSet<>();
 
     public int currentLevelId() {
         return currLevelId;
@@ -28,7 +33,8 @@ public class Player {
 
     // mark current game as finished with success
     public void gameFinishedWithSuccess() {
-        //TODO: save current level as saved
+        // mark current level as solved
+        levelsSolved.add(currentLevelId());
         //TODO: save the fact that game is solved
         //TODO: save game statistics
         //TODO: update points per level
@@ -41,6 +47,28 @@ public class Player {
 
     public static Player get() {
         return player;
+    }
+
+    public boolean isSolved(int levelId) {
+        return levelsSolved.contains(levelId);
+    }
+
+    public boolean canPlayLevel(int level) {
+        // Player can play level if all games in previous level were solved
+        boolean solved = true;
+        for(int l=1; solved && l<level; l++) {
+            solved = allGamesSolvedInLevel(l);
+        }
+        return solved;
+    }
+
+    private boolean allGamesSolvedInLevel(int level) {
+        boolean solved = true;
+        for(int game=1; solved && game<BoardLoader.levelSizes[level]; game++) {
+            int levelId = LevelId.levelId(level, game);
+            solved = levelsSolved.contains(levelId);
+        }
+        return solved;
     }
 
 }
