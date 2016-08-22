@@ -50,6 +50,7 @@ public class MainActivity extends BasicActivity {
         Settings settings = new Settings(this);
         Boolean soundOn = settings.sound();
         this.setSoundIcon(soundOn);
+        SoundPoolPlayer.init(this);
 
         int nextLevel = settings.nextLevelId();
         Player.get().setLevel(nextLevel);
@@ -63,8 +64,6 @@ public class MainActivity extends BasicActivity {
             }
         });
 
-        SoundPoolPlayer.init(this);
-
         ConnectorBitmap.initialize(getResources());
 
         try {
@@ -73,6 +72,8 @@ public class MainActivity extends BasicActivity {
             Toast.makeText(this, "Ups. Loading levels failed.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+
+        restoreSolvedLevels();
     }
 
     @Override
@@ -146,5 +147,16 @@ public class MainActivity extends BasicActivity {
     public void showLevels(View view) {
         Intent myIntent = new Intent(this, LevelsActivity.class);
         startActivity(myIntent);
+    }
+
+    private void restoreSolvedLevels() {
+        Settings settings = new Settings(this);
+        for(int level=1; level<=BoardLoader.NUM_LEVELS; level++) {
+            for(int game=1; game<=BoardLoader.levelSizes[level]; game++) {
+                int levelId = LevelId.levelId(level, game);
+                boolean solved = settings.isLevelSolved(levelId);
+                if (solved) Player.get().markSolved(levelId);
+            }
+        }
     }
 }

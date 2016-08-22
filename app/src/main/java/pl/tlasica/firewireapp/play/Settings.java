@@ -36,4 +36,16 @@ public class Settings {
         editor.putInt("NEXT_LEVEL", levelId);
         editor.apply();
     }
+
+    public void storeLevelSolved(int levelId) {
+        String key = String.format("LEVEL_%d_solved", levelId);
+        SharedPreferences.Editor editor = preferences().edit();
+        editor.putBoolean(key, true);
+        editor.apply();
+    }
+
+    public boolean isLevelSolved(int levelId) {
+        String key = String.format("LEVEL_%d_solved", levelId);
+        return preferences().getBoolean(key, false);
+    }
 }

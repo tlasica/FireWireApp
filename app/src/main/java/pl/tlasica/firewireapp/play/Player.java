@@ -34,7 +34,7 @@ public class Player {
     // mark current game as finished with success
     public void gameFinishedWithSuccess() {
         // mark current level as solved
-        levelsSolved.add(currentLevelId());
+        markSolved(currentLevelId());
         //TODO: save the fact that game is solved
         //TODO: save game statistics
         //TODO: update points per level
@@ -51,6 +51,10 @@ public class Player {
 
     public boolean isSolved(int levelId) {
         return levelsSolved.contains(levelId);
+    }
+
+    public void markSolved(int levelId) {
+        levelsSolved.add(levelId);
     }
 
     public boolean canPlayLevel(int level) {
