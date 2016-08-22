@@ -1,8 +1,10 @@
 package pl.tlasica.firewireapp.play;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -12,9 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import pl.tlasica.firewireapp.BasicActivity;
+import pl.tlasica.firewireapp.PlayActivity;
 import pl.tlasica.firewireapp.R;
+import pl.tlasica.firewireapp.model.Board;
+import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 
 // gird layput not expanded:
@@ -64,11 +72,15 @@ public class LevelsActivity extends BasicActivity {
     private void addLevelGames(int level) {
         int numColumns = 5;
         LinearLayout layout = (LinearLayout)findViewById(R.id.levels_vertical_view);
-        LinearLayout row = this.row();
-        layout.addView(row);
-        int imageSize = 160; // TODO: change to 1/7 of screen width
+        // calculate image size and create layout params
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int imageSize = metrics.widthPixels / 7; // TODO: change to 1/7 of screen width
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(imageSize, imageSize);
         layoutParams.setMargins(5, 5, 5, 5);
+        // add 1st row
+        LinearLayout row = this.row();
+        layout.addView(row);
         for(int game=1; game<=BoardLoader.levelSizes[level]; game++) {
             Log.d("LEVEL", "adding game " + String.valueOf(game));
             ImageView image = new ImageView(row.getContext());
@@ -76,6 +88,23 @@ public class LevelsActivity extends BasicActivity {
             image.setBackgroundResource(R.drawable.level_image_view);
             image.setImageResource(R.drawable.shockcircle);
             image.setAdjustViewBounds(true);
+            image.setId(LevelId.levelId(level, game));
+            image.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    int levelId = v.getId();
+                    Toast.makeText(getApplicationContext(), String.format("Play level %d", levelId), Toast.LENGTH_LONG).show();
+                    BoardLoader loader = new BoardLoader(getAssets());
+                    try {
+                        Board level = loader.load(levelId);
+                        Player.get().setLevel(levelId);
+                        LevelPlay.startLevel(level);
+                        Intent myIntent = new Intent(getBaseContext(), PlayActivity.class);
+                        startActivity(myIntent);
+                    } catch (IOException e) {
+                        Toast.makeText(getBaseContext(), "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                }});
             row.addView(image, layoutParams);
             Space space = new Space(this);
             row.addView(space);
@@ -87,49 +116,3 @@ public class LevelsActivity extends BasicActivity {
     }
 }
 
-
-
-
-class LevelAdapter extends BaseAdapter {
-    private Context mContext;
-    private int     levelNo;
-
-    public LevelAdapter(Context c, int level) {
-        mContext = c;
-        levelNo = level;
-    }
-
-    @Override
-    public int getCount() {
-        int count = BoardLoader.levelSizes[levelNo];
-        Log.d("LEVELS", "Level " + String.valueOf(levelNo) + " count is " + String.valueOf(count));
-        return count;
-    }
-
-    public Object getItem(int position) {
-        return null;
-    }
-
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    // create a new ImageView for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d("LEVELS", "Level " + String.valueOf(levelNo) + " get view for " + String.valueOf(position));
-        ImageView imageView;
-        if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
-            imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
-            imageView.setBackgroundResource(R.drawable.level_image_view);
-        } else {
-            imageView = (ImageView) convertView;
-        }
-
-        imageView.setImageResource(R.drawable.shockcircle);
-        return imageView;
-    }
-}
