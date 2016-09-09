@@ -135,7 +135,12 @@ public class LevelsActivity extends BasicActivity {
                         Intent myIntent = new Intent(getBaseContext(), PlayActivity.class);
                         startActivity(myIntent);
                     } catch (IOException e) {
-                        Toast.makeText(getBaseContext(), "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
+                        String msg = String.format("Ups. Loading level failed on %s", loader.getLastFile());
+                        Toast.makeText(getBaseContext(), msg , Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        String msg = String.format("Ups. Loading level failed on %s\nError: %s", loader.getLastFile(), e.getMessage());
+                        Toast.makeText(getBaseContext(), msg , Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }

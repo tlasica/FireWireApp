@@ -111,10 +111,12 @@ public class MainActivity extends BasicActivity {
             //myIntent.putExtra("key", value); //Optional parameters
             startActivity(myIntent);
         } catch (IOException e) {
-            Toast.makeText(this, "Ups. Loading level failed on " + loader.getLastFile(), Toast.LENGTH_LONG).show();
+            String msg = String.format("Ups. Loading level failed on %s", loader.getLastFile());
+            Toast.makeText(getBaseContext(), msg , Toast.LENGTH_LONG).show();
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            Toast.makeText(this, "Ups. Loading level failed on " + e.getMessage(), Toast.LENGTH_LONG).show();
+            String msg = String.format("Ups. Loading level failed on %s\nError: %s", loader.getLastFile(), e.getMessage());
+            Toast.makeText(getBaseContext(), msg , Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }

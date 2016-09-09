@@ -18,7 +18,7 @@ import pl.tlasica.firewireapp.play.LevelId;
  */
 public class BoardLoader {
 
-    public static final int NUM_LEVELS = 3;
+    public static final int NUM_LEVELS = 4;
     public static final int[] levelSizes = new int[NUM_LEVELS+1];
 
     private AssetManager    assets;
@@ -77,7 +77,7 @@ public class BoardLoader {
     public static int nextLevelId(int levelId) {
         int levelNo = LevelId.level(levelId);
         int gameNo = LevelId.game(levelId);
-        if (gameNo > levelSizes[levelNo])
+        if (gameNo >= levelSizes[levelNo])
             return LevelId.levelId(levelNo+1, 1);
         else
             return LevelId.levelId(levelNo, gameNo+1);
