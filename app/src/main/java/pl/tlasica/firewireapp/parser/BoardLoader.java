@@ -18,7 +18,7 @@ import pl.tlasica.firewireapp.play.LevelId;
  */
 public class BoardLoader {
 
-    public static final int NUM_LEVELS = 4;
+    public static final int NUM_LEVELS = 5;
     public static final int[] levelSizes = new int[NUM_LEVELS+1];
 
     private AssetManager    assets;
