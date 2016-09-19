@@ -66,7 +66,6 @@ public class Game {
                         // save the fact game is solved
                         Settings settings = new Settings(playActivity);
                         int levelId = Player.get().currentLevelId();
-                        settings.storeNextLevelId(BoardLoader.nextLevelId(levelId));
                         settings.storeLevelSolved(levelId);
                         // show level completed dialog
                         LevelCompletedDialogFragment dialogFragment = new LevelCompletedDialogFragment();

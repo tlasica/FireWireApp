@@ -52,9 +52,6 @@ public class MainActivity extends BasicActivity {
         this.setSoundIcon(soundOn);
         SoundPoolPlayer.init(this);
 
-        int nextLevel = settings.nextLevelId();
-        Player.get().setLevel(nextLevel);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +101,15 @@ public class MainActivity extends BasicActivity {
         // load next level
         BoardLoader loader = new BoardLoader(getAssets());
         try {
-            Board level = loader.load(Player.get().currentLevelId());
-            LevelPlay.startLevel(level);
+            int levelId = Player.get().firstUnfinishedLevelId();
+            if (levelId == 0) {
+                String msg = "Sorry to say but you already played all the games.";
+                Toast.makeText(getBaseContext(), msg , Toast.LENGTH_LONG).show();
+                return;
+            }
+            Board levelBoard = loader.load(levelId);
+            LevelPlay.startLevel(levelBoard);
+            Player.get().setCurrentLevelId(levelId);
             // start play activity
             Intent myIntent = new Intent(this, PlayActivity.class);
             //myIntent.putExtra("key", value); //Optional parameters

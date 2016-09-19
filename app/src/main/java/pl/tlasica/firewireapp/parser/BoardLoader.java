@@ -74,11 +74,14 @@ public class BoardLoader {
         }
     }
 
+    /**
+     * Return next level id or 0 if all games are finished and nothing left
+     */
     public static int nextLevelId(int levelId) {
         int levelNo = LevelId.level(levelId);
         int gameNo = LevelId.game(levelId);
         if (gameNo >= levelSizes[levelNo])
-            return LevelId.levelId(levelNo+1, 1);
+            return levelNo < NUM_LEVELS ? LevelId.levelId(levelNo+1, 1) : 0;
         else
             return LevelId.levelId(levelNo, gameNo+1);
     }

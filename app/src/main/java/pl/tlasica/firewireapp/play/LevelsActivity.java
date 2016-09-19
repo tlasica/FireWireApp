@@ -130,7 +130,7 @@ public class LevelsActivity extends BasicActivity {
                     BoardLoader loader = new BoardLoader(getAssets());
                     try {
                         Board level = loader.load(levelId);
-                        Player.get().setLevel(levelId);
+                        Player.get().setCurrentLevelId(levelId);
                         LevelPlay.startLevel(level);
                         Intent myIntent = new Intent(getBaseContext(), PlayActivity.class);
                         startActivity(myIntent);

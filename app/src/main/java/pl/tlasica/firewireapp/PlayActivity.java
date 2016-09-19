@@ -4,10 +4,7 @@ import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +18,6 @@ import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.Game;
 import pl.tlasica.firewireapp.play.Player;
-import pl.tlasica.firewireapp.play.SoundPoolPlayer;
 
 
 //http://stackoverflow.com/questions/6645537/how-to-detect-the-swipe-left-or-right-in-android
@@ -132,8 +128,21 @@ public class PlayActivity extends BasicActivity {
     }
 
     public void nextLevel() {
-        Player.get().setNextLevel();
-        playLevel();
+        int nextLevel = Player.get().setNextLevel();
+        if (nextLevel > 0) playLevel(); else this.showEndOfLevels();
+    }
+
+    //TODO: implement a nice dialog for this with score etc, share on FB
+    private void showEndOfLevels() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You won!\nThere are no more tasks to finish.\nNo most creatures to fire.\n\nAwesome job!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                fullScreenMode();
+                finish();
+            } });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void repeatLevel() {

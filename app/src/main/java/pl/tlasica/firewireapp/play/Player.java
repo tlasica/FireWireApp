@@ -1,7 +1,5 @@
 package pl.tlasica.firewireapp.play;
 
-// TODO: add persistency
-
 import android.util.Log;
 
 import java.util.HashSet;
@@ -19,30 +17,45 @@ public class Player {
     private int currLevelId = LevelId.levelId(1, 1);
     private Set<Integer> levelsSolved = new HashSet<>();
 
+    /**
+     * CurrentLevelId is currently playing (not next)
+     */
     public int currentLevelId() {
         return currLevelId;
     }
 
-    public void setLevel(int levelId) {
+    public void setCurrentLevelId(int levelId) {
         currLevelId=levelId;
     }
 
-    public void setNextLevel() {
+    public int setNextLevel() {
         currLevelId = BoardLoader.nextLevelId(currentLevelId());
+        return currLevelId;
+    }
+
+    /**
+     * Return first unfinished levelId or -0 if all levels are finished (solved)
+     */
+    public int firstUnfinishedLevelId() {
+        for(int level=1; level<=BoardLoader.NUM_LEVELS; level++) {
+            for(int game=1; game<BoardLoader.levelSizes[level]; game++) {
+                int levelId = LevelId.levelId(level, game);
+                if (! levelsSolved.contains(levelId) ) return levelId;
+            }
+        }
+        return 0; // all tasks played, end of the game
     }
 
     // mark current game as finished with success
+    // TODO: save game statistics
+    // TODO: update points per level
     public void gameFinishedWithSuccess() {
-        // mark current level as solved
         markSolved(currentLevelId());
-        //TODO: save the fact that game is solved
-        //TODO: save game statistics
-        //TODO: update points per level
         Log.d("Player", "Level finished: " + String.valueOf(currentLevelId()));
     }
 
     public void gameCancelled() {
-        //TODO: ?
+        Log.d("Player", "Level cancelled: " + String.valueOf(currentLevelId()));
     }
 
     public static Player get() {
