@@ -1,6 +1,7 @@
 package pl.tlasica.firewireapp.play;
 
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -25,6 +26,9 @@ public class GameLoop implements Runnable {
     private final BoardDrawing boardDrawing;
     private final ConnectorSetDrawing connSetDrawing;
     private final GameLoopStatistics stats = new GameLoopStatistics();
+
+    private ConnectorType movingConnType;
+    private Point         movingConnPos;
 
     private long lastLogTime;
     private Game game;
@@ -88,6 +92,9 @@ public class GameLoop implements Runnable {
             synchronized (surfaceHolder) {
                 boardDrawing.draw(canvas, levelPlay);
                 connSetDrawing.draw(canvas, levelPlay);
+                if (this.movingConnType != null) {
+                    connSetDrawing.drawConnectorAtMouse(canvas, this.movingConnPos, this.movingConnType);
+                }
             }
             long t1 = System.currentTimeMillis();
             logPerf("Drawing duration[ms]", t1-t0);
@@ -112,6 +119,10 @@ public class GameLoop implements Runnable {
             }
             else if (ev instanceof SwipeEvent) {
                 sthProcessed |= handleSwipe((SwipeEvent)ev, play);
+            }
+            else if (ev instanceof MouseMoveEvent) {
+                Log.i(TAG, "mouse moved");
+                handleMouseMove((MouseMoveEvent)ev, play);
             }
         }
         // if there was handled event
@@ -144,12 +155,11 @@ public class GameLoop implements Runnable {
         running = false;
     }
 
-
     private boolean handleSwipe(SwipeEvent event, LevelPlay play) {
-        Log.d(TAG, "SwipeEvent");
+        this.movingConnType = null;
         int nodeFrom = boardDrawing.nodeNumber(event.from, play.board);
         int nodeTo = boardDrawing.nodeNumber(event.to, play.board);
-        Log.d(TAG, "nodeFrom:" + nodeFrom + ", nodeTo:" + nodeTo);
+        Log.d(TAG, "SwipeEvent nodeFrom:" + nodeFrom + ", nodeTo:" + nodeTo);
         if (nodeFrom >= 0) {
             if (nodeTo >= 0) {
                 Log.d(TAG, "Try to move connector from " + nodeFrom + " to node " + nodeTo);
@@ -203,6 +213,7 @@ public class GameLoop implements Runnable {
     }
 
     private boolean handleClick(ClickEvent event, LevelPlay play) {
+        this.movingConnType = null;
         int node = boardDrawing.nodeNumber(event.point, play.board);
         if (node >= 0) {
             Log.d(TAG, "ClickEvent on node " + node);
@@ -215,6 +226,22 @@ public class GameLoop implements Runnable {
                 return true;
             }
         }
+        return false;
+    }
+
+    private boolean handleMouseMove(MouseMoveEvent event, LevelPlay play) {
+        // let's check if move from connector
+        if (this.movingConnType != null) {
+            this.movingConnPos = event.to;
+            return true;
+        }
+        ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
+        if (type != null) {
+            this.movingConnType = type;
+            this.movingConnPos = event.to;
+            return true;
+        }
+        // TODO: int nodeFrom = boardDrawing.nodeNumber(event.from, play.board);
         return false;
     }
 

@@ -53,14 +53,14 @@ public class ConnectorBitmap {
             case I_SHAPE: return R.drawable.connector_e_180_placed;
             case L_SHAPE: return R.drawable.connector_e_90_placed;
             case X_SHAPE: return R.drawable.connector_e_x_placed;
-            default: return R.drawable.connector_e_180;
+            default: return R.drawable.connector;
         }
     }
 
     static int freeResId(ConnectorType type) {
         switch (type) {
             case DEFINED: return R.drawable.connection;
-            default: return R.drawable.connector_e_180;
+            default: return R.drawable.connector;
         }
     }
 }

@@ -41,7 +41,6 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     }
 
     public void draw(Canvas canvas, LevelPlay play) {
-        //TODO: draw all available connectors
         prepareDrawing(canvas);
         int index = 0;
         for(Map.Entry<ConnectorType, Integer> e: play.availableConnectors.entrySet()) {
@@ -50,6 +49,12 @@ public class ConnectorSetDrawing extends CanvasDrawing {
             drawConnector(canvas, index, type, count);
             index ++;
         }
+    }
+
+    public void drawConnectorAtMouse(Canvas canvas, Point mouse, ConnectorType connectorType) {
+        float size = this.cellSize / 2.7f;
+        RectF dst = new RectF(mouse.x-size, mouse.y-size, mouse.x+size, mouse.y+size);
+        this.drawConnectorInRect(canvas, dst, connectorType);
     }
 
     public ConnectorType connAtMouse(Point mouse, LevelPlay play) {
@@ -65,7 +70,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
 
     void drawConnector(Canvas canvas, int index, ConnectorType type, int count) {
         drawFrame(canvas, index);
-        drawConnector(canvas, index, type);
+        drawConnectorByIndex(canvas, index, type);
         drawCount(canvas, index, count);
     }
 
@@ -79,14 +84,18 @@ public class ConnectorSetDrawing extends CanvasDrawing {
         canvas.drawText(String.valueOf(count), rect.left, rect.bottom, textPaint());
     }
 
-    void drawConnector(Canvas canvas, int index, ConnectorType type) {
+    void drawConnectorByIndex(Canvas canvas, int index, ConnectorType type) {
+        this.drawConnectorInRect(canvas, bitmapRect(index), type);
+    }
+
+    void drawConnectorInRect(Canvas canvas, RectF dst, ConnectorType type) {
         Bitmap bmp = ConnectorBitmap.choiceBitmap(type);
         if (bmp == null) {
             Log.e("", "No bitmap for" + type);
             return;
         }
         Rect rectSrc = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
-        canvas.drawBitmap(bmp, rectSrc, bitmapRect(index), bmpPaint);
+        canvas.drawBitmap(bmp, rectSrc, dst, bmpPaint);
     }
 
     float left(int index) {

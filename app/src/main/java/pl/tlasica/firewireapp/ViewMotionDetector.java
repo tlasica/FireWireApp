@@ -8,6 +8,7 @@ import android.util.Log;
 import java.util.Queue;
 
 import pl.tlasica.firewireapp.play.ClickEvent;
+import pl.tlasica.firewireapp.play.MouseMoveEvent;
 import pl.tlasica.firewireapp.play.SwipeEvent;
 
 /**
@@ -16,7 +17,7 @@ import pl.tlasica.firewireapp.play.SwipeEvent;
 public class ViewMotionDetector implements View.OnTouchListener{
 
     private float downX, downY;
-    private float upX, upY;
+    private Point down;
     private View view;
     private Queue<MouseEvent> eventQueue;
 
@@ -32,12 +33,13 @@ public class ViewMotionDetector implements View.OnTouchListener{
                 Log.d("EVENT", event.toString());
                 downX = event.getX();
                 downY = event.getY();
+                this.down = new Point((int)downX, (int)downY);
                 return true;
             }
             case MotionEvent.ACTION_UP: {
                 Log.d("EVENT", event.toString());
-                upX = event.getX();
-                upY = event.getY();
+                float upX = event.getX();
+                float upY = event.getY();
 
                 // Can be swipe event
                 double dist = distance(downX, downY, upX, upY);
@@ -55,14 +57,20 @@ public class ViewMotionDetector implements View.OnTouchListener{
                         return true;
                     }
                 }
-                // Can be short press
-                // Can be long press
-
                 return false;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                Point curr = new Point((int)event.getX(),(int)event.getY());
+                eventQueue.add(new MouseMoveEvent(this.down, curr));
             }
             default:
                 return false;
         }
+    }
+
+    private boolean isLongPress(long downTime) {
+        // always false - we do not support long press
+        return false;
     }
 
     private void onClick(float downX, float downY) {
@@ -76,7 +84,6 @@ public class ViewMotionDetector implements View.OnTouchListener{
     private void onLongClick(float downX, float downY) {
         String msg = String.format("LONG CLICK at (%f, %f)", downX, downY);
         Log.d("MOTION", msg);
-        //TODO: notify
     }
 
     private boolean isSwipeDistance(double dist) {
@@ -85,11 +92,6 @@ public class ViewMotionDetector implements View.OnTouchListener{
 
     private boolean isClickDistance(double dist) {
         return  dist <= 10.0;
-    }
-
-    private boolean isLongPress(long downTime) {
-        //TODO: calculate using diff in time
-        return false;
     }
 
     private void onSwipeEvent(float downX, float downY, float upX, float upY) {
