@@ -25,7 +25,7 @@ public class Player {
     }
 
     public void setCurrentLevelId(int levelId) {
-        currLevelId=levelId;
+        currLevelId = levelId;
     }
 
     public int setNextLevel() {
@@ -37,10 +37,10 @@ public class Player {
      * Return first unfinished levelId or -0 if all levels are finished (solved)
      */
     public int firstUnfinishedLevelId() {
-        for(int level=1; level<=BoardLoader.NUM_LEVELS; level++) {
-            for(int game=1; game<BoardLoader.levelSizes[level]; game++) {
+        for (int level = 1; level <= BoardLoader.NUM_LEVELS; level++) {
+            for (int game = 1; game < BoardLoader.levelSizes[level]; game++) {
                 int levelId = LevelId.levelId(level, game);
-                if (! levelsSolved.contains(levelId) ) return levelId;
+                if (!levelsSolved.contains(levelId)) return levelId;
             }
         }
         return 0; // all tasks played, end of the game
@@ -73,7 +73,8 @@ public class Player {
     public boolean canPlayLevel(int level) {
         // Player can play level if all games in previous level were solved
         boolean solved = true;
-        for(int l=1; solved && l<level; l++) {
+        int maxLevel = Math.min(level, BoardLoader.NUM_LEVELS);
+        for (int l = 1; solved && l < maxLevel; l++) {
             solved = allGamesSolvedInLevel(l);
         }
         return solved;
@@ -81,11 +82,17 @@ public class Player {
 
     private boolean allGamesSolvedInLevel(int level) {
         boolean solved = true;
-        for(int game=1; solved && game<BoardLoader.levelSizes[level]; game++) {
+        int maxGame = BoardLoader.levelSizes[level];
+        for (int game = 1; solved && game <= maxGame ; game++) {
             int levelId = LevelId.levelId(level, game);
             solved = levelsSolved.contains(levelId);
         }
         return solved;
+    }
+
+    public void clear() {
+        this.currLevelId = LevelId.levelId(1, 1);
+        this.levelsSolved.clear();
     }
 
 }
