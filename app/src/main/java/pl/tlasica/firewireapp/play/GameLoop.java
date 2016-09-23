@@ -193,6 +193,10 @@ public class GameLoop implements Runnable {
         if (nodeTo >= 0) {
             ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
             if (type != null) {
+                if (! play.hasAvaliableConnector(type)) {
+                    Log.d(TAG, "No available connector of this type");
+                    return false;
+                }
                 Log.d(TAG, "Try to place connector on " + nodeTo);
                 int rotation = play.tryPlaceConnector(type, nodeTo, false);
                 if (rotation >= 0) {
