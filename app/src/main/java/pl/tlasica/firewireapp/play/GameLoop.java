@@ -64,7 +64,7 @@ public class GameLoop implements Runnable {
     private long waitForNextFrame(long frameStartTime) {
         long nextFrameStartTime = new Date().getTime();
         long howLongWeTook = nextFrameStartTime - frameStartTime;
-        long frameDurationMs = 200;
+        long frameDurationMs = 50;
         long waitTime = frameDurationMs - howLongWeTook;
         if (waitTime > 0) {
             try {
