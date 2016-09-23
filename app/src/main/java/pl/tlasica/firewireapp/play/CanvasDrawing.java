@@ -30,8 +30,8 @@ public class CanvasDrawing {
 
     void prepareDrawing(Canvas canvas) {
         cellSize = Math.round(canvas.getWidth() / cellsInRow);
-        nodeRadius = cellSize / 7.0f;
-        wireWidth = nodeRadius / 1.3f;
+        nodeRadius = cellSize / 10.0f;
+        wireWidth = nodeRadius / 2.2f;
     }
 
     float canvasX(int boardX) {

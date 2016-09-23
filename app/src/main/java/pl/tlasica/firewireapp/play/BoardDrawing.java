@@ -15,6 +15,7 @@ import java.util.Random;
 
 import android.util.Log;
 
+import pl.tlasica.firewireapp.R;
 import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.ConnectorType;
 import pl.tlasica.firewireapp.model.DefinedConnector;
@@ -26,9 +27,12 @@ import pl.tlasica.firewireapp.model.Wire;
 
 public class BoardDrawing extends CanvasDrawing {
 
-    private int boardColor = Color.parseColor("#325132");
-    private int wireColor = Color.parseColor("#55B746");
-    private int connectionColor = Color.parseColor("#E7C03F");
+    private int myOrange = Color.parseColor("#FFA500");
+    private int boardColor = Color.parseColor("#002312");
+//    private int wireColor = Color.parseColor("#7CC597");
+    private int wireColor = Color.parseColor("#7DC698");
+//    private int connectionColor = Color.parseColor("#E7C03F");
+    private int connectionColor = myOrange;
 
     private Paint nodePaint = fillPaint(wireColor);
     private Paint boardPaint = fillPaint(boardColor);
@@ -41,14 +45,7 @@ public class BoardDrawing extends CanvasDrawing {
     private Paint[] wirePaints = {
             strokePaint(10, Color.parseColor("#2A5528")),
             strokePaint(10, Color.parseColor("#488341")),
-            strokePaint(10, Color.parseColor("#55B746"))
-    };
-
-    private Paint[] connectorFillPaints = {
-            fillPaint(Color.parseColor("#C6A436")),
-            fillPaint(Color.parseColor("#E7C03F")),
-            fillPaint(Color.parseColor("#FADC6A")),
-            fillPaint(Color.parseColor("#FFF29D"))
+            strokePaint(10, wireColor)
     };
 
     private Canvas boardCanvas;
@@ -149,7 +146,7 @@ public class BoardDrawing extends CanvasDrawing {
         float cx = canvasX(IntCoord.x(node));
         float cy = canvasY(IntCoord.y(node));
         canvas.drawCircle(cx, cy, radius, nodePaint);
-        float holeRadius = wireWidth > 6 ? wireWidth / 3.0f : 2.0f;
+        float holeRadius = wireWidth > 6 ? wireWidth / 2.0f : 2.0f;
         canvas.drawCircle(cx, cy, holeRadius, boardPaint);
     }
 
