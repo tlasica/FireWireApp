@@ -17,7 +17,8 @@
         android:id="@+id/logo_text"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/button_switch_sound"
         android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
         android:textColor="@color/myGreen"
@@ -53,11 +54,11 @@
             android:onClick="onPlay"
             android:elevation="8dp"
             android:src="@drawable/ic_play_circle_outline_white_48dp"
-            android:background="@color/myGreen"
+            android:background="@drawable/green_button"
             android:padding="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:clickable="true" />
         <Space
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -68,7 +69,7 @@
             android:id="@+id/button_levels"
             android:elevation="8dp"
             android:src="@drawable/ic_apps_white_48dp"
-            android:background="@color/myGreen"
+            android:background="@drawable/green_button"
             android:onClick="showLevels"
             android:padding="10dp"
             android:layout_width="wrap_content"
@@ -84,7 +85,7 @@
             android:id="@+id/button_tutorial"
             android:elevation="8dp"
             android:src="@drawable/ic_help_outline_white_48dp"
-            android:background="@color/myGreen"
+            android:background="@drawable/green_button"
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,25 +102,25 @@
 
     <ImageView
         android:id="@+id/button_switch_sound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:elevation="8dp"
         android:src="@drawable/ic_volume_up_black_36dp"
-        android:alpha="0.66"
+        android:alpha="0.50"
         android:onClick="switchSound"
         />
 
     <ImageView
         android:id="@+id/button_exit_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:elevation="8dp"
         android:src="@drawable/ic_highlight_off_black_48dp"
-        android:alpha="0.66"
+        android:alpha="0.50"
         android:onClick="exitGame"
         />
 

@@ -21,6 +21,19 @@
             android:paddingRight="10dp"
             android:paddingTop="20dp">
 
+            <ImageView
+                android:id="@+id/close_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="right"
+                android:contentDescription="@string/close"
+                android:nestedScrollingEnabled="true"
+                android:elevation="8dp"
+                android:src="@drawable/ic_highlight_off_black_48dp"
+                android:alpha="0.50"
+                android:onClick="onClose"
+                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,16 +115,6 @@
                     android:text="@string/tutorial_4"
                     android:textSize="@dimen/abc_text_size_medium_material" />
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/close_button"
-                android:background="@mipmap/exit_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:onClick="onClose"
-                android:layout_gravity="right"
-                android:contentDescription="close"
-                android:nestedScrollingEnabled="true" />
 
         </LinearLayout>
 

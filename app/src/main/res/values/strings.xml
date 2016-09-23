@@ -9,4 +9,5 @@
     <string name="tutorial_2">The power flows via wires between the two blue fuses. Make sure you hit the target creature as power will always use the shortest path</string>
     <string name="tutorial_3">Swipe connectors to close the circuit. They are limited so choose wisely. Click to rotate connector already placed on the board.</string>
     <string name="tutorial_4">Gray connectors are there to help you close the circuit. Unfortunately they are fixed and you cannot move nor rotate them.</string>
+    <string name="close">close</string>
 </resources>
