@@ -21,8 +21,8 @@
         android:layout_below="@+id/button_switch_sound"
         android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/myGreen"
-        android:textSize="40sp"
+        android:textColor="@android:color/black"
+        android:textSize="36sp"
         android:text="Fire-Wire" />
 
     <ImageView
