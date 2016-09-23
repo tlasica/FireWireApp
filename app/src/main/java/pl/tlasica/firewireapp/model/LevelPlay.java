@@ -135,6 +135,10 @@ public class LevelPlay {
         generation++;
     }
 
+    public boolean hasAvaliableConnector(ConnectorType type) {
+        return availableConnectors.get(type) > 0;
+    }
+
     public PlacedConnector connectorAt(int pos) {
         return placedConnectors.get(pos);
     }

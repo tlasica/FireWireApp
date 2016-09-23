@@ -236,7 +236,7 @@ public class GameLoop implements Runnable {
             return true;
         }
         ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
-        if (type != null) {
+        if (type != null && play.hasAvaliableConnector(type)) {
             this.movingConnType = type;
             this.movingConnPos = event.to;
             return true;
