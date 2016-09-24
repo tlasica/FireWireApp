@@ -12,6 +12,7 @@ import pl.tlasica.firewireapp.MouseEvent;
 import pl.tlasica.firewireapp.engine.Solution;
 import pl.tlasica.firewireapp.model.ConnectorType;
 import pl.tlasica.firewireapp.model.LevelPlay;
+import pl.tlasica.firewireapp.model.PlacedConnector;
 
 
 public class GameLoop implements Runnable {
@@ -238,13 +239,23 @@ public class GameLoop implements Runnable {
             this.movingConnPos = event.to;
             return true;
         }
+        // in case it is placing connector
         ConnectorType type = connSetDrawing.connAtMouse(event.from, play);
         if (type != null && play.hasAvaliableConnector(type)) {
             this.movingConnType = type;
             this.movingConnPos = event.to;
             return true;
         }
-        // TODO: int nodeFrom = boardDrawing.nodeNumber(event.from, play.board);
+        // in case it is moving connector / removing connector
+        int node = boardDrawing.nodeNumber(event.from, play.board);
+        if (node >= 0) {
+            PlacedConnector conn = play.connectorAt(node);
+            if (conn != null) {
+                this.movingConnType = conn.type;
+                this.movingConnPos = event.to;
+                return true;
+            }
+        }
         return false;
     }
 
