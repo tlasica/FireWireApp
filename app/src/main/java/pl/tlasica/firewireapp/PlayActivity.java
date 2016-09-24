@@ -128,6 +128,7 @@ public class PlayActivity extends BasicActivity {
     }
 
     public void nextLevel() {
+        new AppRater(this).tryRate();
         int nextLevel = Player.get().setNextLevel();
         if (nextLevel > 0) playLevel(); else this.showEndOfLevels();
     }

@@ -13,7 +13,6 @@ import java.util.Queue;
 import pl.tlasica.firewireapp.MouseEvent;
 import pl.tlasica.firewireapp.PlayActivity;
 import pl.tlasica.firewireapp.model.LevelPlay;
-import pl.tlasica.firewireapp.parser.BoardLoader;
 
 
 /**

@@ -10,4 +10,9 @@
     <string name="tutorial_3">Swipe connectors to close the circuit. They are limited so choose wisely. Click to rotate connector already placed on the board.</string>
     <string name="tutorial_4">Gray connectors are there to help you close the circuit. Unfortunately they are fixed and you cannot move nor rotate them.</string>
     <string name="close">close</string>
+    <string name="apprater_title">Rate us!</string>
+    <string name="apprater_btn_later">Later</string>
+    <string name="apprater_title_btn_no">No, thanks!</string>
+    <string name="apprater_text">Please tell us how do you like firewire</string>
+    <string name="apprater_btn_rate">Ok</string>
 </resources>
