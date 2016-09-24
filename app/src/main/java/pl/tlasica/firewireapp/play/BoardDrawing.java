@@ -86,7 +86,7 @@ public class BoardDrawing extends CanvasDrawing {
     }
 
     private void drawBoard(Canvas canvas, Board board) {
-        RectF rect = new RectF(10, 10, canvas.getWidth()-10, canvas.getHeight()-10);
+        RectF rect = getBoardRect(canvas);
         float rad = this.nodeRadius * 0.6f;
         canvas.drawRoundRect(rect, rad, rad, this.boardPaint);
     }

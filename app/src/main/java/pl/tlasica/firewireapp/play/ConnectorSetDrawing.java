@@ -54,6 +54,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     public void drawConnectorAtMouse(Canvas canvas, Point mouse, ConnectorType connectorType) {
         float size = this.cellSize / 2.7f;
         RectF dst = new RectF(mouse.x-size, mouse.y-size, mouse.x+size, mouse.y+size);
+        clipRect(canvas);
         this.drawConnectorInRect(canvas, dst, connectorType);
     }
 

@@ -121,7 +121,6 @@ public class GameLoop implements Runnable {
                 sthProcessed |= handleSwipe((SwipeEvent)ev, play);
             }
             else if (ev instanceof MouseMoveEvent) {
-                Log.i(TAG, "mouse moved");
                 handleMouseMove((MouseMoveEvent)ev, play);
             }
         }

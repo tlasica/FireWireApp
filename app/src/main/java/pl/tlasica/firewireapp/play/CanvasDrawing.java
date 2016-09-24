@@ -2,6 +2,7 @@ package pl.tlasica.firewireapp.play;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.Log;
 
 public class CanvasDrawing {
@@ -40,6 +41,19 @@ public class CanvasDrawing {
 
     float canvasY(int boardY) {
         return boardY * cellSize + cellSize/2.0f;
+    }
+
+    RectF getBoardRect(Canvas canvas) {
+        float margin = 10.0f;
+        RectF rect = new RectF(margin, margin, canvas.getWidth()-margin, canvas.getHeight()-margin);
+        return rect;
+    }
+
+    void clipRect(Canvas canvas) {
+        RectF boardRect = getBoardRect(canvas);
+        float safety = 6.0f;    // to not draw moving connectors on rounded edges as they are nore refreshed
+        RectF safeRect = new RectF(boardRect.left+safety, boardRect.top+safety, boardRect.right-safety, boardRect.bottom-safety);
+        canvas.clipRect(safeRect);
     }
 
 }
