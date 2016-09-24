@@ -91,8 +91,10 @@ public class PlayActivity extends BasicActivity {
 
     public void closeGame(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Stop game and return to menu?");
-        builder.setPositiveButton("STOP", new DialogInterface.OnClickListener() {
+        builder.setIcon(R.drawable.shockcircle);
+        builder.setTitle("Stop game");
+        builder.setMessage("Do you want to stop this game and exit?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 fullScreenMode();
                 finish();
@@ -107,8 +109,10 @@ public class PlayActivity extends BasicActivity {
 
     public void restartGame(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Restart this game?");
-        builder.setPositiveButton("RESTART", new DialogInterface.OnClickListener() {
+        builder.setIcon(R.drawable.shockcircle);
+        builder.setTitle("Restart game");
+        builder.setMessage("Do you want to restart this game?");
+        builder.setPositiveButton("YES, RESTART", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 fullScreenMode();
                 game().restart();
@@ -136,6 +140,8 @@ public class PlayActivity extends BasicActivity {
     //TODO: implement a nice dialog for this with score etc, share on FB
     private void showEndOfLevels() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game completed!");
+        builder.setIcon(R.drawable.shockcircle);
         builder.setMessage("You won!\nThere are no more tasks to finish.\nNo most creatures to fire.\n\nAwesome job!");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 
 import pl.tlasica.firewireapp.PlayActivity;
+import pl.tlasica.firewireapp.R;
 import pl.tlasica.firewireapp.model.LevelPlay;
 
 /**
@@ -25,6 +26,7 @@ public class LevelCompletedDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Good job!");
         builder.setMessage(this.buildMsg());
+        builder.setIcon(R.drawable.shockcircle);
 
         builder.setNeutralButton("EXIT", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
