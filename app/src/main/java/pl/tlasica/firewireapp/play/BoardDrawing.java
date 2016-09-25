@@ -29,9 +29,7 @@ public class BoardDrawing extends CanvasDrawing {
 
     private int myOrange = Color.parseColor("#FFA500");
     private int boardColor = Color.parseColor("#002312");
-//    private int wireColor = Color.parseColor("#7CC597");
     private int wireColor = Color.parseColor("#7DC698");
-//    private int connectionColor = Color.parseColor("#E7C03F");
     private int connectionColor = myOrange;
 
     private Paint nodePaint = fillPaint(wireColor);
@@ -80,9 +78,9 @@ public class BoardDrawing extends CanvasDrawing {
 
         drawConnectors(canvas, play.board, play.placedConnectors);
         drawDefinedConnections(canvas, play.board);
-        drawSpecial(canvas, play.board, play.board.plus, ConnectorBitmap.plusBitmap);
-        drawSpecial(canvas, play.board, play.board.minus, ConnectorBitmap.minusBitmap);
-        drawSpecial(canvas, play.board, play.board.target, ConnectorBitmap.targetBitmap);
+        drawSpecial(canvas, play.board, play.board.plus, ConnectorBitmap.plusBitmap, 0, 0);
+        drawSpecial(canvas, play.board, play.board.minus, ConnectorBitmap.minusBitmap, 0, 0);
+        drawSpecial(canvas, play.board, play.board.target, ConnectorBitmap.targetBitmap, 0, 0);
     }
 
     private void drawBoard(Canvas canvas, Board board) {
@@ -129,7 +127,7 @@ public class BoardDrawing extends CanvasDrawing {
         if (!board.isSpecial(pos)) {
             Bitmap bmp = ConnectorBitmap.freeBitmap(ConnectorType.DEFINED);
             assert bmp != null;
-            drawBitmapAtNode(canvas, pos, bmp);
+            drawBitmapAtNode(canvas, pos, bmp, 0, 0);
         }
     }
 
@@ -239,7 +237,7 @@ public class BoardDrawing extends CanvasDrawing {
         Bitmap bmp = ConnectorBitmap.freeBitmap(conn.type);
         assert bmp != null;
         // draw connector bitmap
-        drawBitmapAtNode(canvas, at, bmp);
+        drawBitmapAtNode(canvas, at, bmp, 0 ,0);
     }
 
     void drawConnectedWires(Canvas canvas, int at, List<Integer> toNodes, int size) {
@@ -248,16 +246,19 @@ public class BoardDrawing extends CanvasDrawing {
         }
     }
 
-    void drawSpecial(Canvas canvas, Board board, int at, Bitmap bmp) {
+    void drawSpecial(Canvas canvas, Board board, int at, Bitmap bmp, int sizePlus, int randomMove) {
         // we expected defined conn for special fields if they are connected
-        drawBitmapAtNode(canvas, at, bmp);
+        drawBitmapAtNode(canvas, at, bmp, sizePlus, randomMove);
     }
 
-    void drawBitmapAtNode(Canvas canvas, int at, Bitmap bmp) {
-        float cx = canvasX(IntCoord.x(at));
-        float cy = canvasY(IntCoord.y(at));
-        float size = this.cellSize / 2.7f;
-        RectF targetRect = new RectF(cx - size / 2, cy - size / 2, cx + size / 2, cy + size / 2);
+    void drawBitmapAtNode(Canvas canvas, int at, Bitmap bmp, int sizePlus, int randomMove) {
+        float randomX = (randomMove > 0) ? random.nextInt(randomMove) : 0;
+        float randomY = (randomMove > 0) ? random.nextInt(randomMove) : 0;
+        float cx = canvasX(IntCoord.x(at)) + randomX;
+        float cy = canvasY(IntCoord.y(at)) + randomY;
+        float size = this.cellSize / 2.7f + sizePlus;
+        float halfSize = size / 2.0f;
+        RectF targetRect = new RectF(cx - halfSize, cy - halfSize, cx + halfSize, cy + halfSize);
         Rect rectSrc = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
         canvas.drawBitmap(bmp, rectSrc, targetRect, bmpPaint);
     }
@@ -289,4 +290,13 @@ public class BoardDrawing extends CanvasDrawing {
         return shape;
     }
 
+    /**
+     * Draw grilled creature for success switching grey / yellow shock image like a Neon lamp
+     */
+    public void drawGrilledCreature(Canvas canvas, LevelPlay play, int frameNo) {
+        boolean creatureOn = (frameNo % 2 == 0);
+        Bitmap img = creatureOn ? ConnectorBitmap.targetConnectedBitmap : ConnectorBitmap.targetBitmap;
+        int addSize = creatureOn ? 20+random.nextInt(20) : 0;
+        drawSpecial(canvas, play.board, play.board.target, img, addSize, 10);
+    }
 }

@@ -17,22 +17,24 @@ import pl.tlasica.firewireapp.model.PlacedConnector;
 
 public class GameLoop implements Runnable {
 
-    private final SurfaceHolder surfaceHolder;
-    private boolean running = true;
-    private boolean pause = false;
-    private final String TAG = "GameLoop";
+    private final SurfaceHolder         surfaceHolder;
+    private boolean                     running = true;
+    private boolean                     pause = false;
+    private final String                TAG = "GameLoop";
 
-    private Queue<MouseEvent>   eventQueue;
+    private Queue<MouseEvent>           eventQueue;
 
-    private final BoardDrawing boardDrawing;
-    private final ConnectorSetDrawing connSetDrawing;
-    private final GameLoopStatistics stats = new GameLoopStatistics();
+    private final BoardDrawing          boardDrawing;
+    private final ConnectorSetDrawing   connSetDrawing;
+    private final GameLoopStatistics    stats = new GameLoopStatistics();
 
     private ConnectorType movingConnType;
     private Point         movingConnPos;
 
-    private long lastLogTime;
-    private Game game;
+    private long                lastLogTime;
+    private Game                game;
+    private Solution.GameStatus gameStatus = Solution.GameStatus.NOT_FINISHED;
+    private int                 gameFinishedFrame = 0;    // 30 x 100ms = 3s
 
     public GameLoop(Game g, SurfaceHolder sfHolder, Queue<MouseEvent> eventQ) {
         game = g;
@@ -52,10 +54,18 @@ public class GameLoop implements Runnable {
         stats.start();
         while (running) {
             long frameStartTime = new Date().getTime();
-            if (! pause) {
+            if (! pause ) {
                 processInput();
                 doPhysics();
                 drawGraphics();
+            }
+            if (this.gameStatus == Solution.GameStatus.WIN) {
+                this.gameFinishedFrame += 1;
+                drawGraphics();
+                if (this.gameFinishedFrame == 16) {  // has to be even to draw grilled creature as last
+                    Log.d(TAG, "close game loop after game is finished");
+                    this.gameSolved();
+                }
             }
             waitForNextFrame(frameStartTime);
         }
@@ -65,7 +75,7 @@ public class GameLoop implements Runnable {
     private long waitForNextFrame(long frameStartTime) {
         long nextFrameStartTime = new Date().getTime();
         long howLongWeTook = nextFrameStartTime - frameStartTime;
-        long frameDurationMs = 100;
+        long frameDurationMs = 50;
         long waitTime = frameDurationMs - howLongWeTook;
         if (waitTime > 0) {
             try {
@@ -96,6 +106,9 @@ public class GameLoop implements Runnable {
                 if (this.movingConnType != null) {
                     connSetDrawing.drawConnectorAtMouse(canvas, this.movingConnPos, this.movingConnType);
                 }
+                if (this.gameStatus == Solution.GameStatus.WIN) {
+                    boardDrawing.drawGrilledCreature(canvas, levelPlay, this.gameFinishedFrame);
+                }
             }
             long t1 = System.currentTimeMillis();
             logPerf("Drawing duration[ms]", t1-t0);
@@ -103,7 +116,6 @@ public class GameLoop implements Runnable {
         finally {
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
-
     }
 
     private void doPhysics() {
@@ -129,25 +141,34 @@ public class GameLoop implements Runnable {
         if (sthProcessed) {
             game.noifyStateChange();
             Log.i(TAG, "Something processed, checking game status");
-            Solution.GameStatus status = Solution.solution(LevelPlay.current());
-            switch (status) {
+            this.gameStatus = Solution.solution(LevelPlay.current());
+            switch (this.gameStatus) {
                 case WIN:
+                    // if is ok to just set status and pause
+                    // main game loop will take care
+                    this.pause(true);
                     Log.i("GAME", "Success. Win!");
                     stats.stop();
                     SoundPoolPlayer.get().electricshock();
-                    SoundPoolPlayer.get().playYes();
-                    this.pleaseStop();
-                    game.notifyGameSolved();
                     break;
                 case LOST:
                     Log.i("GAME", "Game Lost...");
                     stats.stop();
                     SoundPoolPlayer.get().playNo();
-                    this.pleaseStop();
-                    game.notifyGameLost();
+                    this.gameLost();
                     break;
             }
         }
+    }
+
+    private void gameSolved() {
+        this.pleaseStop();
+        game.notifyGameSolved();
+    }
+
+    private void gameLost() {
+        this.pleaseStop();
+        game.notifyGameLost();
     }
 
     public void pleaseStop() {

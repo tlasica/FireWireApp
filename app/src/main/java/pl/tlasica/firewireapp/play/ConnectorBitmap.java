@@ -18,6 +18,7 @@ public class ConnectorBitmap {
     static public Bitmap plusBitmap;
     static public Bitmap minusBitmap;
     static public Bitmap targetBitmap;
+    public static Bitmap targetConnectedBitmap;
 
     public static void initialize(Resources res) {
         resources = res;
@@ -27,7 +28,8 @@ public class ConnectorBitmap {
         }
         plusBitmap = BitmapFactory.decodeResource(res, R.drawable.battery_blue);
         minusBitmap = BitmapFactory.decodeResource(res, R.drawable.battery_blue);
-        targetBitmap = BitmapFactory.decodeResource(res, R.drawable.shockcircle);
+        targetBitmap = BitmapFactory.decodeResource(res, R.drawable.shockcircle_off);
+        targetConnectedBitmap = BitmapFactory.decodeResource(res, R.drawable.shockcircle_grilled);
     }
 
     // get bitmap without any connections
