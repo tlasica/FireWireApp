@@ -40,8 +40,8 @@
                 android:layout_margin="10dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="20dp"
                     android:src="@drawable/shockcircle" />
 
@@ -59,11 +59,9 @@
                 android:layout_margin="10dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="20dp"
-                    android:maxHeight="50dp"
-                    android:maxWidth="50dp"
                     android:src="@drawable/battery_blue" />
 
                 <TextView
@@ -80,11 +78,9 @@
                 android:layout_margin="10dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="20dp"
-                    android:maxHeight="50dp"
-                    android:maxWidth="50dp"
                     android:src="@drawable/connector_e_x_placed" />
 
                 <TextView
@@ -101,11 +97,9 @@
                 android:layout_margin="10dp">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="20dp"
-                    android:maxHeight="50dp"
-                    android:maxWidth="50dp"
                     android:src="@drawable/connection" />
 
                 <TextView
