@@ -32,7 +32,8 @@ public class Solution {
                     return GameStatus.WIN;
                 }
             }
-            return GameStatus.LOST;
+            // path of length 2 is not a solution as it may happen during rotating the connector
+            if (path.size()>2) return GameStatus.LOST;
         }
         return GameStatus.NOT_FINISHED;
     }
