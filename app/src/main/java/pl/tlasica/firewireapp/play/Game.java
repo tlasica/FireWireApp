@@ -47,8 +47,6 @@ public class Game {
                         Log.d("GAME", "game loop msg: change");
                         break;
                     case GAME_LOST:
-                        // TODO: show alert what now: restart, stop
-                        // TODO: maybe a better idea would be to pass this message to
                         Log.d("GAME", "game loop msg: lost");
                         builder = new AlertDialog.Builder(playActivity);
                         builder.setIcon(R.drawable.shockcircle);

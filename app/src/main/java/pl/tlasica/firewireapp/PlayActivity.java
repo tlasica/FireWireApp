@@ -17,6 +17,7 @@ import pl.tlasica.firewireapp.model.Board;
 import pl.tlasica.firewireapp.model.LevelPlay;
 import pl.tlasica.firewireapp.parser.BoardLoader;
 import pl.tlasica.firewireapp.play.Game;
+import pl.tlasica.firewireapp.play.LevelId;
 import pl.tlasica.firewireapp.play.Player;
 
 
@@ -138,8 +139,23 @@ public class PlayActivity extends BasicActivity {
 
     public void nextLevel() {
         new AppRater(this).tryRate();
-        int nextLevel = Player.get().setNextLevel();
-        if (nextLevel > 0) playLevel(); else this.showEndOfLevels();
+        int currLevel = Player.get().currentLevelId();
+        int nextLevel = BoardLoader.nextLevelId(currLevel);
+        if (nextLevel > 0)
+        {
+            int level = LevelId.level(nextLevel);
+            boolean canPlayLevel = Player.get().canPlayLevel(level);
+            if (! canPlayLevel) {
+                Log.i("", "taking fist unfinished as next instead of 1st in next level");
+                nextLevel = Player.get().firstUnfinishedLevelId();
+            }
+            Player.get().setCurrentLevelId(nextLevel);
+            playLevel();
+        }
+        else {
+            Log.i("", "all levels solved, game finished!");
+            this.showEndOfLevels();
+        }
     }
 
     //TODO: implement a nice dialog for this with score etc, share on FB
