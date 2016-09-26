@@ -127,7 +127,7 @@ public class LevelsActivity extends BasicActivity {
             image.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     int levelId = v.getId();
-                    BoardLoader loader = new BoardLoader(getAssets());
+                    BoardLoader loader = new BoardLoader();
                     try {
                         Board level = loader.load(levelId);
                         Player.get().setCurrentLevelId(levelId);

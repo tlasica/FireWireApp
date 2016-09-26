@@ -64,10 +64,11 @@ public class MainActivity extends BasicActivity {
         ConnectorBitmap.initialize(getResources());
 
         try {
-            new BoardLoader(getAssets()).initLevelSizes();
+            BoardLoader.initLevelSizes(getAssets());
         } catch (IOException e) {
             Toast.makeText(this, "Ups. Loading levels failed.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+            this.finish();
         }
 
         restoreSolvedLevels();
@@ -99,7 +100,7 @@ public class MainActivity extends BasicActivity {
 
     public void onPlay(View view) {
         // load next level
-        BoardLoader loader = new BoardLoader(getAssets());
+        BoardLoader loader = new BoardLoader();
         try {
             int levelId = Player.get().firstUnfinishedLevelId();
             if (levelId == 0) {

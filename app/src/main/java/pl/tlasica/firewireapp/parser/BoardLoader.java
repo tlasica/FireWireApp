@@ -18,21 +18,17 @@ import pl.tlasica.firewireapp.play.LevelId;
  */
 public class BoardLoader {
 
-    public static final int NUM_LEVELS = 5;
-    public static final int[] levelSizes = new int[NUM_LEVELS+1];
+    public static final int         NUM_LEVELS = 5;
+    public static final int[]       levelSizes = new int[NUM_LEVELS+1];
+    private static AssetManager     assets;
 
-    private AssetManager    assets;
-    private String          lastFile;   // last file used for loading eg. for error reporting
-
-    public BoardLoader(AssetManager assets) {
-        this.assets = assets;
-    }
+    private String                  lastFile;   // last file used for loading eg. for error reporting
 
     public Board load(int levelId) throws IOException {
         int levelNo = LevelId.level(levelId);
         int gameNo = LevelId.game(levelId);
         lastFile = fileName(levelNo, gameNo);
-        List<String> lines = loadLines(this.assets, lastFile);
+        List<String> lines = loadLines(assets, lastFile);
         TextParser parser = new TextParser();
         Board board = parser.parse(lines);
         if (board.title==null) {
@@ -61,13 +57,14 @@ public class BoardLoader {
         return lines;
     }
 
-    private int numGamesInLevel(int levelNo) throws IOException {
+    private static final int numGamesInLevel(int levelNo) throws IOException {
         String levelPath = String.format("levels/%02d", levelNo);
-        String[] games = this.assets.list(levelPath);
+        String[] games = assets.list(levelPath);
         return games.length;
     }
 
-    public final void initLevelSizes() throws IOException {
+    public final static void initLevelSizes(AssetManager assets) throws IOException {
+        BoardLoader.assets = assets;
         for(int l=1; l<=NUM_LEVELS; l++) {
             levelSizes[l] = numGamesInLevel(l);
             Log.d("GameLoader", String.format("Level %02d: %d games", l, levelSizes[l]));

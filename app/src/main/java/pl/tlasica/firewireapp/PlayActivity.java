@@ -164,8 +164,8 @@ public class PlayActivity extends BasicActivity {
     private void playLevel() {
         game().stop();
         fullScreenMode();
-        BoardLoader loader = new BoardLoader(getAssets());
         Board level = null;
+        BoardLoader loader = new BoardLoader();
         try {
             level = loader.load(Player.get().currentLevelId());
         } catch (IOException e) {
