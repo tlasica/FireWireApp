@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "115693740851",
+    "firebase_url": "https://firewireapp-f8e4d.firebaseio.com",
+    "project_id": "firewireapp-f8e4d",
+    "storage_bucket": "firewireapp-f8e4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115693740851:android:2d7dc4359f1039ce",
+        "android_client_info": {
+          "package_name": "pl.tlasica.firewireapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115693740851-c5suc5sqg21g19eq8ntq3ucdd4l5gr0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVxDN7P4QDZQZkxn7Nrt3-chp-MVe1mko"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
