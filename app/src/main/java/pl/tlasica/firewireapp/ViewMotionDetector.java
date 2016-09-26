@@ -47,17 +47,10 @@ public class ViewMotionDetector implements View.OnTouchListener{
                     onSwipeEvent(downX, downY, upX, upY);
                     return true;
                 }
-                if (isClickDistance(dist)) {
-                    if (isLongPress(event.getDownTime())) {
-                        onLongClick(downX, downY);
-                        return true;
-                    }
-                    else {
-                        onClick(downX, downY);
-                        return true;
-                    }
+                else {
+                    onClick(downX, downY);
+                    return true;
                 }
-                return false;
             }
             case MotionEvent.ACTION_MOVE: {
                 Point curr = new Point((int)event.getX(),(int)event.getY());
@@ -68,22 +61,12 @@ public class ViewMotionDetector implements View.OnTouchListener{
         }
     }
 
-    private boolean isLongPress(long downTime) {
-        // always false - we do not support long press
-        return false;
-    }
-
     private void onClick(float downX, float downY) {
         int x = (int) downX;
         int y = (int) downY;
         String msg = String.format("SHORT CLICK at (%d, %d)", x, y);
         Log.d("MOTION", msg);
         eventQueue.add(new ClickEvent(new Point(x, y)));
-    }
-
-    private void onLongClick(float downX, float downY) {
-        String msg = String.format("LONG CLICK at (%f, %f)", downX, downY);
-        Log.d("MOTION", msg);
     }
 
     private boolean isSwipeDistance(double dist) {
