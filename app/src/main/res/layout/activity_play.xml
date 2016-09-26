@@ -80,9 +80,10 @@
 
         <ImageButton
             android:id="@+id/restart_button"
-            android:background="@mipmap/restart_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:background="@drawable/ic_replay_white_36dp"
+            android:alpha="0.66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:onClick="showRestartGameDialog"
             android:nestedScrollingEnabled="true"
             android:layout_alignParentStart="false"
@@ -91,9 +92,10 @@
 
         <ImageButton
             android:id="@+id/close_button"
-            android:background="@mipmap/exit_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:background="@drawable/ic_highlight_off_white_36dp"
+            android:alpha="0.66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:onClick="closeGame"
             android:nestedScrollingEnabled="true"
             android:layout_centerHorizontal="true"
