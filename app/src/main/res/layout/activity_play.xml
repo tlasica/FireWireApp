@@ -83,7 +83,7 @@
             android:background="@mipmap/restart_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="restartGame"
+            android:onClick="showRestartGameDialog"
             android:nestedScrollingEnabled="true"
             android:layout_alignParentStart="false"
             android:layout_alignParentLeft="true"

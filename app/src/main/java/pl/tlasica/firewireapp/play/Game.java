@@ -12,6 +12,7 @@ import java.util.Queue;
 
 import pl.tlasica.firewireapp.MouseEvent;
 import pl.tlasica.firewireapp.PlayActivity;
+import pl.tlasica.firewireapp.R;
 import pl.tlasica.firewireapp.model.LevelPlay;
 
 
@@ -50,12 +51,19 @@ public class Game {
                         // TODO: maybe a better idea would be to pass this message to
                         Log.d("GAME", "game loop msg: lost");
                         builder = new AlertDialog.Builder(playActivity);
-                        builder.setMessage("Game lost:\npower wired but not fired.");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        builder.setIcon(R.drawable.shockcircle);
+                        builder.setTitle("Game Over");
+                        builder.setMessage("Game lost.\nPower wired but not fired :-(");
+                        builder.setNegativeButton("CLOSE", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 playActivity.finish();
                             }
                         });
+                        builder.setPositiveButton("REPLAY", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                playActivity.repeatLevel();
+                            } });
+
                         builder.create().show();
                         break;
                     case GAME_SOLVED:
@@ -110,6 +118,7 @@ public class Game {
     public void restart() {
         gameLoop.pause(true);
         LevelPlay.restart();
+        gameLoop.restart();
         gameLoop.pause(false);
     }
 

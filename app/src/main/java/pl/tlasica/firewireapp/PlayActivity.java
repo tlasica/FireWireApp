@@ -107,15 +107,14 @@ public class PlayActivity extends BasicActivity {
         dialog.show();
     }
 
-    public void restartGame(View view) {
+    public void showRestartGameDialog(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.shockcircle);
         builder.setTitle("Restart game");
         builder.setMessage("Do you want to restart this game?");
         builder.setPositiveButton("YES, RESTART", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                fullScreenMode();
-                game().restart();
+                doRestartGame();
             } });
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -123,6 +122,12 @@ public class PlayActivity extends BasicActivity {
             } });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void doRestartGame() {
+        this.startTimer();
+        fullScreenMode();
+        game().restart();
     }
 
     private Game game() {

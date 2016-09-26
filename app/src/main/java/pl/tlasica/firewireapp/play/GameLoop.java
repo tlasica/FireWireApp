@@ -28,8 +28,8 @@ public class GameLoop implements Runnable {
     private final ConnectorSetDrawing   connSetDrawing;
     private final GameLoopStatistics    stats = new GameLoopStatistics();
 
-    private ConnectorType movingConnType;
-    private Point         movingConnPos;
+    private ConnectorType       movingConnType;
+    private Point               movingConnPos;
 
     private long                lastLogTime;
     private Game                game;
@@ -291,6 +291,13 @@ public class GameLoop implements Runnable {
 
     public GameLoopStatistics stats() {
         return stats;
+    }
+
+    public void restart() {
+        stats.start();
+        eventQueue.clear();
+        movingConnType = null;
+        gameStatus = Solution.GameStatus.NOT_FINISHED;
     }
 }
 
