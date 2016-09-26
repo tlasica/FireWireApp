@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.io.IOException;
 
 import pl.tlasica.firewireapp.model.Board;
@@ -28,11 +32,27 @@ public class PlayActivity extends BasicActivity {
     private GameView    mGameView;
     private TextView    mTimeView;
     private CountDownTimer timer;
+    private String      addUnitId = "ca-app-pub-6316552100242193/6643259663";
+    InterstitialAd      mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        // request new add
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(addUnitId);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                Log.d("Ad", "Ad closed.");
+                requestNewInterstitial();
+                playLevel();
+            }
+        });
+
+        requestNewInterstitial();
         // set the full screen mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // change title to level title
@@ -44,6 +64,15 @@ public class PlayActivity extends BasicActivity {
         // start game
         mGameView = (GameView)findViewById(R.id.game_view);
         mGameView.setGame(new Game(this));
+    }
+
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .build();
+        mInterstitialAd.loadAd(adRequest);
     }
 
     @Override
@@ -141,16 +170,22 @@ public class PlayActivity extends BasicActivity {
         new AppRater(this).tryRate();
         int currLevel = Player.get().currentLevelId();
         int nextLevel = BoardLoader.nextLevelId(currLevel);
-        if (nextLevel > 0)
-        {
+        if (nextLevel > 0) {
             int level = LevelId.level(nextLevel);
             boolean canPlayLevel = Player.get().canPlayLevel(level);
-            if (! canPlayLevel) {
+            if (!canPlayLevel) {
                 Log.i("", "taking fist unfinished as next instead of 1st in next level");
                 nextLevel = Player.get().firstUnfinishedLevelId();
             }
             Player.get().setCurrentLevelId(nextLevel);
-            playLevel();
+
+            if (mInterstitialAd.isLoaded()) {
+                Log.d("Ad", "Ad is loaded - showing");
+                mInterstitialAd.show();
+            } else {
+                Log.d("Ad", "Ad is NOT loaded");
+                playLevel();
+            }
         }
         else {
             Log.i("", "all levels solved, game finished!");
