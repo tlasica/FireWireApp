@@ -1,7 +1,7 @@
 MATRIX(4,4)
 TARGET(1,2)
-PLUS(2,1)
-MINUS(3,2)
+PLUS(0,1)
+MINUS(3,0)
 (4,0)=W,S
 (2,2)=S,W
 (3,3)=S,W
@@ -12,8 +12,6 @@ MINUS(3,2)
 (0,1)=S,E
 (3,0)=E,S
 (3,1)=E,W
-(2,1)=W,E
-(3,2)=S,E
 # connectors
-C90=5
-C180=1
+C90=4
+C180=2
