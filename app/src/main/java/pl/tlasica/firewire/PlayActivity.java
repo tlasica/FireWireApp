@@ -35,6 +35,9 @@ public class PlayActivity extends BasicActivity {
     private String      addUnitId = "ca-app-pub-6316552100242193/6643259663";
     InterstitialAd      mInterstitialAd;
 
+    private static int  playNextCounter = 0;
+    private static int  showAddCounterBarrier = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,8 +181,8 @@ public class PlayActivity extends BasicActivity {
                 nextLevel = Player.get().firstUnfinishedLevelId();
             }
             Player.get().setCurrentLevelId(nextLevel);
-
-            if (mInterstitialAd.isLoaded()) {
+            boolean shouldShowAdd = this.checkIfShowAdd(nextLevel) && mInterstitialAd.isLoaded();
+            if (shouldShowAdd) {
                 Log.d("Ad", "Ad is loaded - showing");
                 mInterstitialAd.show();
             } else {
@@ -191,6 +194,23 @@ public class PlayActivity extends BasicActivity {
             Log.i("", "all levels solved, game finished!");
             this.showEndOfLevels();
         }
+    }
+
+    /**
+     * We want to show Ad after 3..4..5 playNext runs and only in level 2+
+     */
+    private static boolean checkIfShowAdd(int nextLevel) {
+        // do not show if level == 1
+        if (nextLevel == 0) return false;
+        if (LevelId.level(nextLevel) < 2) return false;
+        // show after 3., then 7th (3+4), then 12. (3+4+5) run
+        playNextCounter++;
+        if (playNextCounter == showAddCounterBarrier) {
+            playNextCounter = 0;
+            if (showAddCounterBarrier<5) showAddCounterBarrier++; // 3..4..5
+            return true;
+        }
+        return false;
     }
 
     //TODO: implement a nice dialog for this with score etc, share on FB
