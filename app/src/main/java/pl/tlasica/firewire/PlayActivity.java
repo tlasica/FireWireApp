@@ -170,7 +170,6 @@ public class PlayActivity extends BasicActivity {
     }
 
     public void nextLevel() {
-        new AppRater(this).tryRate();
         int currLevel = Player.get().currentLevelId();
         int nextLevel = BoardLoader.nextLevelId(currLevel);
         if (nextLevel > 0) {
@@ -187,6 +186,7 @@ public class PlayActivity extends BasicActivity {
                 mInterstitialAd.show();
             } else {
                 Log.d("Ad", "Ad is NOT loaded");
+                new AppRater(this).tryRate();
                 playLevel();
             }
         }

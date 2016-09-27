@@ -40,17 +40,17 @@ public class AppRater {
         return count;
     }
 
-    public void tryRate() {
+    public boolean tryRate() {
         if (this.SHOW_ALWAYS) {
             Log.i("AppRater", "show always mode, show the dialog");
             showRateDialog();
-            return;
+            return true;
         }
 
         SharedPreferences prefs = mContext.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         if (prefs.getBoolean("dontshowagain", false)) {
             Log.i("AppRater", "not showing again");
-            return;
+            return false;
         }
 
         long launchCount = incTryCount();
@@ -58,7 +58,9 @@ public class AppRater {
         if (runsToAsk.contains(launchCount)) {
             Log.i("AppRater", "show the dialog");
             showRateDialog();
+            return true;
         }
+        return false;
     }
 
     public void showRateDialog() {
