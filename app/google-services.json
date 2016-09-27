@@ -36,6 +36,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115693740851:android:9f7fa814e2e12640",
+        "android_client_info": {
+          "package_name": "pl.tlasica.firewire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115693740851-c5suc5sqg21g19eq8ntq3ucdd4l5gr0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVxDN7P4QDZQZkxn7Nrt3-chp-MVe1mko"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
