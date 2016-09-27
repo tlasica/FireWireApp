@@ -1,22 +1,18 @@
-T: Finito
+#@ 03:05
 MATRIX(4,4)
-TARGET(2,2)
+TARGET(3,3)
 PLUS(0,1)
-MINUS(4,3)
-(4,0)
-(0,4)
-(4,0)=S,W
-(4,3)=S,W,N
-(0,4)=W,S
-(2,0)=W,S
-(1,2)=S,E
-(2,4)=E,N
-(3,3)=S,W
-(2,2)=N,E,S,W
-(3,2)=N,E
-(4,1)=W,N
-(0,1)=N,S
-
-#i tu 4 proste i 2 90 stopni.
+MINUS(2,4)
+(3,1)=W,S
+(2,2)=N,E
+(0,3)=E,N
+(2,3)=E,W
+(0,1)=E,N,S
+(3,3)=E,W,N
+(1,0)=E,W
+(0,0)=E,S
+(2,4)=E,W
+# connectors
 C90=4
 C180=2
+#C6
