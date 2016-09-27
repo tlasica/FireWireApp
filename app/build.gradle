@@ -8,8 +8,8 @@ android {
         applicationId "pl.tlasica.firewire"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 6
-        versionName "0.80"
+        versionCode 7
+        versionName "0.81"
     }
     buildTypes {
         debug {
