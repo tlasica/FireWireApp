@@ -2,17 +2,14 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
 
     <color name="myGreen">#009240</color>
     <color name="myLightGreen">#7DC698</color>
-    <color name="myDarkGreen">#007734</color>
     <color name="myLightGray">#BFC1C2</color>
     <color name="myOrange">#FFA500</color>
     <color name="myDarkOrange">#FF8300</color>
-    <color name="myRed">#FF2600</color>
 </resources>
 
 <!--

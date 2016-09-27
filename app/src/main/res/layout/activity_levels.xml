@@ -9,7 +9,6 @@
     tools:context="pl.tlasica.firewireapp.MainActivity">
 
     <ScrollView
-        android:id="@+id/levels_scroll_view"
         android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -25,7 +24,6 @@
             android:paddingTop="20dp">
 
             <ImageView
-                android:id="@+id/close_button"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="right"

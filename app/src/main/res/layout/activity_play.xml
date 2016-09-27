@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:id="@+id/content_view"
     tools:context="pl.tlasica.firewireapp.PlayActivity"
     android:touchscreenBlocksFocus="false">
 
@@ -79,7 +78,6 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/restart_button"
             android:background="@drawable/ic_replay_white_36dp"
             android:alpha="0.66"
             android:layout_width="wrap_content"
@@ -91,7 +89,6 @@
             android:layout_alignParentTop="true" />
 
         <ImageButton
-            android:id="@+id/close_button"
             android:background="@drawable/ic_highlight_off_white_36dp"
             android:alpha="0.66"
             android:layout_width="wrap_content"

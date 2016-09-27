@@ -3,8 +3,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_play">PlayActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="tutorial_1">Your goal is to let the power burn this ugly creature. Time is important so think fast!</string>
     <string name="tutorial_2">The power flows via wires between the two blue fuses. Make sure you hit the target creature as power will always use the shortest path</string>
     <string name="tutorial_3">Swipe connectors to close the circuit. They are limited so choose wisely. Click to rotate connector already placed on the board.</string>

@@ -50,7 +50,6 @@
         </Space>
 
         <ImageButton
-            android:id="@+id/button_play"
             android:onClick="onPlay"
             android:elevation="8dp"
             android:src="@drawable/ic_play_circle_outline_white_48dp"
@@ -66,7 +65,6 @@
         </Space>
 
         <ImageButton
-            android:id="@+id/button_levels"
             android:elevation="8dp"
             android:src="@drawable/ic_apps_white_48dp"
             android:background="@drawable/green_button"
@@ -82,7 +80,6 @@
         </Space>
 
         <ImageButton
-            android:id="@+id/button_tutorial"
             android:elevation="8dp"
             android:src="@drawable/ic_help_outline_white_48dp"
             android:background="@drawable/green_button"
@@ -113,7 +110,6 @@
         />
 
     <ImageView
-        android:id="@+id/button_exit_game"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_alignParentRight="true"
