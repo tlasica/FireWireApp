@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:fitsSystemWindows="true"
-    tools:context="pl.tlasica.firewireapp.MainActivity">
+    tools:context="pl.tlasica.firewire.MainActivity">
 
     <ScrollView
         android:fillViewport="true"

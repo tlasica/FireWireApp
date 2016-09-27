@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.tlasica.firewireapp">
+    package="pl.tlasica.firewire">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="pl.tlasica.firewire.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -21,25 +21,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlayActivity"
+            android:name="pl.tlasica.firewire.PlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_play"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".play.TutorialActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="pl.tlasica.firewire.play.TutorialActivity"
+            android:parentActivityName="pl.tlasica.firewire.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.tlasica.firewireapp.MainActivity" />
+                android:value="pl.tlasica.firewire.MainActivity" />
         </activity>
         <activity
-            android:name=".play.LevelsActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="pl.tlasica.firewire.play.LevelsActivity"
+            android:parentActivityName="pl.tlasica.firewire.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.tlasica.firewireapp.MainActivity" />
+                android:value="pl.tlasica.firewire.MainActivity" />
         </activity>
 
     </application>
