@@ -1,21 +1,18 @@
-T: Turn to win
+#@ 03:02
 MATRIX(4,4)
-TARGET(3,2)
-PLUS(0,4)
-MINUS(4,0)
-(4,0)
-(0,4)
-(4,0)=S,W
-(0,4)=E,N
+TARGET(1,3)
+PLUS(2,0)
+MINUS(3,4)
+(1,3)=W,S
+(2,2)=N,S
+(0,3)=E,N
 (1,2)=S,W
-(1,3)=N,W
+(2,0)=E,W
+(3,1)=S,N
+(1,1)=E,W
+(0,0)=E,S
 (3,4)=E,W
-(2,3)=N,W
-(3,2)=N,S,W,E
-(4,1)=W,N
-(2,1)=N,S
-(0,1)=N,S
-
-#do tej 6 konektorów 90 stopni i jeden "na wprost"
-C90=6
-C180=1
+# connectors
+C90=1
+C180=4
+#C5
