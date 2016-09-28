@@ -22,7 +22,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     float offsetX;
     float offsetY;
 
-    final int countColor = Color.parseColor("#E7C03F");
+    final int countColor = Color.parseColor("#FFA500");
     final int frameColor = Color.argb(255, 219, 219, 219);
 
     Paint framePaint = strokePaint(3, frameColor);
@@ -80,7 +80,9 @@ public class ConnectorSetDrawing extends CanvasDrawing {
 
     void drawCount(Canvas canvas, int index, int count) {
         RectF rect = textRect(index);
-        canvas.drawText(String.valueOf(count), rect.left, rect.bottom, textPaint());
+        Paint paint = textPaint();
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText(String.format("%d",count), rect.right, rect.bottom, paint);
     }
 
     void drawConnectorByIndex(Canvas canvas, int index, ConnectorType type) {
@@ -110,8 +112,8 @@ public class ConnectorSetDrawing extends CanvasDrawing {
     }
 
     RectF textRect(int index) {
-        float l = left(index) + 0.75f * frameWidth;
-        float r = left(index) + frameWidth - 5;
+        float l = left(index) + 0.70f * frameWidth;
+        float r = left(index) + frameWidth - 10;
         float t = offsetY + 5;
         float b = offsetY + 0.33f * frameHeight;
         return new RectF(l, t, r, b);
@@ -141,6 +143,7 @@ public class ConnectorSetDrawing extends CanvasDrawing {
             textPaint.setColor(color);
             textPaint.setTextSize(size);
             textPaint.setAntiAlias(true);
+            textPaint.setTextAlign(Paint.Align.RIGHT);
             textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
         }
         return textPaint;
