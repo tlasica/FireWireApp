@@ -40,6 +40,11 @@ public class AppRater {
         return count;
     }
 
+    public boolean isDoNotShowAgain() {
+        SharedPreferences prefs = mContext.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean("dontshowagain", false);
+    }
+
     public boolean tryRate() {
         if (this.SHOW_ALWAYS) {
             Log.i("AppRater", "show always mode, show the dialog");
@@ -47,8 +52,7 @@ public class AppRater {
             return true;
         }
 
-        SharedPreferences prefs = mContext.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        if (prefs.getBoolean("dontshowagain", false)) {
+        if (isDoNotShowAgain()) {
             Log.i("AppRater", "not showing again");
             return false;
         }

@@ -1,6 +1,7 @@
 package pl.tlasica.firewire;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
@@ -216,14 +217,15 @@ public class PlayActivity extends BasicActivity {
 
     //TODO: implement a nice dialog for this with score etc, share on FB
     private void showEndOfLevels() {
+        final AppRater appRater = new AppRater(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Game completed!");
         builder.setIcon(R.drawable.shockcircle);
-        builder.setMessage("You won!\nThere are no more tasks to finish.\nNo most creatures to fire.\n\nAwesome job!");
+        builder.setMessage("Awesome job!\nWe are working on next challenges.\nStay tuned.");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                if (!appRater.isDoNotShowAgain()) appRater.showRateDialog();
                 fullScreenMode();
-                finish();
             } });
         AlertDialog dialog = builder.create();
         dialog.show();
