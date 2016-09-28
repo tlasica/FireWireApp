@@ -9,6 +9,7 @@ import java.io.IOException;
 import pl.tlasica.firewire.model.Board;
 import pl.tlasica.firewire.parser.BoardLoader;
 import pl.tlasica.firewire.play.LevelId;
+import pl.tlasica.firewire.play.Player;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -42,4 +43,5 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             }
         }
     }
+
 }

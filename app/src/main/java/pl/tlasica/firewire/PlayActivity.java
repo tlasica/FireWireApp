@@ -221,7 +221,7 @@ public class PlayActivity extends BasicActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Game completed!");
         builder.setIcon(R.drawable.shockcircle);
-        builder.setMessage("Awesome job!\nWe are working on next challenges.\nStay tuned.");
+        builder.setMessage("Awesome job!\n\nYou have solved all the puzzles we have at the moment.\n\nStay tuned, we are working on new challenges!");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (!appRater.isDoNotShowAgain()) appRater.showRateDialog();

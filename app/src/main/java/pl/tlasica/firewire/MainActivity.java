@@ -3,7 +3,9 @@ package pl.tlasica.firewire;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,7 +95,7 @@ public class MainActivity extends BasicActivity {
         try {
             int levelId = Player.get().firstUnfinishedLevelId();
             if (levelId == 0) {
-                String msg = "Sorry to say but you already played all the games.";
+                String msg = "You have solved all the puzzles we have at the moment so please pick something from already played ones.  We are working on new challenges!";
                 Toast.makeText(getBaseContext(), msg , Toast.LENGTH_LONG).show();
                 return;
             }
@@ -145,13 +147,35 @@ public class MainActivity extends BasicActivity {
         startActivity(myIntent);
     }
 
-    private void restoreSolvedLevels() {
-        Settings settings = new Settings(this);
-        for(int level=1; level<=BoardLoader.NUM_LEVELS; level++) {
-            for(int game=1; game<=BoardLoader.levelSizes[level]; game++) {
-                int levelId = LevelId.levelId(level, game);
-                boolean solved = settings.isLevelSolved(levelId);
-                if (solved) Player.get().markSolved(levelId);
+    private void restoreSolvedLevels()
+    {
+        boolean debug = false;
+        if (!debug)
+        {
+            Settings settings = new Settings(this);
+            for (int level = 1; level <= BoardLoader.NUM_LEVELS; level++)
+            {
+                for (int game = 1; game <= BoardLoader.levelSizes[level]; game++)
+                {
+                    int levelId = LevelId.levelId(level, game);
+                    boolean solved = settings.isLevelSolved(levelId);
+                    if (solved) Player.get().markSolved(levelId);
+                }
+            }
+        }
+        else
+        {
+            Log.i("", "DEBUG MODE");
+            for (int level = 1; level <= BoardLoader.NUM_LEVELS; level++)
+            {
+                for (int game = 1; game <= BoardLoader.levelSizes[level]; game++)
+                {
+                    int levelId = LevelId.levelId(level, game);
+                    boolean lastLevel = (level == BoardLoader.NUM_LEVELS);
+                    boolean lastGame = (game == BoardLoader.levelSizes[level]);
+                    if (!lastLevel || !lastGame)
+                        Player.get().markSolved(levelId);
+                }
             }
         }
     }

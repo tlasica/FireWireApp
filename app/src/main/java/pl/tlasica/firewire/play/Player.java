@@ -34,11 +34,11 @@ public class Player {
     }
 
     /**
-     * Return first unfinished levelId or -0 if all levels are finished (solved)
+     * Return first unfinished levelId or 0 if all levels are finished (solved)
      */
     public int firstUnfinishedLevelId() {
         for (int level = 1; level <= BoardLoader.NUM_LEVELS; level++) {
-            for (int game = 1; game < BoardLoader.levelSizes[level]; game++) {
+            for (int game = 1; game <= BoardLoader.levelSizes[level]; game++) {
                 int levelId = LevelId.levelId(level, game);
                 if (!levelsSolved.contains(levelId)) return levelId;
             }

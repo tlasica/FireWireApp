@@ -44,4 +44,19 @@ public class PlayerTests {
         assertTrue(p.canPlayLevel(2));
         assertFalse(p.canPlayLevel(3));
     }
+
+    @Test
+    public void firstUnfinishedLevel() {
+        Player p = Player.get();
+        p.clear();
+        assertEquals(p.firstUnfinishedLevelId(), LevelId.levelId(1,1));
+        p.markSolved(LevelId.levelId(1,1));
+        p.markSolved(LevelId.levelId(1,2));
+        assertEquals(p.firstUnfinishedLevelId(), LevelId.levelId(1,3));
+        p.markSolved(LevelId.levelId(1,3));
+        p.markSolved(LevelId.levelId(1,4));
+        assertEquals(p.firstUnfinishedLevelId(), LevelId.levelId(1,5));
+        p.markSolved(LevelId.levelId(1,5));
+        assertEquals(p.firstUnfinishedLevelId(), LevelId.levelId(2,1));
+    }
 }
