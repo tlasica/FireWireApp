@@ -51,11 +51,7 @@ public class LevelCompletedDialogFragment extends DialogFragment {
 
     private String buildMsg() {
         int points = PointCalculator.points(gameStats, LevelPlay.current().board);
-        String msg = String.format("Level completed in %02.1fs\n" +
-                "LEVEL POINTS: %d" +
-                "\n",
-                gameStats.durationSec(),
-                points);
+        String msg = String.format("\nLevel completed in %02.1fs\n", gameStats.durationSec());
         return msg;
     }
 }
