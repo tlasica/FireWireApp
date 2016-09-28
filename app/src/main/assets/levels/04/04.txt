@@ -1,19 +1,22 @@
-#@ 04:04
-# 04/07.txt
+#@ 04:06
 MATRIX(4,4)
-TARGET(1,3)
-PLUS(0,1)
-MINUS(4,3)
-(4,0)=W,S
-(2,1)=S,E
-(0,3)=E,N
-(3,3)=E,W
-(0,1)=E,N,S
-(1,3)=S,E,W
-(1,0)=E,W
-(0,0)=E,S
-(4,3)=N,W
-# connectors
-C90=1
-C180=6
-#C7
+TARGET(3,2)
+PLUS(0,4)
+MINUS(4,0)
+(4,0)
+(0,4)
+(4,0)=S,W
+(0,4)=E,N
+(1,2)=S,W
+(1,3)=N,W
+(3,4)=E,W
+(2,3)=N,W
+(3,2)=N,S,W,E
+(3,1)=E,S
+(4,1)=W,S
+(2,1)=N,S
+(0,1)=N,S
+# do rozwiązania potrzeba 5 konektorów "na wprost" i 3 90 stopni
+C90=3
+C180=5
+#C8
