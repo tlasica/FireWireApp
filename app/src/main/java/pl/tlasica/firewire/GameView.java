@@ -30,14 +30,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public Game getGame() {
-        return game;
-    }
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("SURFACE", "Created");
         if (game != null) {
+            Log.d("SURFACE", "Game was not null. Create() and start()");
             game.create(holder, events);
             game.start();
         }

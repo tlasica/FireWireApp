@@ -29,11 +29,11 @@ import pl.tlasica.firewire.play.Player;
 //https://developer.android.com/guide/topics/ui/dialogs.html
 
 public class PlayActivity extends BasicActivity {
-    private GameView    mGameView;
     private TextView    mTimeView;
     private CountDownTimer timer;
     private String      addUnitId = "ca-app-pub-6316552100242193/6643259663";
     InterstitialAd      mInterstitialAd;
+    Game                game;
 
     private static int  playNextCounter = 0;
     private static int  showAddCounterBarrier = 3;
@@ -65,8 +65,8 @@ public class PlayActivity extends BasicActivity {
         // start countdown timer to stop game and update time
         timer = startTimer();
         // start game
-        mGameView = (GameView)findViewById(R.id.game_view);
-        mGameView.setGame(new Game(this));
+        game = new Game(this);
+        this.setGameInGameView();
     }
 
 
@@ -80,8 +80,11 @@ public class PlayActivity extends BasicActivity {
 
     @Override
     protected void onResume() {
+        Log.i("PLAYACT", "onResume()");
         super.onResume();
         fullScreenMode();
+        this.game = new Game(this);
+        this.setGameInGameView();
     }
 
     private void fullScreenMode() {
@@ -164,9 +167,7 @@ public class PlayActivity extends BasicActivity {
     }
 
     private Game game() {
-        GameView gameView = (GameView)findViewById(R.id.game_view);
-        Game game = gameView.getGame();
-        return game;
+        return this.game;
     }
 
     public void nextLevel() {
@@ -248,7 +249,15 @@ public class PlayActivity extends BasicActivity {
         timer = startTimer();
         TextView titleText = (TextView)findViewById(R.id.level_title);
         titleText.setText(LevelPlay.current().board.title);
-        mGameView.setGame(new Game(this));
+        game = new Game(this);
+        this.setGameInGameView();
         game().start();
+    }
+
+    private void setGameInGameView() {
+        GameView gameView = (GameView)findViewById(R.id.game_view);
+        if (gameView != null) {
+            gameView.setGame(game);
+        }
     }
 }
