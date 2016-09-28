@@ -50,15 +50,6 @@ public class MainActivity extends BasicActivity {
         this.setSoundIcon(soundOn);
         SoundPoolPlayer.init(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String msg = "TODO: Share on FB";
-                Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-        });
-
         ConnectorBitmap.initialize(getResources());
 
         try {
