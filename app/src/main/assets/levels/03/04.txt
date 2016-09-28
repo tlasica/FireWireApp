@@ -1,5 +1,5 @@
 #@ 03:04
-T: Finito
+#T: Finito
 MATRIX(4,4)
 TARGET(2,2)
 PLUS(0,1)

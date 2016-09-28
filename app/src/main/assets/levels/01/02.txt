@@ -1,4 +1,4 @@
-T:Easy Fizy
+#T:Easy Fizy
 MATRIX(2,2)
 TARGET(1,1)
 PLUS(0,0)

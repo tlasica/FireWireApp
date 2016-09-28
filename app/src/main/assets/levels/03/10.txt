@@ -1,5 +1,5 @@
 #@ 03:10
-T: Turn to win
+#T: Turn to win
 MATRIX(4,4)
 TARGET(3,2)
 PLUS(0,4)

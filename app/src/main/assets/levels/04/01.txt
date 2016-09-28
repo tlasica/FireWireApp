@@ -1,5 +1,5 @@
 #@ 04:01
-T: Think twice
+#T: Think twice
 MATRIX(4,4)
 TARGET(3,3)
 PLUS(0,4)
