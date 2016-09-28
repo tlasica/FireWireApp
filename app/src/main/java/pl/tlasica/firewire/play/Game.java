@@ -99,8 +99,10 @@ public class Game {
     }
 
     public void start() {
-        Log.i("", "Game started");
-        thread.start();
+        Log.i("Game", "start()");
+        if (thread.getState() == Thread.State.NEW) {
+            thread.start();
+        }
     }
 
     public void stop() {
@@ -122,8 +124,15 @@ public class Game {
 
     public void create(SurfaceHolder surfaceHolder, Queue<MouseEvent> eventsQueue) {
         Log.i("Game", "create()");
-        gameLoop = new GameLoop(this, surfaceHolder, eventsQueue);
-        thread = new Thread(gameLoop);
+        if (gameLoop == null) {
+            Log.i("Game", "gameLoop was null -> starting.");
+            gameLoop = new GameLoop(this, surfaceHolder, eventsQueue);
+            thread = new Thread(gameLoop);
+        }
+        else {
+            Log.i("Game", "gameLoop was not null -> updating");
+
+        }
     }
 
 }
