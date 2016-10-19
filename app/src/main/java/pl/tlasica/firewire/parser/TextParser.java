@@ -157,9 +157,9 @@ public class TextParser {
     }
 
     private boolean tryRemoveNode(Board b, String line) {
-        if (line.startsWith("-")) {
+        if (line.startsWith("-") && !line.contains("~")) {
             Matcher m = emptyNodePattern.matcher(line.substring(1));
-            if (m.matches() && m.hitEnd()) {
+            if (m.matches()) {
                 int node = nodeCoord(m);
                 b.removeNode(node);
                 return true;
